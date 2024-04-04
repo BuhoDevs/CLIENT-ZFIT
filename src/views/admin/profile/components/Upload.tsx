@@ -12,6 +12,7 @@ import Card from "../../../../components/card/Card";
 // Assets
 import { MdUpload } from "react-icons/md";
 import Dropzone from "../../../../views/admin/profile/components/Dropzone";
+import { axiosApi } from "../../../../config/axios";
 
 export default function Upload(props: {
   used?: number;
@@ -76,6 +77,11 @@ export default function Upload(props: {
               mt={{ base: "20px", "2xl": "auto" }}
               variant="brand"
               fontWeight="500"
+              // para probar la conexion con del back
+              onClick={(e) => {
+                e.preventDefault();
+                axiosApi.get("/");
+              }}
             >
               Publish now
             </Button>
