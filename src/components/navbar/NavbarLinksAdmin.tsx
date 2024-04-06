@@ -4,28 +4,27 @@ import {
   Button,
   Flex,
   Icon,
-  Image,
-  Link,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   Text,
-  useColorModeValue,
   useColorMode,
+  useColorModeValue,
 } from "@chakra-ui/react";
 // Custom Components
+import PropTypes from "prop-types";
 import { ItemContent } from "../../components/menu/ItemContent";
 import { SearchBar } from "../../components/navbar/searchBar/SearchBar";
 import { SidebarResponsive } from "../../components/sidebar/Sidebar";
-import PropTypes from "prop-types";
 // Assets
-import navImage from "../../assets/img/layout/Navbar.png";
-import { MdNotificationsNone, MdInfoOutline } from "react-icons/md";
-import { IoMdMoon, IoMdSunny } from "react-icons/io";
 import { FaEthereum } from "react-icons/fa";
+import { IoMdMoon, IoMdSunny } from "react-icons/io";
+import { MdNotificationsNone } from "react-icons/md";
 import { routes } from "../../routes";
+import { getUserInfo, logOut } from "../../utilities";
 export default function HeaderLinks(props: { secondary: boolean }) {
+  const userInfo = getUserInfo();
   const { secondary } = props;
   const { colorMode, toggleColorMode } = useColorMode();
   // Chakra Color Mode
@@ -41,7 +40,10 @@ export default function HeaderLinks(props: { secondary: boolean }) {
     "14px 17px 40px 4px rgba(112, 144, 176, 0.18)",
     "14px 17px 40px 4px rgba(112, 144, 176, 0.06)"
   );
-  const borderButton = useColorModeValue("secondaryGray.500", "whiteAlpha.200");
+  // const borderButton = useColorModeValue("secondaryGray.500", "whiteAlpha.200");
+  const userLogout = () => {
+    logOut();
+  };
   return (
     <Flex
       w={{ sm: "100%", md: "auto" }}
@@ -97,7 +99,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
           </Text>
         </Text>
       </Flex>
-      <SidebarResponsive routes={routes as RoutesType[]} />
+      <SidebarResponsive routes={routes} />
       <Menu>
         <MenuButton p="0px">
           <Icon
@@ -122,7 +124,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
         >
           <Flex w="100%" mb="20px">
             <Text fontSize="md" fontWeight="600" color={textColor}>
-              Notifications
+              Notificaciones
             </Text>
             <Text
               fontSize="sm"
@@ -131,7 +133,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
               ms="auto"
               cursor="pointer"
             >
-              Mark all read
+              Marcar como leído
             </Text>
           </Flex>
           <Flex flexDirection="column">
@@ -142,9 +144,9 @@ export default function HeaderLinks(props: { secondary: boolean }) {
               borderRadius="8px"
               mb="10px"
             >
-              <ItemContent info="Horizon UI Dashboard PRO" />
+              <ItemContent info="Subscripciones" />
             </MenuItem>
-            <MenuItem
+            {/* <MenuItem
               _hover={{ bg: "none" }}
               _focus={{ bg: "none" }}
               px="0"
@@ -152,12 +154,12 @@ export default function HeaderLinks(props: { secondary: boolean }) {
               mb="10px"
             >
               <ItemContent info="Horizon Design System Free" />
-            </MenuItem>
+            </MenuItem> */}
           </Flex>
         </MenuList>
       </Menu>
 
-      <Menu>
+      {/* <Menu>
         <MenuButton p="0px">
           <Icon
             mt="6px"
@@ -217,7 +219,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
             </Link>
           </Flex>
         </MenuList>
-      </Menu>
+      </Menu> */}
 
       <Button
         variant="no-hover"
@@ -242,7 +244,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
           <Avatar
             _hover={{ cursor: "pointer" }}
             color="white"
-            name="Adela Parkson"
+            name={userInfo?.Person.firstname}
             bg="#11047A"
             size="sm"
             w="40px"
@@ -269,11 +271,11 @@ export default function HeaderLinks(props: { secondary: boolean }) {
               fontWeight="700"
               color={textColor}
             >
-              👋&nbsp; Hey, Adela
+              👋&nbsp; Hola, {userInfo?.Person.firstname}
             </Text>
           </Flex>
           <Flex flexDirection="column" p="10px">
-            <MenuItem
+            {/* <MenuItem
               _hover={{ bg: "none" }}
               _focus={{ bg: "none" }}
               borderRadius="8px"
@@ -288,7 +290,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
               px="14px"
             >
               <Text fontSize="sm">Newsletter Settings</Text>
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem
               _hover={{ bg: "none" }}
               _focus={{ bg: "none" }}
@@ -296,7 +298,9 @@ export default function HeaderLinks(props: { secondary: boolean }) {
               borderRadius="8px"
               px="14px"
             >
-              <Text fontSize="sm">Log out</Text>
+              <Text fontSize="sm" onClick={userLogout}>
+                Cerrar sesión
+              </Text>
             </MenuItem>
           </Flex>
         </MenuList>

@@ -39,6 +39,9 @@ export function SearchBar(props: {
             _focus={{
               boxShadow: "none",
             }}
+            _hover={{
+              bg: "none",
+            }}
             icon={<SearchIcon color={searchIconColor} w="15px" h="15px" />}
           />
         }

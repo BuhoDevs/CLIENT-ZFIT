@@ -1,12 +1,11 @@
 // Chakra imports
-import { Box, Flex, Icon, Text } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import PropTypes from "prop-types";
-import Footer from "../../components/footer/FooterAuth";
 import FixedPlugin from "../../components/fixedPlugin/FixedPlugin";
+import Footer from "../../components/footer/FooterAuth";
 // Custom components
 import { NavLink } from "react-router-dom";
 // Assets
-import { FaChevronLeft } from "react-icons/fa";
 
 function AuthIllustration(props: {
   children: JSX.Element | string;
@@ -45,7 +44,7 @@ function AuthIllustration(props: {
             pt={{ lg: "0px", xl: "0px" }}
             w="fit-content"
           >
-            <Icon
+            {/* <Icon
               as={FaChevronLeft}
               me="12px"
               h="13px"
@@ -54,7 +53,7 @@ function AuthIllustration(props: {
             />
             <Text ms="0px" fontSize="sm" color="secondaryGray.600">
               Back to Simmmple
-            </Text>
+            </Text> */}
           </Flex>
         </NavLink>
         {children}

@@ -1,9 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
-// import { getAuthState } from '../services/storage';
+import { getAuthState } from "../utilities";
 
 export const PublicGuard = () => {
-  // getAuthState();
-  const isUserAuthenticated = true;
+  const isUserAuthenticated = getAuthState();
   return isUserAuthenticated ? <Navigate to={"/dashboard"} /> : <Outlet />;
 };
 

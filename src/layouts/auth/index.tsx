@@ -6,15 +6,16 @@ import { useState } from "react";
 import { Box, useColorModeValue } from "@chakra-ui/react";
 
 // Layout components
+import { Outlet } from "react-router-dom";
 import { SidebarContext } from "../../contexts/SidebarContext";
 
 // Custom Chakra theme
-export default function Auth() {
+export default function AuthLayout() {
   // states and functions
   const [toggleSidebar, setToggleSidebar] = useState(false);
-  const getRoute = () => {
-    return window.location.pathname !== "/auth/full-screen-maps";
-  };
+  // const getRoute = () => {
+  //   return window.location.pathname !== "/auth/full-screen-maps";
+  // };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
   //   const getRoutes = (routes: RoutesType[]): any => {
   //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,18 +55,9 @@ export default function Auth() {
           transitionProperty="top, bottom, width"
           transitionTimingFunction="linear, linear, ease"
         >
-          {getRoute() ? (
-            <Box mx="auto" minH="100vh">
-              {/* <Switch>
-                {getRoutes(routes)}
-                <Redirect
-                  from="/auth"
-                  to="/auth/sign-in/default
-                  "
-                />
-              </Switch> */}
-            </Box>
-          ) : null}
+          <Box mx="auto" minH="100vh">
+            <Outlet />
+          </Box>
         </Box>
       </SidebarContext.Provider>
     </Box>

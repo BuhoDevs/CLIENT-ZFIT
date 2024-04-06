@@ -1,3 +1,5 @@
+import { LazyExoticComponent } from "react";
+
 export {};
 
 declare global {
@@ -8,7 +10,7 @@ declare global {
   interface RoutesType {
     name: string;
     layout: string;
-    component: () => JSX.Element;
+    component: LazyExoticComponent<() => JSX.Element>;
     icon: JSX.Element | string;
     path: string;
     secondary?: boolean;
