@@ -23,7 +23,9 @@ import { IoMdMoon, IoMdSunny } from "react-icons/io";
 import { MdNotificationsNone } from "react-icons/md";
 import { routes } from "../../routes";
 import { getUserInfo, logOut } from "../../utilities";
+import { useNavigate } from "react-router-dom";
 export default function HeaderLinks(props: { secondary: boolean }) {
+  const navigate = useNavigate();
   const userInfo = getUserInfo();
   const { secondary } = props;
   const { colorMode, toggleColorMode } = useColorMode();
@@ -43,6 +45,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
   // const borderButton = useColorModeValue("secondaryGray.500", "whiteAlpha.200");
   const userLogout = () => {
     logOut();
+    navigate("/login");
   };
   return (
     <Flex
