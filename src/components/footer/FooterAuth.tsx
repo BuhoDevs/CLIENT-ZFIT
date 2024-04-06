@@ -1,13 +1,5 @@
 /* eslint-disable */
-
-import {
-  Flex,
-  Link,
-  //   List,
-  //   ListItem,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Flex, Link, Text, useColorModeValue } from "@chakra-ui/react";
 
 export default function Footer() {
   let textColor = useColorModeValue("gray.400", "white");
@@ -35,10 +27,9 @@ export default function Footer() {
         }}
         mb={{ base: "20px", lg: "0px" }}
       >
-        {" "}
         &copy; {new Date().getFullYear()}
         <Text as="span" fontWeight="500" ms="4px">
-          MD +. Todos los derechos reservados. Desarrollado por
+          - Todos los derechos reservados. Desarrollado por
           <Link
             mx="3px"
             color={textColor}

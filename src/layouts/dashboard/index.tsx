@@ -7,13 +7,27 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import { useState } from "react";
 import { routes } from "../../routes";
 import AdminNavbar from "../../components/navbar/NavbarAdmin";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import { getToken, isValidToken, logOut } from "../../utilities";
 // Custom Chakra theme
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function Dashboard(props: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [x: string]: any;
 }) {
+  const navigate = useNavigate();
+
+  // logout token expirated
+  const handleLogOut = () => {
+    logOut();
+    navigate("/login");
+  };
+
+  const token = getToken();
+  const istokenValidate = isValidToken(token || "");
+  if (!istokenValidate) {
+    handleLogOut();
+  }
   const { ...rest } = props;
   // states and functions
   const [fixed] = useState(false);
@@ -26,15 +40,24 @@ export default function Dashboard(props: {
 
   const getActiveRoute = (routes: RoutesType[]): string => {
     const activeRoute = "Default Brand Text";
+    let currentPath = window.location.pathname;
+
+    if (currentPath === "/dashboard") {
+      currentPath = "/dashboard/home";
+    }
+
     for (let i = 0; i < routes.length; i++) {
-      if (
-        window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
-      ) {
+      const { layout, path } = routes[i];
+      const fullPath = `${layout}/${path}`;
+
+      if (currentPath.startsWith(fullPath)) {
         return routes[i].name;
       }
     }
+
     return activeRoute;
   };
+
   const getActiveNavbar = (routes: RoutesType[]): boolean => {
     const activeNavbar = false;
     for (let i = 0; i < routes.length; i++) {

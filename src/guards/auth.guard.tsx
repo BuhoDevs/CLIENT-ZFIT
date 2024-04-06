@@ -1,11 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
-// import { getAuthState } from '../services/storage';
+import { getAuthState } from "../utilities";
 
 export const AuthGuard = () => {
-  // getAuthState();
-  const isUserAuthenticated = true;
+  const isUserAuthenticated = getAuthState();
 
-  return isUserAuthenticated ? <Outlet /> : <Navigate to={"/auth"} />;
+  return isUserAuthenticated ? <Outlet /> : <Navigate to={"/login"} />;
 };
 
 export default AuthGuard;

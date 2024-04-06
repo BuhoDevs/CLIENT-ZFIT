@@ -1,11 +1,11 @@
 import { Icon } from "@chakra-ui/react";
-import { MdHome, MdLock } from "react-icons/md";
+import { MdHome } from "react-icons/md";
 
 import { FaUser } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { BiSolidBarChartAlt2 } from "react-icons/bi";
 // layout imports
-import DashboardLayout from "./layouts/admin";
+import DashboardLayout from "./layouts/dashboard";
 
 // auth imports
 import AuthGuard from "./guards/auth.guard";
@@ -13,7 +13,6 @@ import AuthGuard from "./guards/auth.guard";
 // Admin Imports
 
 // Auth Imports
-import SignInCentered from "./views/auth/signIn";
 import { Suspense, lazy } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
@@ -23,8 +22,10 @@ import MarketDashLazy from "./lazyexports/MarketPlace";
 import PatientsDashLazy from "./lazyexports/PatientsDashboard";
 import ProfileDashLazy from "./lazyexports/ProfileDashboard";
 import LoginDashLazy from "./lazyexports/LoginDashboard";
+import PublicGuard from "./guards/public.guard";
+import AuthLayout from "./layouts/auth";
 
-export const routes = [
+export const routes: RoutesType[] = [
   {
     name: "Inicio",
     layout: "/dashboard",
@@ -63,13 +64,13 @@ export const routes = [
     icon: <Icon as={IoMdSettings} width="20px" height="20px" color="inherit" />,
     component: lazy(() => import("./views/admin/profile")),
   },
-  {
-    name: "Ingresar",
-    layout: "/dashboard",
-    path: "login",
-    icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
-    component: SignInCentered,
-  },
+  // {
+  //   name: "Ingresar",
+  //   layout: "/dashboard",
+  //   path: "login",
+  //   icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
+  //   component: SignInCentered,
+  // },
   // {
   //   name: "RTL Admin",
   //   layout: "/rtl",
@@ -94,7 +95,6 @@ export const renderRoutes = () => {
             <Route path="balance" element={<MarketDashLazy />} />
             <Route path="clients" element={<PatientsDashLazy />} />
             <Route path="profile" element={<ProfileDashLazy />} />
-            <Route path="login" element={<LoginDashLazy />} />
             {/* 
             <Route path="users" element={<UsersDashboard />} />
             <Route path="listUsers" element={<ListUsersDashboard />} />
@@ -145,14 +145,15 @@ export const renderRoutes = () => {
           </Route>
         </Route>
 
-        {/* <Route element={<PublicGuard />}>
-          <Route key={"authKey"} path="/auth" element={<AuthLayout />}>
-            <Route index element={<LoginAuthDashboard />} />
+        <Route element={<PublicGuard />}>
+          <Route key={"authKey"} path="/login" element={<AuthLayout />}>
+            <Route index element={<LoginDashLazy />} />
+            {/* 
             <Route path="register" element={<RegisterAuthDashboard />} />
             <Route path="forgotPassword" element={<ForgotAuthDashboard />} />
-            <Route path="resetPassword" element={<ResetPasswordDashboard />} />
+            <Route path="resetPassword" element={<ResetPasswordDashboard />} /> */}
           </Route>
-        </Route> */}
+        </Route>
       </Routes>
     </Suspense>
   );
