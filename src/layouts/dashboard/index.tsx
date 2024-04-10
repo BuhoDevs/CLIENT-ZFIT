@@ -1,6 +1,6 @@
 // Chakra imports
 import { Portal, Box, useDisclosure } from "@chakra-ui/react";
-import Footer from "../../components/footer/FooterAdmin";
+// import Footer from "../../components/footer/FooterAdmin";
 // Layout components
 import Sidebar from "../../components/sidebar/Sidebar";
 // import { SidebarContext } from "../../contexts/SidebarContext";
@@ -128,9 +128,9 @@ export default function Dashboard(props: {
         {/* {children} */}
         <Outlet />
 
-        <Box>
+        {/* <Box>
           <Footer />
-        </Box>
+        </Box> */}
       </Box>
       {/* </SidebarContext.Provider> */}
     </Box>

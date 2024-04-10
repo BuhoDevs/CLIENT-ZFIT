@@ -19,11 +19,12 @@ import { Navigate, Route, Routes } from "react-router-dom";
 // lazy imports
 import HomeDashLazy from "./lazyexports/HomeDashboard";
 import MarketDashLazy from "./lazyexports/MarketPlace";
-import PatientsDashLazy from "./lazyexports/PatientsDashboard";
+import ClientsDashLazy from "./lazyexports/ClientsDashboard";
 import ProfileDashLazy from "./lazyexports/ProfileDashboard";
 import LoginDashLazy from "./lazyexports/LoginDashboard";
 import PublicGuard from "./guards/public.guard";
 import AuthLayout from "./layouts/auth";
+import NewClient from "./views/admin/clients/components/newClient";
 
 export const routes: RoutesType[] = [
   {
@@ -31,7 +32,7 @@ export const routes: RoutesType[] = [
     layout: "/dashboard",
     path: "home",
     icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
-    component: lazy(() => import("./views/admin/default")),
+    component: lazy(() => import("./views/admin/home")),
     isIndex: true,
   },
 
@@ -40,7 +41,7 @@ export const routes: RoutesType[] = [
     layout: "/dashboard",
     icon: <Icon as={FaUser} width="20px" height="20px" color="inherit" />,
     path: "clients",
-    component: lazy(() => import("./views/admin/dataTables")),
+    component: lazy(() => import("./views/admin/clients")),
   },
   {
     name: "Balances",
@@ -93,7 +94,8 @@ export const renderRoutes = () => {
           >
             <Route index element={<HomeDashLazy />} />
             <Route path="balance" element={<MarketDashLazy />} />
-            <Route path="clients" element={<PatientsDashLazy />} />
+            <Route path="clients" element={<ClientsDashLazy />} />
+            <Route path="clients/new" element={<NewClient />} />
             <Route path="profile" element={<ProfileDashLazy />} />
             {/* 
             <Route path="users" element={<UsersDashboard />} />
