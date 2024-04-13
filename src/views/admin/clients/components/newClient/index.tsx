@@ -3,13 +3,20 @@ import {
   Button,
   Flex,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Icon,
   Image,
   Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
   SimpleGrid,
   Text,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import {
   marginTopDefault,
@@ -25,23 +32,72 @@ import { Select as CkakraSelect } from "chakra-react-select";
 import { Controller, useForm } from "react-hook-form";
 import { ChangeEvent, useState } from "react";
 import { MdClose } from "react-icons/md";
-
-const genres = [
-  { value: 1, label: "Masculino" },
-  { value: 2, label: "Femenino" },
-];
+import { useGenre } from "../../../../../hooks/genre";
+import { useClient } from "../../../../../hooks/client";
+import { IClientRequestBody } from "../../../../../types/client";
 
 const NewClient = () => {
   const navigate = useNavigate();
   const formBg = useColorModeValue(lightBgForm, darkBgForm);
-  const { control } = useForm();
   const [image, setImage] = useState<string>();
+  const toast = useToast();
+
+  const { data: genres } = useGenre();
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setImage(URL.createObjectURL(event.target.files[0]));
     }
   };
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<IClientRequestBody>();
+
+  const { mutate: onClientMutate } = useClient();
+
+  const onSubmitClient = handleSubmit((values: IClientRequestBody) => {
+    onClientMutate(
+      {
+        firstname: values.firstname,
+        lastname: values.lastname,
+        birthdate: values.birthdate,
+        ci: values.ci,
+        phone: +values.phone,
+        photo: values.photo,
+        genreId: values.genre?.id || 0,
+        weight: +values.weight,
+        height: +values.height,
+        email: values.email,
+        password: values.password,
+      },
+      {
+        onSuccess: () => {
+          toast({
+            title: `Registro de Cliente`,
+            description: `Datos guardados exitosamente!`,
+            status: "success",
+            duration: 2000,
+            isClosable: true,
+          });
+          reset();
+        },
+        onError: (error) => {
+          toast({
+            title: "Registro de Cliente",
+            description: `Ups! Algo salió mal ${error?.message}`,
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        },
+      }
+    );
+  });
 
   return (
     <Box pt={{ base: marginTopMobile, md: "80px", xl: marginTopDefault }}>
@@ -65,45 +121,95 @@ const NewClient = () => {
           </Text>
         </Flex>
         <Box bgColor={formBg} borderRadius={8} p={4}>
-          <form>
+          <form onSubmit={onSubmitClient}>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} mb={4}>
-              <FormControl>
+              <FormControl isInvalid={!!errors.ci}>
                 <FormLabel display="flex" gap={1}>
                   Nro Cedula <Text color="brand.500">*</Text>
                 </FormLabel>
-                <Input type="text" placeholder="Cedula.." />
+                <Input
+                  id="ci"
+                  type="text"
+                  {...register("ci", {
+                    required: {
+                      value: true,
+                      message: "El carnet es requerido",
+                    },
+                  })}
+                  placeholder="Cedula.."
+                />
+                {errors && errors.ci && (
+                  <FormErrorMessage ps={1} mb="24px">
+                    {errors.ci.message}
+                  </FormErrorMessage>
+                )}
               </FormControl>
-              <FormControl>
+              <FormControl isInvalid={!!errors.firstname}>
                 <FormLabel display="flex" gap={1}>
                   Nombre(s) <Text color="brand.500">*</Text>
                 </FormLabel>
-                <Input type="text" placeholder="Nombres" required />
+                <Input
+                  id="firstname"
+                  type="text"
+                  {...register("firstname", {
+                    required: {
+                      value: true,
+                      message: "El nombre es requerido",
+                    },
+                  })}
+                  placeholder="Nombres"
+                />
+                {errors && errors.firstname && (
+                  <FormErrorMessage ps={1} mb="24px">
+                    {errors.firstname.message}
+                  </FormErrorMessage>
+                )}
               </FormControl>
-              <FormControl>
+              <FormControl isInvalid={!!errors.lastname}>
                 <FormLabel display="flex" gap={1}>
                   Apellido(s)<Text color="brand.500">*</Text>
                 </FormLabel>
-                <Input type="text" placeholder="Apellido" />
+                <Input
+                  id="lastname"
+                  type="text"
+                  {...register("lastname", {
+                    required: {
+                      value: true,
+                      message: "El apellido es requerido",
+                    },
+                  })}
+                  placeholder="Apellido"
+                />
+                {errors && errors.lastname && (
+                  <FormErrorMessage ps={1} mb="24px">
+                    {errors.lastname.message}
+                  </FormErrorMessage>
+                )}
               </FormControl>
               <FormControl>
                 <FormLabel>Fecha de Nacimiento</FormLabel>
-                <Input type="date" placeholder="Fecha de nacimiento" />
+                <Input
+                  id="birthdate"
+                  type="date"
+                  {...register("birthdate")}
+                  placeholder="Fecha de nacimiento"
+                />
               </FormControl>
             </SimpleGrid>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} mb={4}>
-              <FormControl>
+              <FormControl isInvalid={!!errors.genre}>
                 <FormLabel display="flex" gap={1}>
                   Genero<Text color="brand.500">*</Text>
                 </FormLabel>
                 <Controller
-                  name="province"
-                  control={control}
+                  name="genre"
                   rules={{
                     required: {
                       value: true,
-                      message: "Este campo es requerido",
+                      message: "El genero es requerido",
                     },
                   }}
+                  control={control}
                   render={({
                     field: { value, onChange, onBlur, name, ref },
                   }) => (
@@ -111,8 +217,8 @@ const NewClient = () => {
                       name={name}
                       ref={ref}
                       colorScheme="brandScheme"
-                      options={genres}
-                      selectedOptionColor="brandScheme"
+                      options={genres || []}
+                      selectedOptionColorScheme="brandScheme"
                       placeholder="Seleccionar"
                       // isDisabled={!isEditing}
                       onChange={onChange}
@@ -123,26 +229,68 @@ const NewClient = () => {
                     />
                   )}
                 />
+                {errors && errors.genre && (
+                  <FormErrorMessage ps={1} mb="24px">
+                    {errors.genre.message}
+                  </FormErrorMessage>
+                )}
               </FormControl>
               <FormControl>
                 <FormLabel>Correo</FormLabel>
-                <Input type="text" placeholder="Correo" />
+                <Input
+                  id="email"
+                  type="text"
+                  {...register("email")}
+                  placeholder="Correo"
+                />
               </FormControl>
-              <FormControl>
+              <FormControl isInvalid={!!errors.phone}>
                 <FormLabel display="flex" gap={1}>
                   Celular <Text color="brand.500">*</Text>
                 </FormLabel>
-                <Input type="number" placeholder="Celular" />
+                <Input
+                  id="phone"
+                  type="number"
+                  {...register("phone", {
+                    required: {
+                      value: true,
+                      message: "El telefono es requerido",
+                    },
+                    maxLength: {
+                      value: 10,
+                      message:
+                        "El numero de celular no debe tener mas de 10 digitos",
+                    },
+                  })}
+                  placeholder="Celular"
+                />
+                {errors && errors.phone && (
+                  <FormErrorMessage ps={1} mb="24px">
+                    {errors.phone.message}
+                  </FormErrorMessage>
+                )}
               </FormControl>
             </SimpleGrid>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} mb={4}>
               <FormControl>
                 <FormLabel>Altura</FormLabel>
-                <Input type="number" placeholder="Ejemplo: 1.75 mts" />
+                <NumberInput defaultValue={1.5} precision={2} step={0.1}>
+                  <NumberInputField {...register("height")} />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
               </FormControl>
               <FormControl>
                 <FormLabel>Peso</FormLabel>
-                <Input type="number" placeholder="Ejemplo: 75.5 kg" />
+                <NumberInput defaultValue={50.5} precision={2} step={0.1}>
+                  <NumberInputField {...register("weight")} />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
               </FormControl>
             </SimpleGrid>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2}>
@@ -170,7 +318,6 @@ const NewClient = () => {
                     />
                   </Flex>
                 )}
-
                 <Input
                   type="file"
                   placeholder="Foto"
@@ -184,6 +331,8 @@ const NewClient = () => {
                 fontWeight={400}
                 fontSize="small"
                 borderRadius={8}
+                isLoading={isSubmitting}
+                type="submit"
               >
                 Registrar
               </Button>

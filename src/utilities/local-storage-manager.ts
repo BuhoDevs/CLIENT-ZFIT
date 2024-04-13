@@ -18,7 +18,8 @@ export const setLoginOnLocalStorage = ({
 
 export const getInLocalStorage = (key: string) => {
   const result = localStorage.getItem(key);
-  return !!result && JSON.parse(result);
+  // return !!result && JSON.parse(result);
+  return result || "token";
 };
 
 export const clearLocalStorage = () => {

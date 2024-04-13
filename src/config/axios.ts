@@ -11,7 +11,7 @@ export const axiosApi = Axios.create({
 });
 
 axiosApi.interceptors.request.use((request) => {
-  const token = getInLocalStorage("token") || "token_de_prueba";
+  const token = getInLocalStorage("token");
   request.headers.Authorization = `Bearer ${token}`;
   return request;
 });
