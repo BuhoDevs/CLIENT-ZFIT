@@ -44,14 +44,14 @@ import {
   MdFileCopy,
 } from "react-icons/md";
 import CheckTable from "../../../views/admin/rtl/components/CheckTable";
-import ComplexTable from "../../../views/admin/default/components/ComplexTable";
-import DailyTraffic from "../../../views/admin/default/components/DailyTraffic";
-import PieCard from "../../../views/admin/default/components/PieCard";
-import Tasks from "../../../views/admin/default/components/Tasks";
-import TotalSpent from "../../../views/admin/default/components/TotalSpent";
-import WeeklyRevenue from "../../../views/admin/default/components/WeeklyRevenue";
-import tableDataCheck from "../../../views/admin/default/variables/tableDataCheck";
-import tableDataComplex from "../../../views/admin/default/variables/tableDataComplex";
+import ComplexTable from "../../../views/admin/home/components/ComplexTable";
+import DailyTraffic from "../../../views/admin/home/components/DailyTraffic";
+import PieCard from "../../../views/admin/home/components/PieCard";
+import Tasks from "../../../views/admin/home/components/Tasks";
+import TotalSpent from "../../../views/admin/home/components/TotalSpent";
+import WeeklyRevenue from "../../../views/admin/home/components/WeeklyRevenue";
+import tableDataCheck from "../../../views/admin/home/variables/tableDataCheck";
+import tableDataComplex from "../../../views/admin/home/variables/tableDataComplex";
 import { marginTopDefault, marginTopMobile } from "../../../layouts/contants";
 
 export default function UserReports() {
