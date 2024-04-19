@@ -5,8 +5,6 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Icon,
-  Image,
   Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
@@ -30,26 +28,29 @@ import {
 
 import { Select as CkakraSelect } from "chakra-react-select";
 import { Controller, useForm } from "react-hook-form";
-import { ChangeEvent, useState } from "react";
-import { MdClose } from "react-icons/md";
+import { useEffect, useState } from "react";
 import { useGenre } from "../../../../../hooks/genre";
 import { useClient } from "../../../../../hooks/client";
 import { IClientRequestBody } from "../../../../../types/client";
+import DragAndDropInput from "../DragAndDropInput";
+import { parseToFormdata } from "../utils";
 
 const NewClient = () => {
   const navigate = useNavigate();
   const formBg = useColorModeValue(lightBgForm, darkBgForm);
   const [image, setImage] = useState<string>();
+  const [file, setFile] = useState<File | null>(null);
+
   const toast = useToast();
 
   const { data: genres } = useGenre();
 
-  const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setImage(URL.createObjectURL(event.target.files[0]));
-    }
-  };
-
+  // const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     console.log(event.target.files[0], "la foto desde el otro lado ");
+  //     setImage(URL.createObjectURL(event.target.files[0]));
+  //   }
+  // };
   const {
     register,
     handleSubmit,
@@ -63,17 +64,7 @@ const NewClient = () => {
   const onSubmitClient = handleSubmit((values: IClientRequestBody) => {
     onClientMutate(
       {
-        firstname: values.firstname,
-        lastname: values.lastname,
-        birthdate: values.birthdate,
-        ci: values.ci,
-        phone: +values.phone,
-        photo: values.photo,
-        genreId: values.genre?.id || 0,
-        weight: +values.weight,
-        height: +values.height,
-        email: values.email,
-        password: values.password,
+        bodyData: parseToFormdata({ values, file }),
       },
       {
         onSuccess: () => {
@@ -85,6 +76,8 @@ const NewClient = () => {
             isClosable: true,
           });
           reset();
+          setImage(undefined);
+          setFile(null);
         },
         onError: (error) => {
           toast({
@@ -98,6 +91,12 @@ const NewClient = () => {
       }
     );
   });
+
+  useEffect(() => {
+    if (file) {
+      setImage(URL.createObjectURL(file));
+    }
+  }, [file]);
 
   return (
     <Box pt={{ base: marginTopMobile, md: "80px", xl: marginTopDefault }}>
@@ -293,46 +292,26 @@ const NewClient = () => {
                 </NumberInput>
               </FormControl>
             </SimpleGrid>
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2}>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 1 }} spacing={2}>
               <Flex flexDirection="column" gap={2}>
                 <FormLabel>Foto</FormLabel>
-                {image && (
-                  <Flex alignItems="flex-start" gap={1}>
-                    <Image
-                      src={image}
-                      width={200}
-                      height={200}
-                      objectFit="contain"
-                      border="1px solid gray"
-                      borderRadius={8}
-                    />
-                    <Icon
-                      as={MdClose}
-                      bgColor="red.500"
-                      cursor="pointer"
-                      borderRadius={6}
-                      width="24px"
-                      height="24px"
-                      p={1}
-                      onClick={() => setImage(undefined)}
-                    />
-                  </Flex>
-                )}
-                <Input
-                  type="file"
-                  placeholder="Foto"
-                  onChange={onImageChange}
+                <DragAndDropInput
+                  file={file}
+                  setFile={setFile}
+                  setImage={setImage}
+                  image={image}
                 />
               </Flex>
             </SimpleGrid>
             <Flex justifyContent="flex-end" mt={3}>
               <Button
-                bgColor="brand.500"
+                colorScheme="brandScheme"
                 fontWeight={400}
                 fontSize="small"
                 borderRadius={8}
                 isLoading={isSubmitting}
                 type="submit"
+                color="white"
               >
                 Registrar
               </Button>
