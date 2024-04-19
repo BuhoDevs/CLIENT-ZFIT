@@ -80,79 +80,77 @@ export function DataTable<TData, TValue>({
   const { rows } = table.getRowModel();
 
   return (
-    <>
-      <Box ref={tableContainerRef}>
-        <Table>
-          <Thead className={`sticky top-0 bg-slate-50 z-10`}>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <Tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  //   const widthByColumn =
-                  //     header.column.id === "actions" ? "w-[64px]" : undefined;
-                  return (
-                    <Th
-                      key={header.id}
-                      //className={cn(widthByColumn)}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </Th>
-                  );
-                })}
-              </Tr>
-            ))}
-          </Thead>
-          <Tbody>
-            {isFetching || isLoading ? (
-              <Tr>
-                <Td
-                  colSpan={columns.length}
-                  position="relative"
-                  height="24px"
-                  textAlign="center"
-                >
-                  <Box position="relative" minH="500px">
-                    <Spinner size="lg" />
-                  </Box>
-                </Td>
-              </Tr>
-            ) : rows.length > 0 ? (
-              rows.map((row) => {
+    <Box ref={tableContainerRef}>
+      <Table>
+        <Thead className={`sticky top-0 bg-slate-50 z-10`}>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <Tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                //   const widthByColumn =
+                //     header.column.id === "actions" ? "w-[64px]" : undefined;
                 return (
-                  <Tr
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    onClick={() => {
-                      //   navigate(`/formulario/${stateForm}/${row.original.form}`);
-                    }}
+                  <Th
+                    key={header.id}
+                    //className={cn(widthByColumn)}
                   >
-                    {row.getVisibleCells().map((cell) => {
-                      return (
-                        <Td key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </Td>
-                      );
-                    })}
-                  </Tr>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </Th>
                 );
-              })
-            ) : (
-              <Tr>
-                <Td colSpan={columns.length} height="24px" textAlign="center">
-                  Sin resultados.
-                </Td>
-              </Tr>
-            )}
-          </Tbody>
-        </Table>
-      </Box>
-    </>
+              })}
+            </Tr>
+          ))}
+        </Thead>
+        <Tbody>
+          {isFetching || isLoading ? (
+            <Tr>
+              <Td
+                colSpan={columns.length}
+                position="relative"
+                height="24px"
+                textAlign="center"
+              >
+                <Box position="relative" minH="500px">
+                  <Spinner size="lg" />
+                </Box>
+              </Td>
+            </Tr>
+          ) : rows.length > 0 ? (
+            rows.map((row) => {
+              return (
+                <Tr
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  onClick={() => {
+                    //   navigate(`/formulario/${stateForm}/${row.original.form}`);
+                  }}
+                >
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+                      <Td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </Td>
+                    );
+                  })}
+                </Tr>
+              );
+            })
+          ) : (
+            <Tr>
+              <Td colSpan={columns.length} height="24px" textAlign="center">
+                Sin resultados.
+              </Td>
+            </Tr>
+          )}
+        </Tbody>
+      </Table>
+    </Box>
   );
 }

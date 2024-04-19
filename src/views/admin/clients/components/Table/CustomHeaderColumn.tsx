@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import SorterArrowIcon from "./SorterArrowIcon";
+import { SorterArrowIcon } from "./SorterArrowIcon";
 import { IClient } from "../../../../../types/client";
 import { Column } from "@tanstack/react-table";
 
