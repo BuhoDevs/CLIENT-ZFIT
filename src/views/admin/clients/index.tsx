@@ -50,6 +50,7 @@ import { marginTopDefault, marginTopMobile } from "../../../layouts/contants";
 import { MdPersonAdd, MdSearch } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { darkBgForm, lightBgForm } from "../../../components/form/variables";
+import Clients from "./components/Tabs/client";
 
 export default function Settings() {
   // Chakra Color Mode
@@ -76,6 +77,7 @@ export default function Settings() {
               <Tab>Ingresos</Tab>
               <Tab>Suscripciones</Tab>
               <Tab>Reportes</Tab>
+              <Tab>Clientes</Tab>
             </TabList>
 
             <Button
@@ -162,6 +164,9 @@ export default function Settings() {
                 <ColumnsTable tableData={tableDataColumns} />
                 <ComplexTable tableData={tableDataComplex} />
               </SimpleGrid>
+            </TabPanel>
+            <TabPanel>
+              <Clients />
             </TabPanel>
           </TabPanels>
         </Tabs>

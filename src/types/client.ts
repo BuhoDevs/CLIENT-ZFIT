@@ -25,3 +25,18 @@ export interface IClientRequestBody {
   email: string;
   password: string;
 }
+
+export interface IClientDataTable {
+  firstname: string;
+  lastname: string;
+  birthdate: string;
+  ci: string;
+  phone: number;
+  email: string;
+  photo: string;
+}
+
+export interface IGetClientPromise {
+  message: string;
+  client: IClient[];
+}

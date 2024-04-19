@@ -1,6 +1,20 @@
 import axiosApi from "../../config/axios";
-import { IClient, IClientRequestBody } from "../../types/client";
-import { clientsEndpointSave } from "./clients.endpoints";
+import {
+  IClient,
+  IClientRequestBody,
+  IGetClientPromise,
+} from "../../types/client";
+import {
+  clientsEndpointGetAll,
+  clientsEndpointSave,
+} from "./clients.endpoints";
+
+export const getAllClients = async (): Promise<IClient[]> => {
+  const { data } = await axiosApi.get<IGetClientPromise>(
+    clientsEndpointGetAll()
+  );
+  return data.client;
+};
 
 export const saveClient = async ({
   firstname,
