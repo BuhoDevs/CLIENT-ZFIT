@@ -32,6 +32,7 @@ import {
   lightBgForm,
   lightBrandBgColor,
 } from "../../../components/form/variables";
+import Clients from "./components/Tabs/client";
 
 export default function Settings() {
   // Chakra Color Mode
@@ -52,6 +53,7 @@ export default function Settings() {
             <Tab>Ingresos</Tab>
             <Tab>Suscripciones</Tab>
             <Tab>Reportes</Tab>
+            <Tab>Clientes</Tab>
           </TabList>
 
           <Button
@@ -148,6 +150,9 @@ export default function Settings() {
               <ColumnsTable tableData={tableDataColumns} />
               <ComplexTable tableData={tableDataComplex} />
             </SimpleGrid>
+          </TabPanel>
+          <TabPanel>
+            <Clients />
           </TabPanel>
         </TabPanels>
       </Tabs>
