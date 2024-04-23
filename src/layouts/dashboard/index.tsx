@@ -1,13 +1,13 @@
 // Chakra imports
-import { Portal, Box, useDisclosure } from "@chakra-ui/react";
+import { Box, Portal, useDisclosure } from "@chakra-ui/react";
 // import Footer from "../../components/footer/FooterAdmin";
 // Layout components
 import Sidebar from "../../components/sidebar/Sidebar";
 // import { SidebarContext } from "../../contexts/SidebarContext";
 import { useState } from "react";
-import { routes } from "../../routes";
-import AdminNavbar from "../../components/navbar/NavbarAdmin";
 import { Outlet, useNavigate } from "react-router-dom";
+import AdminNavbar from "../../components/navbar/NavbarAdmin";
+import { routes } from "../../routes";
 import { getToken, isValidToken, logOut } from "../../utilities";
 // Custom Chakra theme
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
