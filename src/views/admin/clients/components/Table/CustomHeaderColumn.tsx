@@ -1,10 +1,10 @@
 import { Flex } from "@chakra-ui/react";
 import { SorterArrowIcon } from "./SorterArrowIcon";
-import { IClient } from "../../../../../types/client";
+import { IClientDataTable } from "../../../../../types/client";
 import { Column } from "@tanstack/react-table";
 
 interface ICustomHeaderColumn {
-  column: Column<IClient, unknown>;
+  column: Column<IClientDataTable, unknown>;
   columnText: string;
 }
 

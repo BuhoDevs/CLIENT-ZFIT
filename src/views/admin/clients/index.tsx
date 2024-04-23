@@ -14,15 +14,15 @@ import {
   Tabs,
   useColorModeValue,
 } from "@chakra-ui/react";
-import DevelopmentTable from "../../../views/admin/clients/components/DevelopmentTable";
+import { marginTopDefault, marginTopMobile } from "../../../layouts/contants";
 import CheckTable from "../../../views/admin/clients/components/CheckTable";
 import ColumnsTable from "../../../views/admin/clients/components/ColumnsTable";
 import ComplexTable from "../../../views/admin/clients/components/ComplexTable";
-import tableDataDevelopment from "../../../views/admin/clients/variables/tableDataDevelopment";
+import DevelopmentTable from "../../../views/admin/clients/components/DevelopmentTable";
 import tableDataCheck from "../../../views/admin/clients/variables/tableDataCheck";
 import tableDataColumns from "../../../views/admin/clients/variables/tableDataColumns";
 import tableDataComplex from "../../../views/admin/clients/variables/tableDataComplex";
-import { marginTopDefault, marginTopMobile } from "../../../layouts/contants";
+import tableDataDevelopment from "../../../views/admin/clients/variables/tableDataDevelopment";
 
 import { MdPersonAdd, MdSearch } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -51,7 +51,6 @@ export default function Settings() {
         >
           <TabList display="flex" flexWrap="nowrap" overflowX="auto" pl="1rem">
             <Tab>Ingresos</Tab>
-            <Tab>Suscripciones</Tab>
             <Tab>Reportes</Tab>
             <Tab>Clientes</Tab>
           </TabList>
@@ -87,7 +86,7 @@ export default function Settings() {
                   spacing={2}
                 >
                   <FormControl>
-                    <FormLabel>Cedula</FormLabel>
+                    <FormLabel>Cédula</FormLabel>
                     <Input fontSize="small" placeholder="Cedula..." />
                   </FormControl>
                   <FormControl>
@@ -99,7 +98,7 @@ export default function Settings() {
                     />
                   </FormControl>
                   <FormControl>
-                    <FormLabel>Apellidos</FormLabel>
+                    <FormLabel>Apellido(s)</FormLabel>
                     <Input
                       fontSize="small"
                       type="text"
@@ -130,15 +129,7 @@ export default function Settings() {
               <DevelopmentTable tableData={tableDataDevelopment} />
             </SimpleGrid>
           </TabPanel>
-          <TabPanel>
-            <SimpleGrid
-              mb="20px"
-              columns={{ sm: 1, md: 1 }}
-              spacing={{ base: "20px", xl: "20px" }}
-            >
-              <CheckTable tableData={tableDataCheck} />
-            </SimpleGrid>
-          </TabPanel>
+
           <TabPanel>
             <SimpleGrid
               mb="20px"

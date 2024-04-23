@@ -27,6 +27,7 @@ export interface IClientRequestBody {
 }
 
 export interface IClientDataTable {
+  id: number;
   firstname: string;
   lastname: string;
   birthdate: string;
@@ -34,9 +35,21 @@ export interface IClientDataTable {
   phone: number;
   email: string;
   photo: string;
+  status: boolean;
 }
 
 export interface IGetClientPromise {
-  message: string;
-  client: IClient[];
+  totalLength: number;
+  clients: IClientDataTable[];
+}
+
+export interface IClientDataFilters {
+  ci?: string;
+  firstname?: string;
+  lastname?: string;
+}
+export interface IClientFilters {
+  clientData: IClientDataFilters;
+  skip: number;
+  take: number;
 }

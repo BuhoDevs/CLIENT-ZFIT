@@ -15,6 +15,7 @@ import {
   Box,
   Spinner,
   Table,
+  TableContainer,
   Tbody,
   Td,
   Th,
@@ -22,8 +23,6 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { rankItem } from "@tanstack/match-sorter-utils";
-
-// import { IClientDataTable } from "../../../../types/client";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
@@ -42,6 +41,9 @@ interface DataTableProps<TData, TValue> {
   //   formVersionsData: IClientDataTable[] | undefined;
   isFetching: boolean;
   isLoading: boolean;
+  tableSize?: string;
+  tableVariant?: string;
+  setSelectedItem?: (value: TData) => void;
 }
 
 const defaultSorting = [{ id: "ci", desc: true }];
@@ -51,6 +53,9 @@ export function DataTable<TData, TValue>({
   isFetching,
   isLoading,
   data,
+  tableSize = "sm",
+  tableVariant = "simple",
+  setSelectedItem,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>(defaultSorting);
   const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -80,9 +85,9 @@ export function DataTable<TData, TValue>({
   const { rows } = table.getRowModel();
 
   return (
-    <Box ref={tableContainerRef}>
-      <Table>
-        <Thead className={`sticky top-0 bg-slate-50 z-10`}>
+    <TableContainer ref={tableContainerRef} className="customScroll">
+      <Table variant={tableVariant} size={tableSize} colorScheme="brandScheme">
+        <Thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <Tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -126,7 +131,9 @@ export function DataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() => {
-                    //   navigate(`/formulario/${stateForm}/${row.original.form}`);
+                    if (setSelectedItem) {
+                      setSelectedItem(row.original);
+                    }
                   }}
                 >
                   {row.getVisibleCells().map((cell) => {
@@ -151,6 +158,6 @@ export function DataTable<TData, TValue>({
           )}
         </Tbody>
       </Table>
-    </Box>
+    </TableContainer>
   );
 }

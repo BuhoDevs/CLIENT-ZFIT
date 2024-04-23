@@ -1,7 +1,7 @@
 import { Icon } from "@chakra-ui/react";
 import { MdHome } from "react-icons/md";
 
-import { FaUser } from "react-icons/fa";
+import { FaClipboardList, FaUser } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { BiSolidBarChartAlt2 } from "react-icons/bi";
 // layout imports
@@ -25,6 +25,8 @@ import LoginDashLazy from "./lazyexports/LoginDashboard";
 import PublicGuard from "./guards/public.guard";
 import AuthLayout from "./layouts/auth";
 import NewClient from "./views/admin/clients/components/newClient";
+import SubscriptionsDashLazy from "./lazyexports/SubscriptionsDashboard";
+import NewSubscriptionLazy from "./lazyexports/NewSubscriptionDashboard";
 
 export const routes: RoutesType[] = [
   {
@@ -43,6 +45,17 @@ export const routes: RoutesType[] = [
     path: "clients",
     component: lazy(() => import("./views/admin/clients")),
   },
+
+  {
+    name: "Suscripciones",
+    layout: "/dashboard",
+    icon: (
+      <Icon as={FaClipboardList} width="20px" height="20px" color="inherit" />
+    ),
+    path: "subscriptions",
+    component: lazy(() => import("./views/admin/subscriptions")),
+  },
+
   {
     name: "Balances",
     layout: "/dashboard",
@@ -96,6 +109,11 @@ export const renderRoutes = () => {
             <Route path="balance" element={<MarketDashLazy />} />
             <Route path="clients" element={<ClientsDashLazy />} />
             <Route path="clients/new" element={<NewClient />} />
+            <Route path="subscriptions" element={<SubscriptionsDashLazy />} />
+            <Route
+              path="subscriptions/client/:clientId"
+              element={<NewSubscriptionLazy />}
+            />
             <Route path="profile" element={<ProfileDashLazy />} />
             {/* 
             <Route path="users" element={<UsersDashboard />} />
