@@ -53,3 +53,25 @@ export interface IClientFilters {
   skip: number;
   take: number;
 }
+
+export interface IClientPerson {
+  id: number;
+  genreId: number;
+  firstname: string;
+  lastname: string;
+  birthdate: string;
+  ci: string;
+  status: boolean;
+  phone: number;
+  photo: string;
+}
+
+export interface IClientById {
+  id: number;
+  personId: number;
+  weight: string;
+  height: string;
+  status: boolean;
+  email: string;
+  Person: IClientPerson;
+}
