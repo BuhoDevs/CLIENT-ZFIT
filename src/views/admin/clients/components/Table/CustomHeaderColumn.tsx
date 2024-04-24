@@ -2,9 +2,12 @@ import { Flex } from "@chakra-ui/react";
 import { SorterArrowIcon } from "./SorterArrowIcon";
 import { IClientDataTable } from "../../../../../types/client";
 import { Column } from "@tanstack/react-table";
+import { ISubscriptionDataTable } from "../../../../../types/suscription";
 
 interface ICustomHeaderColumn {
-  column: Column<IClientDataTable, unknown>;
+  column:
+    | Column<IClientDataTable, unknown>
+    | Column<ISubscriptionDataTable, unknown>;
   columnText: string;
 }
 

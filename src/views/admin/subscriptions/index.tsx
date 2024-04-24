@@ -14,13 +14,13 @@ import {
 import { marginTopDefault, marginTopMobile } from "../../../layouts/contants";
 
 // import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
+import { FaAddressCard } from "react-icons/fa";
 import {
   darkBrandBgColor,
   lightBrandBgColor,
 } from "../../../components/form/variables";
-import Supscriptions from "../clients/components/Tabs/supscriptions";
-import { FaAddressCard } from "react-icons/fa";
-import { useRef } from "react";
+import SubscriptionContainer from "./components/SubscriptionContainer";
 import SubscriptionModal from "./components/SubscriptionModal";
 
 export default function SubscriptionView() {
@@ -74,7 +74,7 @@ export default function SubscriptionView() {
               >
                 <CheckTable tableData={tableDataCheck} />
               </SimpleGrid> */}
-            <Supscriptions />
+            <SubscriptionContainer />
           </TabPanel>
         </TabPanels>
       </Tabs>

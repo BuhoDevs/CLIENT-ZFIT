@@ -21,6 +21,7 @@ import {
   Th,
   Thead,
   Tr,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { rankItem } from "@tanstack/match-sorter-utils";
 
@@ -44,6 +45,7 @@ interface DataTableProps<TData, TValue> {
   tableSize?: string;
   tableVariant?: string;
   setSelectedItem?: (value: TData) => void;
+  maxH?: string;
 }
 
 const defaultSorting = [{ id: "ci", desc: true }];
@@ -56,9 +58,11 @@ export function DataTable<TData, TValue>({
   tableSize = "sm",
   tableVariant = "simple",
   setSelectedItem,
+  maxH = "auto",
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>(defaultSorting);
   const tableContainerRef = useRef<HTMLDivElement>(null);
+  const bgThead = useColorModeValue("gray.100", "navy.700");
 
   const table = useReactTable({
     data: data ?? [],
@@ -85,9 +89,14 @@ export function DataTable<TData, TValue>({
   const { rows } = table.getRowModel();
 
   return (
-    <TableContainer ref={tableContainerRef} className="customScroll">
+    <TableContainer
+      ref={tableContainerRef}
+      maxH={maxH}
+      className="customScroll"
+      overflowY="auto"
+    >
       <Table variant={tableVariant} size={tableSize} colorScheme="brandScheme">
-        <Thead>
+        <Thead position="sticky" top={0} bg={bgThead} zIndex={1}>
           {table.getHeaderGroups().map((headerGroup) => (
             <Tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
