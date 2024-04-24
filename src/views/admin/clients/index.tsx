@@ -50,9 +50,9 @@ export default function Settings() {
           gap={3}
         >
           <TabList display="flex" flexWrap="nowrap" overflowX="auto" pl="1rem">
-            <Tab>Ingresos</Tab>
-            <Tab>Reportes</Tab>
             <Tab>Clientes</Tab>
+            <Tab>Reportes</Tab>
+            <Tab>Ingresos</Tab>
           </TabList>
 
           <Button
@@ -77,6 +77,23 @@ export default function Settings() {
         />
 
         <TabPanels>
+          <TabPanel>
+            <Clients />
+          </TabPanel>
+
+          <TabPanel>
+            <SimpleGrid
+              mb="20px"
+              columns={{ sm: 1, md: 2 }}
+              spacing={{ base: "20px", xl: "20px" }}
+            >
+              <DevelopmentTable tableData={tableDataDevelopment} />
+              <CheckTable tableData={tableDataCheck} />
+              <ColumnsTable tableData={tableDataColumns} />
+              <ComplexTable tableData={tableDataComplex} />
+            </SimpleGrid>
+          </TabPanel>
+
           <TabPanel>
             <Box bgColor={formBg} borderRadius={8} p={1} mb={4}>
               <form>
@@ -128,22 +145,6 @@ export default function Settings() {
             >
               <DevelopmentTable tableData={tableDataDevelopment} />
             </SimpleGrid>
-          </TabPanel>
-
-          <TabPanel>
-            <SimpleGrid
-              mb="20px"
-              columns={{ sm: 1, md: 2 }}
-              spacing={{ base: "20px", xl: "20px" }}
-            >
-              <DevelopmentTable tableData={tableDataDevelopment} />
-              <CheckTable tableData={tableDataCheck} />
-              <ColumnsTable tableData={tableDataColumns} />
-              <ComplexTable tableData={tableDataComplex} />
-            </SimpleGrid>
-          </TabPanel>
-          <TabPanel>
-            <Clients />
           </TabPanel>
         </TabPanels>
       </Tabs>

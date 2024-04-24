@@ -22,6 +22,8 @@ const ClientData = ({ bgContainer, clientsData }: IClientData) => {
         direction={{ base: "column", sm: "column", md: "row" }}
         overflow="hidden"
         variant="outline"
+        bg="transparent"
+        px={2}
       >
         <Avatar
           size="2xl"
@@ -32,7 +34,7 @@ const ClientData = ({ bgContainer, clientsData }: IClientData) => {
           }}
         />
 
-        <Stack alignSelf="center">
+        <Stack alignSelf="center" flex={1}>
           <CardBody>
             <SimpleGrid
               columns={{

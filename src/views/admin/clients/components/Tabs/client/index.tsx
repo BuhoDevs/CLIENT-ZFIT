@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   FormControl,
   FormErrorMessage,
@@ -61,6 +62,17 @@ const Clients = () => {
   }, [filters, getClients]);
 
   const columns: ColumnDef<IClientDataTable>[] = [
+    {
+      header: "FOTO",
+      accessorKey: "photo",
+      cell: ({ row }) => (
+        <Avatar
+          size="sm"
+          name={row.original.firstname}
+          src={row.original.photo}
+        />
+      ),
+    },
     {
       header: ({ column }) => (
         <CustomHeaderColumn column={column} columnText="CEDULA" />
@@ -199,7 +211,7 @@ const Clients = () => {
           isLoading={areClientsFetching}
           data={clientsData}
           tableSize="md"
-          tableVariant="striped"
+          tableVariant="simple"
         />
       </SimpleGrid>
     </>

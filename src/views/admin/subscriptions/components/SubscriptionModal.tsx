@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   Flex,
   FormControl,
@@ -73,6 +74,17 @@ const SubscriptionModal = ({
   }, [filters, getClients]);
 
   const clientsColumns: ColumnDef<IClientDataTable>[] = [
+    {
+      header: "FOTO",
+      accessorKey: "photo",
+      cell: ({ row }) => (
+        <Avatar
+          size="sm"
+          name={row.original.firstname}
+          src={row.original.photo}
+        />
+      ),
+    },
     {
       header: ({ column }) => (
         <CustomHeaderColumn column={column} columnText="CEDULA" />
@@ -175,7 +187,7 @@ const SubscriptionModal = ({
             isLoading={areClientsFetching}
             data={clientsData}
             tableSize="md"
-            tableVariant="striped"
+            tableVariant="simple"
             setSelectedItem={setClientSelected}
           />
         </ModalBody>
