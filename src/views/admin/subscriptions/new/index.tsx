@@ -26,7 +26,7 @@ const NewSubscription = () => {
   const { clientId } = useParams();
   const navigate = useNavigate();
   const bgTabIndicator = useColorModeValue(lightBrandBgColor, darkBrandBgColor);
-  const { data: clientData, isLoading: isClientFetching } = useClientById({
+  const { data: clientData } = useClientById({
     clientId: Number(clientId),
     isReadyTofetch: !!clientId,
   });
