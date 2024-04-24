@@ -52,6 +52,8 @@ const SubscriptionModal = ({
 }: ISubscriptionModal) => {
   const navigate = useNavigate();
   const bgSchemeColor = useColorModeValue(lightBrandBgColor, darkBrandBgColor);
+  const bgCardModal = useColorModeValue("white", "navy.900");
+
   const [filters, setFilters] = useState<IClientDataFilters>(intialFilters);
   const { register, handleSubmit } = useForm<IClientDataFilters>();
   const { mutate: getClients, isPending: areClientsFetching } = useAllClients();
@@ -143,7 +145,7 @@ const SubscriptionModal = ({
       size="xl"
     >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent bg={bgCardModal}>
         <ModalHeader>Seleccionar Cliente</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
@@ -189,6 +191,7 @@ const SubscriptionModal = ({
             tableSize="md"
             tableVariant="simple"
             setSelectedItem={setClientSelected}
+            maxH="200px"
           />
         </ModalBody>
 
@@ -196,6 +199,7 @@ const SubscriptionModal = ({
           <Button
             isDisabled={!clientSelected}
             colorScheme="brandScheme"
+            color="white"
             mr={3}
             borderRadius={8}
             onClick={handleNavigate}

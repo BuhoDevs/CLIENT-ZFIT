@@ -1,6 +1,8 @@
 import {
   Avatar,
+  Box,
   Button,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -119,71 +121,62 @@ const Clients = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSearchClients)}>
-        <SimpleGrid
-          bg={bgTableContainer}
-          columns={{ base: 1, md: 2, lg: 4 }}
-          p={4}
-          spacing={2}
-          mb={4}
-          borderRadius={8}
-        >
-          <FormControl>
-            <FormLabel>Cedula</FormLabel>
-            <Input
-              {...register("ci", {
-                maxLength: {
-                  value: 10,
-                  message: "Debe contener como máximo 10 caracteres",
-                },
-              })}
-              fontSize="small"
-              type="text"
-              placeholder="Cedula..."
-              color={textColor}
-            />
-          </FormControl>
-          <FormControl isInvalid={!!errors.firstname}>
-            <FormLabel>Nombre(s)</FormLabel>
-            <Input
-              {...register("firstname", {
-                minLength: {
-                  value: 3,
-                  message: "Debe tener al menos 3 caracteres",
-                },
-              })}
-              fontSize="small"
-              type="text"
-              placeholder="Nombre(s)"
-              color={textColor}
-            />
-            {errors?.firstname && (
-              <FormErrorMessage>{errors.firstname.message}</FormErrorMessage>
-            )}
-          </FormControl>
-          <FormControl isInvalid={!!errors.lastname}>
-            <FormLabel>Apellido(s)</FormLabel>
-            <Input
-              {...register("lastname", {
-                minLength: {
-                  value: 3,
-                  message: "Debe tener al menos 3 caracteres",
-                },
-              })}
-              fontSize="small"
-              type="text"
-              placeholder="Apellidos"
-              color={textColor}
-            />
-            {errors?.lastname && (
-              <FormErrorMessage>{errors.lastname.message}</FormErrorMessage>
-            )}
-          </FormControl>
-          <FormControl
-            display="flex"
-            justifyContent="flex-end"
-            alignItems="end"
-          >
+      <Box p={1} bg={bgTableContainer} mb={4} borderRadius={8}>
+        <form onSubmit={handleSubmit(onSearchClients)}>
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} p={4} spacing={2}>
+            <FormControl>
+              <FormLabel>Cédula</FormLabel>
+              <Input
+                {...register("ci", {
+                  maxLength: {
+                    value: 10,
+                    message: "Debe contener como máximo 10 caracteres",
+                  },
+                })}
+                fontSize="small"
+                type="text"
+                placeholder="Cedula..."
+                color={textColor}
+              />
+            </FormControl>
+            <FormControl isInvalid={!!errors.firstname}>
+              <FormLabel>Nombre(s)</FormLabel>
+              <Input
+                {...register("firstname", {
+                  minLength: {
+                    value: 3,
+                    message: "Debe tener al menos 3 caracteres",
+                  },
+                })}
+                fontSize="small"
+                type="text"
+                placeholder="Nombre(s)"
+                color={textColor}
+              />
+              {errors?.firstname && (
+                <FormErrorMessage>{errors.firstname.message}</FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isInvalid={!!errors.lastname}>
+              <FormLabel>Apellido(s)</FormLabel>
+              <Input
+                {...register("lastname", {
+                  minLength: {
+                    value: 3,
+                    message: "Debe tener al menos 3 caracteres",
+                  },
+                })}
+                fontSize="small"
+                type="text"
+                placeholder="Apellidos"
+                color={textColor}
+              />
+              {errors?.lastname && (
+                <FormErrorMessage>{errors.lastname.message}</FormErrorMessage>
+              )}
+            </FormControl>
+          </SimpleGrid>
+          <Flex justifyContent="flex-end" alignItems="center">
             <Button
               width={{ base: "full", md: "150px" }}
               leftIcon={<MdSearch fontSize={16} />}
@@ -196,9 +189,9 @@ const Clients = () => {
             >
               Buscar
             </Button>
-          </FormControl>
-        </SimpleGrid>
-      </form>
+          </Flex>
+        </form>
+      </Box>
       <SimpleGrid
         mb="20px"
         columns={{ base: 1, md: 1 }}
