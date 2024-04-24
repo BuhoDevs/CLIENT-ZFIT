@@ -38,12 +38,13 @@ const NewsubscriptionContainer = ({
   const onSubscription = (values: IFormSuscriptionData) => {
     if (!clientsData || !subscriptorInfo) return;
 
-    const { transactionAmmount, ...restSubscriptionData } =
+    const { transactionAmmount, totalAmmount, ...restSubscriptionData } =
       subscriptionDataExtractor(values);
     onSubscriptionSubmmit(
       {
         ...restSubscriptionData,
         transactionAmmount: Number(transactionAmmount),
+        totalAmmount: Number(totalAmmount),
         clientId: clientsData.id,
         subscriptorId: subscriptorInfo.id,
       },
