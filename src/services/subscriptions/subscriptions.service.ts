@@ -3,7 +3,6 @@ import {
   IBodySuscription,
   IGetSubscriptionsPromise,
   IPostResponse,
-  ISubscriptionDataTable,
   ISubscriptionFilters,
 } from "../../types/suscription";
 import {
@@ -25,10 +24,10 @@ export const getSubscriptionsByFilters = async ({
   subscriptionData,
   skip,
   take,
-}: ISubscriptionFilters): Promise<ISubscriptionDataTable[]> => {
+}: ISubscriptionFilters): Promise<IGetSubscriptionsPromise> => {
   const { data } = await axiosApi.post<IGetSubscriptionsPromise>(
     subscriptionsFiltersEndpoint(),
     subscriptionFiltersParsed({ subscriptionData, skip, take })
   );
-  return data.subscriptions;
+  return data;
 };
