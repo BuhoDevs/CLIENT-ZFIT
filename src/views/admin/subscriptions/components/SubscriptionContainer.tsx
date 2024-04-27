@@ -9,6 +9,7 @@ import {
 import { darkBgForm, lightBgForm } from "../../../../components/form/variables";
 import SubscriptionFormFilters from "./SubscriptionFormFilters";
 import {
+  IGetSubscriptionsPromise,
   ISubscriptionDataFilters,
   ISubscriptionDataTable,
 } from "../../../../types/suscription";
@@ -23,6 +24,14 @@ import { useForm } from "react-hook-form";
 import { FaSearch } from "react-icons/fa";
 import moment from "moment";
 import "moment/locale/es";
+import {
+  Pagination,
+  PaginationButtonFirstPage,
+  PaginationButtonLastPage,
+  PaginationButtonNextPage,
+  PaginationButtonPrevPage,
+  PaginationInfo,
+} from "../../../../components/pagination";
 
 const initialFilters: ISubscriptionDataFilters = {
   ci: "",
@@ -46,14 +55,23 @@ const SubscriptionContainer = () => {
   const { mutate: getSubscriptions, isPending: areSubscriptionsFetching } =
     useGetSubscriptionsByFilters();
   const [subscriptionsData, setSubscriptionsData] =
-    useState<ISubscriptionDataTable[]>();
+    useState<IGetSubscriptionsPromise>();
+
+  const [pagination, setPagination] = useState({
+    page: 1,
+    size: 10,
+  });
+
+  const setSubscriptionsPage = (page: number) => {
+    setPagination({ ...pagination, page });
+  };
 
   useEffect(() => {
     getSubscriptions(
       {
         subscriptionData: filters,
-        skip: 1,
-        take: 1000,
+        skip: pagination.page,
+        take: pagination.size,
       },
       {
         onSuccess: (subscriptionsCollection) => {
@@ -61,7 +79,7 @@ const SubscriptionContainer = () => {
         },
       }
     );
-  }, [filters, getSubscriptions]);
+  }, [filters, getSubscriptions, pagination.page, pagination.size]);
 
   const subscriptionsColumns: ColumnDef<ISubscriptionDataTable>[] = [
     {
@@ -121,6 +139,7 @@ const SubscriptionContainer = () => {
 
   const onSearchSubscriptions = (values: ISubscriptionDataFilters) => {
     console.log(values, "valores");
+    setPagination({ ...pagination, page: 1 });
     setFilters(values);
   };
 
@@ -186,8 +205,27 @@ const SubscriptionContainer = () => {
           isFetching={areSubscriptionsFetching}
           isLoading={false}
           tableVariant="simple"
-          data={subscriptionsData}
+          data={subscriptionsData?.subscriptions}
         />
+        <Box
+          p="2"
+          bg="brand.50"
+          backgroundColor={bgFilters}
+          borderBottomRadius={"2xl"}
+        >
+          <Pagination
+            setPage={setSubscriptionsPage}
+            page={pagination.page}
+            pageSize={pagination.size}
+            totalItems={subscriptionsData?.totalLength}
+          >
+            <PaginationButtonFirstPage />
+            <PaginationButtonPrevPage />
+            <PaginationInfo />
+            <PaginationButtonNextPage />
+            <PaginationButtonLastPage />
+          </Pagination>
+        </Box>
       </Box>
     </>
   );
