@@ -1,5 +1,5 @@
 import { IGenrePromise } from "./genre";
-import { IPerson } from "./person";
+import { IPerson, IPersonById } from "./person";
 
 export interface IClient {
   id: number;
@@ -52,4 +52,14 @@ export interface IClientFilters {
   clientData: IClientDataFilters;
   skip: number;
   take: number;
+}
+
+export interface IClientById {
+  id: number;
+  Person: IPersonById;
+  weight: number;
+  status: boolean;
+  email: string;
+  password: string;
+  height: number;
 }

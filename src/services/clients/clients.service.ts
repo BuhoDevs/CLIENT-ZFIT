@@ -1,11 +1,13 @@
 import axiosApi from "../../config/axios";
 import {
   IClient,
+  IClientById,
   IClientDataTable,
   IClientFilters,
   IGetClientPromise,
 } from "../../types/client";
 import {
+  clientEndPointById,
   clientsEndpointGetAll,
   clientsEndpointSave,
 } from "./clients.endpoints";
@@ -33,5 +35,12 @@ export const saveClient = async ({
       "Content-Type": "multipart/form-data",
     },
   });
+  return data;
+};
+
+export const getClientById = async (clientId: number): Promise<IClientById> => {
+  const { data } = await axiosApi.get<IClientById>(
+    clientEndPointById(clientId)
+  );
   return data;
 };

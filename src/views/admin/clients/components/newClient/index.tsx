@@ -23,7 +23,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import {
   darkBgForm,
+  darkTextColor,
   lightBgForm,
+  lightTextColor,
 } from "../../../../../components/form/variables";
 
 import { Select as CkakraSelect } from "chakra-react-select";
@@ -38,6 +40,7 @@ import { parseToFormdata } from "../utils";
 const NewClient = () => {
   const navigate = useNavigate();
   const formBg = useColorModeValue(lightBgForm, darkBgForm);
+  const textColor = useColorModeValue(lightTextColor, darkTextColor);
   const [image, setImage] = useState<string>();
   const [file, setFile] = useState<File | null>(null);
 
@@ -136,6 +139,7 @@ const NewClient = () => {
                     },
                   })}
                   placeholder="Cedula.."
+                  color={textColor}
                 />
                 {errors && errors.ci && (
                   <FormErrorMessage ps={1} mb="24px">
@@ -156,6 +160,7 @@ const NewClient = () => {
                       message: "El nombre es requerido",
                     },
                   })}
+                  color={textColor}
                   placeholder="Nombres"
                 />
                 {errors && errors.firstname && (
@@ -177,6 +182,7 @@ const NewClient = () => {
                       message: "El apellido es requerido",
                     },
                   })}
+                  color={textColor}
                   placeholder="Apellido"
                 />
                 {errors && errors.lastname && (
@@ -191,7 +197,7 @@ const NewClient = () => {
                   id="birthdate"
                   type="date"
                   {...register("birthdate")}
-                  placeholder="Fecha de nacimiento"
+                  color={textColor}
                 />
               </FormControl>
             </SimpleGrid>
@@ -240,6 +246,7 @@ const NewClient = () => {
                   id="email"
                   type="text"
                   {...register("email")}
+                  color={textColor}
                   placeholder="Correo"
                 />
               </FormControl>
@@ -261,6 +268,7 @@ const NewClient = () => {
                         "El numero de celular no debe tener mas de 10 digitos",
                     },
                   })}
+                  color={textColor}
                   placeholder="Celular"
                 />
                 {errors && errors.phone && (
