@@ -5,4 +5,5 @@ export interface ISubscriptionsType {
   montQuantity: number;
   price: number;
   status: boolean;
+  value: number;
 }

@@ -27,6 +27,7 @@ import AuthLayout from "./layouts/auth";
 import NewClient from "./views/admin/clients/components/newClient";
 import SubscriptionsDashLazy from "./lazyexports/SubscriptionsDashboard";
 import NewSubscriptionLazy from "./lazyexports/NewSubscriptionDashboard";
+import SubscriptionEditionLazy from "./lazyexports/SubscriptionEditionDashboard";
 
 export const routes: RoutesType[] = [
   {
@@ -114,9 +115,12 @@ export const renderRoutes = () => {
               path="subscriptions/client/:clientId"
               element={<NewSubscriptionLazy />}
             />
+            <Route
+              path="subscriptions/edition/:subscriptionId"
+              element={<SubscriptionEditionLazy />}
+            />
             <Route path="profile" element={<ProfileDashLazy />} />
             {/* 
-            <Route path="users" element={<UsersDashboard />} />
             <Route path="listUsers" element={<ListUsersDashboard />} />
             <Route
               path="listJobPosition"

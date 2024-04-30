@@ -28,7 +28,6 @@ interface Props {
   isMaxDateRequired?: boolean;
   isDisabled?: boolean;
 }
-
 const DatePicker = ({
   setDate,
   date,

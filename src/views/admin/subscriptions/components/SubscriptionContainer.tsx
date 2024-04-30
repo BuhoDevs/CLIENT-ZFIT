@@ -32,6 +32,7 @@ import {
   PaginationButtonPrevPage,
   PaginationInfo,
 } from "../../../../components/pagination";
+import { useNavigate } from "react-router-dom";
 
 const initialFilters: ISubscriptionDataFilters = {
   ci: "",
@@ -47,6 +48,7 @@ const initialFilters: ISubscriptionDataFilters = {
 
 moment.locale("es");
 const SubscriptionContainer = () => {
+  const navigate = useNavigate();
   const bgFilters = useColorModeValue(lightBgForm, darkBgForm);
   const [filters, setFilters] =
     useState<ISubscriptionDataFilters>(initialFilters);
@@ -61,6 +63,9 @@ const SubscriptionContainer = () => {
     page: 1,
     size: 10,
   });
+
+  const [subscriptionSelected, setSubscriptionSelected] =
+    useState<ISubscriptionDataTable>();
 
   const setSubscriptionsPage = (page: number) => {
     setPagination({ ...pagination, page });
@@ -80,6 +85,12 @@ const SubscriptionContainer = () => {
       }
     );
   }, [filters, getSubscriptions, pagination.page, pagination.size]);
+
+  useEffect(() => {
+    if (subscriptionSelected) {
+      navigate(`/dashboard/subscriptions/edition/${subscriptionSelected.id}`);
+    }
+  }, [navigate, subscriptionSelected]);
 
   const subscriptionsColumns: ColumnDef<ISubscriptionDataTable>[] = [
     {
@@ -206,6 +217,7 @@ const SubscriptionContainer = () => {
           isLoading={false}
           tableVariant="simple"
           data={subscriptionsData?.subscriptions}
+          setSelectedItem={setSubscriptionSelected}
         />
         <Box
           p="2"
