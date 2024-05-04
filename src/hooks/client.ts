@@ -1,8 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getClientById,
+  getClientByIdEdition,
   getClients,
   saveClient,
+  updateClientById,
 } from "../services/clients/clients.service";
 
 export const useClient = () => {
@@ -37,5 +39,28 @@ export const useClientById = ({
     enabled: isReadyTofetch,
     retry: 1,
     refetchOnWindowFocus: false,
+  });
+};
+
+export const useClientByIdEdition = ({
+  clientId,
+  isReadyTofetch,
+}: {
+  clientId: number;
+  isReadyTofetch: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["client-info"],
+    queryFn: () => getClientByIdEdition({ clientId }),
+    enabled: isReadyTofetch,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useClientUpdate = () => {
+  return useMutation({
+    mutationFn: updateClientById,
+    mutationKey: ["client-update"],
   });
 };
