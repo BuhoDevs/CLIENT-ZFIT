@@ -27,6 +27,7 @@ import AuthLayout from "./layouts/auth";
 import NewClient from "./views/admin/clients/components/newClient";
 import SubscriptionsDashLazy from "./lazyexports/SubscriptionsDashboard";
 import NewSubscriptionLazy from "./lazyexports/NewSubscriptionDashboard";
+import ConfigDashLazy from "./lazyexports/ConfigDashboard";
 
 export const routes: RoutesType[] = [
   {
@@ -78,6 +79,13 @@ export const routes: RoutesType[] = [
     icon: <Icon as={IoMdSettings} width="20px" height="20px" color="inherit" />,
     component: lazy(() => import("./views/admin/profile")),
   },
+  {
+    name: "Configuraciónes",
+    layout: "/dashboard",
+    path: "config",
+    icon: <Icon as={IoMdSettings} width="20px" height="20px" color="inherit" />,
+    component: lazy(() => import("./views/admin/configuraciones")),
+  },
   // {
   //   name: "Ingresar",
   //   layout: "/dashboard",
@@ -115,7 +123,8 @@ export const renderRoutes = () => {
               element={<NewSubscriptionLazy />}
             />
             <Route path="profile" element={<ProfileDashLazy />} />
-            {/* 
+            <Route path="config" element={<ConfigDashLazy />} />
+            {/*
             <Route path="users" element={<UsersDashboard />} />
             <Route path="listUsers" element={<ListUsersDashboard />} />
             <Route
@@ -168,7 +177,7 @@ export const renderRoutes = () => {
         <Route element={<PublicGuard />}>
           <Route key={"authKey"} path="/login" element={<AuthLayout />}>
             <Route index element={<LoginDashLazy />} />
-            {/* 
+            {/*
             <Route path="register" element={<RegisterAuthDashboard />} />
             <Route path="forgotPassword" element={<ForgotAuthDashboard />} />
             <Route path="resetPassword" element={<ResetPasswordDashboard />} /> */}
