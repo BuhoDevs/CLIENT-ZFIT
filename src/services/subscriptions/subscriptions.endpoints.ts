@@ -4,3 +4,5 @@ export const insertSubscriptionEndpoint = () => `/subscriptions`;
 export const subscriptionsFiltersEndpoint = () => `/subscriptions/filters`;
 export const subscriptionsByIdEndpoint = ({ id }: ISubscriptionByIdParams) =>
   `/subscriptions/${id}`;
+export const putSubscriptionsEndpoint = ({ id }: ISubscriptionByIdParams) =>
+  `/subscriptions/${id}`;

@@ -2,8 +2,13 @@ import { Button, Flex, useColorModeValue } from "@chakra-ui/react";
 interface IButtonsStack {
   mt?: number;
   handleCancel?: () => void;
+  isSubscriptionUpdate: boolean;
 }
-const ButtonsStack = ({ mt = 2, handleCancel }: IButtonsStack) => {
+const ButtonsStack = ({
+  mt = 2,
+  handleCancel,
+  isSubscriptionUpdate = false,
+}: IButtonsStack) => {
   const cancelBgScheme = useColorModeValue("gray.400", "gray.600");
   const hoverBgScheme = useColorModeValue("gray.500", "gray.500");
   return (
@@ -27,6 +32,7 @@ const ButtonsStack = ({ mt = 2, handleCancel }: IButtonsStack) => {
         fontWeight="normal"
         color="white"
         type="submit"
+        isLoading={isSubscriptionUpdate}
       >
         Guardar
       </Button>
