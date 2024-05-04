@@ -1,9 +1,11 @@
 import {
   Box,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
+  Link,
   SimpleGrid,
   Text,
   useColorModeValue,
@@ -33,6 +35,7 @@ interface ISubscriptionEditionForm {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subsTypePrice: any;
   register: UseFormRegister<IFormSuscriptionData>;
+  handleDiscardChanges: () => void;
 }
 const SubscriptionEditionForm = ({
   bgContainer,
@@ -41,6 +44,7 @@ const SubscriptionEditionForm = ({
   setValue,
   subsTypePrice,
   register,
+  handleDiscardChanges,
 }: ISubscriptionEditionForm) => {
   const { data: disciplinesData } = useDisciplines();
   const { data: subscriptionsTypeData } = useAllSubscriptionsType();
@@ -50,6 +54,17 @@ const SubscriptionEditionForm = ({
 
   return (
     <Box borderRadius={8} bg={bgContainer} mt={2} p={4}>
+      <Flex justifyContent="flex-end">
+        <Link
+          color={brandBgColor}
+          textDecoration="underline"
+          onClick={handleDiscardChanges}
+          w={{ base: "100%", sm: "auto" }}
+          textAlign="center"
+        >
+          Descartar Cambios
+        </Link>
+      </Flex>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} mb={4}>
         <FormControl isInvalid={!!errors?.discipline}>
           <FormLabel display="flex" gap={1}>

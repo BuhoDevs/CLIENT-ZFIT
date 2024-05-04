@@ -20,6 +20,7 @@ import "react-date-range/dist/theme/default.css"; // theme css file
 import { Calendar } from "react-date-range";
 import { IoClose } from "react-icons/io5";
 import { darkBrandBgColor, lightBrandBgColor } from "../form/variables";
+import moment from "moment";
 
 interface Props {
   setDate: (date: string) => void;
@@ -119,6 +120,7 @@ const DatePicker = ({
               onChange={handleSetDate}
               direction="vertical"
               maxDate={maxDate}
+              date={date ? moment(date).toDate() : undefined}
             />
           </PopoverContent>
         </Portal>
