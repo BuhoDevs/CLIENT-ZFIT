@@ -1,4 +1,6 @@
+import { IClientById } from "./client";
 import { IDisciplines } from "./disciplines";
+import { IPayment } from "./payment";
 import { IPerson } from "./person";
 import { ISubscriptionsType } from "./subscriptionsType";
 
@@ -46,7 +48,7 @@ export interface ISubscriptionFilters {
   take: number;
 }
 
-export interface ISubscriptionDataTable {
+export interface ISubscriptionsKeys {
   id: number;
   dateIn: string;
   dateOut: string;
@@ -56,17 +58,27 @@ export interface ISubscriptionDataTable {
   subsTypeId: number;
   subscriptorId: number;
   createdAt: string;
-  Client: {
-    Person: IPerson;
-  };
+  Client: IClientById;
   SubsType: ISubscriptionsType;
+  Discipline: IDisciplines;
+}
+
+export interface ISubscriptionDataTable extends ISubscriptionsKeys {
   User: {
     Person: IPerson;
   };
-  Discipline: IDisciplines;
 }
 
 export interface IGetSubscriptionsPromise {
   totalLength: number;
   subscriptions: ISubscriptionDataTable[];
+}
+
+export interface ISubscriptionByIdParams {
+  id: number;
+  isReadyToFetch?: boolean;
+}
+
+export interface ISubscriptionByIdResponse extends ISubscriptionsKeys {
+  Payment: IPayment[];
 }
