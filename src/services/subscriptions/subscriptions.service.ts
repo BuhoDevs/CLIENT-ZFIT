@@ -3,12 +3,15 @@ import {
   IBodySuscription,
   IGetSubscriptionsPromise,
   IPostResponse,
+  IPutResponse,
+  IPutSubscription,
   ISubscriptionByIdParams,
   ISubscriptionByIdResponse,
   ISubscriptionFilters,
 } from "../../types/suscription";
 import {
   insertSubscriptionEndpoint,
+  putSubscriptionsEndpoint,
   subscriptionsByIdEndpoint,
   subscriptionsFiltersEndpoint,
 } from "./subscriptions.endpoints";
@@ -43,4 +46,16 @@ export const getSubscriptionsById = async ({
   );
 
   return data;
+};
+
+export const updateSubscription = async ({
+  id,
+  ...resData
+}: IPutSubscription): Promise<IPutResponse> => {
+  const { data: putResponse } = await axiosApi.put<IPutResponse>(
+    putSubscriptionsEndpoint({ id }),
+    resData
+  );
+
+  return putResponse;
 };

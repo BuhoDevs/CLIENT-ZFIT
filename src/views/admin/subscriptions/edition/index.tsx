@@ -92,6 +92,7 @@ const SubscriptionEdition = () => {
                 <SubscriptionsEditionContainer
                   clientData={subscriptionData?.Client}
                   subscriptionInfo={subscriptionInfo}
+                  subscriptionId={subscriptionId}
                 />
               </TabPanel>
             </TabPanels>

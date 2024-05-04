@@ -1,8 +1,9 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getSubscriptionsByFilters,
   getSubscriptionsById,
   insertSubscription,
+  updateSubscription,
 } from "../services/subscriptions/subscriptions.service";
 import { ISubscriptionByIdParams } from "../types/suscription";
 
@@ -30,5 +31,26 @@ export const useGetSubscriptionsById = ({
     retry: 1,
     refetchOnWindowFocus: false,
     enabled: isReadyToFetch,
+  });
+};
+
+export const usePutSubscription = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updateSubscription,
+    mutationKey: ["put-subscription"],
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(
+        {
+          queryKey: ["subscriptions-by-id", "subscriptions-filters"],
+          exact: true,
+          refetchType: "active",
+        },
+        {
+          throwOnError: true,
+          cancelRefetch: true,
+        }
+      );
+    },
   });
 };
