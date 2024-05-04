@@ -2,13 +2,15 @@ import axiosApi from "../../config/axios";
 import {
   IClient,
   IClientById,
+  IClientByIdEdition,
   IClientDataTable,
+  IClientEditionResponse,
   IClientFilters,
   IGetClientPromise,
 } from "../../types/client";
 import {
-  clientEndPointById,
   clientsEndpointGetAll,
+  clientsEndpointGetById,
   clientsEndpointSave,
 } from "./clients.endpoints";
 import { clientFiltersParsed } from "./utils";
@@ -38,9 +40,41 @@ export const saveClient = async ({
   return data;
 };
 
-export const getClientById = async (clientId: number): Promise<IClientById> => {
+export const getClientById = async ({
+  clientId,
+}: {
+  clientId: number;
+}): Promise<IClientById> => {
   const { data } = await axiosApi.get<IClientById>(
-    clientEndPointById(clientId)
+    clientsEndpointGetById({ clientId })
+  );
+
+  return data;
+};
+
+export const getClientByIdEdition = async ({
+  clientId,
+}: {
+  clientId: number;
+}): Promise<IClientByIdEdition> => {
+  const { data } = await axiosApi.get<IClientByIdEdition>(
+    clientsEndpointGetById({ clientId })
+  );
+
+  return data;
+};
+
+export const updateClientById = async ({
+  bodyData,
+  clientId,
+}: {
+  bodyData: FormData;
+  clientId: number;
+}): Promise<IClientEditionResponse> => {
+  const { data } = await axiosApi.put<IClientEditionResponse>(
+    clientsEndpointGetById({ clientId }),
+    bodyData,
+    { headers: { "Content-Type": "multipart/form-data" } }
   );
   return data;
 };

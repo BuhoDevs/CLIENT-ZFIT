@@ -48,21 +48,15 @@ const NewClient = () => {
 
   const { data: genres } = useGenre();
 
-  // const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   if (event.target.files && event.target.files[0]) {
-  //     console.log(event.target.files[0], "la foto desde el otro lado ");
-  //     setImage(URL.createObjectURL(event.target.files[0]));
-  //   }
-  // };
   const {
     register,
     handleSubmit,
     control,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<IClientRequestBody>();
 
-  const { mutate: onClientMutate } = useClient();
+  const { mutate: onClientMutate, isPending: isClientCreating } = useClient();
 
   const onSubmitClient = handleSubmit((values: IClientRequestBody) => {
     onClientMutate(
@@ -81,6 +75,7 @@ const NewClient = () => {
           reset();
           setImage(undefined);
           setFile(null);
+          navigate("/dashboard/clients");
         },
         onError: (error) => {
           toast({
@@ -317,7 +312,7 @@ const NewClient = () => {
                 fontWeight={400}
                 fontSize="small"
                 borderRadius={8}
-                isLoading={isSubmitting}
+                isLoading={isClientCreating}
                 type="submit"
                 color="white"
               >

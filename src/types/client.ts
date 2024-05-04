@@ -1,5 +1,5 @@
-import { IGenrePromise } from "./genre";
-import { IPerson, IPersonById } from "./person";
+import { IGenreClientById, IGenrePromise } from "./genre";
+import { IPerson } from "./person";
 
 export interface IClient {
   id: number;
@@ -54,12 +54,39 @@ export interface IClientFilters {
   take: number;
 }
 
+export interface IClientPerson {
+  id: number;
+  genreId: number;
+  firstname: string;
+  lastname: string;
+  birthdate: string;
+  ci: string;
+  status: boolean;
+  phone: number;
+  photo: string;
+}
+
 export interface IClientById {
   id: number;
-  Person: IPersonById;
-  weight: number;
+  personId: number;
+  weight: string;
+  height: string;
   status: boolean;
   email: string;
-  password: string;
-  height: number;
+  Person: IClientPerson;
+}
+
+export interface IClientByIdEdition extends Omit<IClientById, "Person"> {
+  ci: string;
+  birthdate: string;
+  firstname: string;
+  lastname: string;
+  phone: string;
+  photo: string;
+  Genre: IGenreClientById;
+}
+
+export interface IClientEditionResponse {
+  message: string;
+  updatedClient: IClientPerson;
 }

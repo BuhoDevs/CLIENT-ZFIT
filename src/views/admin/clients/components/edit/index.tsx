@@ -6,9 +6,15 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
   SimpleGrid,
   Text,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import {
   marginTopDefault,
@@ -24,33 +30,88 @@ import {
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { Select as CkakraSelect } from "chakra-react-select";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IClientRequestBody } from "../../../../../types/client";
-import { SchemaClient } from "./validations";
-import { useClientId } from "../../../../../hooks/client";
+import { schemaClient } from "./validations";
+
 import { useGenre } from "../../../../../hooks/genre";
+import {
+  useClientByIdEdition,
+  useClientUpdate,
+} from "../../../../../hooks/client";
+import DatePicker from "../../../../../components/calendar/SingleDatePicker";
+import { useEffect, useState } from "react";
+import { IClientByIdEdition } from "../../../../../types/client";
+import moment from "moment";
+import DragAndDropInput from "../DragAndDropInput";
+import { parseToFormdataEditClient } from "../utils";
 
 const EditClient = () => {
   const params = useParams();
-  const { clientId = "0" } = params;
-  const { data, isLoading } = useClientId(+clientId);
-  const { data: genres } = useGenre();
+  const { clientId } = params;
+  const { data: client, isLoading } = useClientByIdEdition({
+    clientId: Number(clientId),
+    isReadyTofetch: Boolean(clientId),
+  });
 
+  const { data: genres } = useGenre();
+  const toast = useToast();
   const navigate = useNavigate();
   const formBg = useColorModeValue(lightBgForm, darkBgForm);
   const textColor = useColorModeValue(lightTextColor, darkTextColor);
+  const [image, setImage] = useState<string>();
+  const [file, setFile] = useState<File | null>(null);
+
+  const { mutate: onMutationUpdate, isPending } = useClientUpdate();
 
   const {
     control,
-    register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<IClientRequestBody>({
-    resolver: zodResolver(SchemaClient),
+    register,
+    reset,
+    formState: { errors },
+  } = useForm<IClientByIdEdition>({
+    mode: "onChange",
+    resolver: zodResolver(schemaClient),
   });
 
-  const onSubmit: SubmitHandler<IClientRequestBody> = (
-    data: IClientRequestBody
-  ) => console.log(data);
+  useEffect(() => {
+    if (client) {
+      reset({
+        ...client,
+        birthdate: moment
+          .utc(client.birthdate)
+          .locale("es")
+          .format("yyyy-MM-DD"),
+      });
+      setImage(client.photo);
+    }
+  }, [client, reset]);
+  console.log("imagen", image);
+  const onSubmit: SubmitHandler<IClientByIdEdition> = (
+    values: IClientByIdEdition
+  ) => {
+    if (!clientId) return;
+    onMutationUpdate(
+      {
+        bodyData: parseToFormdataEditClient({ values, file }),
+        clientId: Number(clientId),
+      },
+      {
+        onSuccess: ({ message }) => {
+          toast({
+            title: `Edicion de Cliente`,
+            description: message,
+            status: "success",
+            duration: 2000,
+            isClosable: true,
+          });
+          reset();
+          setImage(undefined);
+          setFile(null);
+          navigate("/dashboard/clients");
+        },
+      }
+    );
+  };
 
   if (isLoading)
     return (
@@ -83,45 +144,27 @@ const EditClient = () => {
         <Box bgColor={formBg} borderRadius={8} p={4}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} mb={4}>
-              <FormControl isInvalid={!!errors.ci}>
-                <FormLabel display="flex" gap={1}>
-                  Nro Cedula <Text color="brand.500">*</Text>
+              <FormControl isRequired isInvalid={!!errors.ci}>
+                <FormLabel htmlFor="ci_label" display="flex" gap={1}>
+                  Nro Cedula
                 </FormLabel>
-                <Controller
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      onChange={field.onChange}
-                      color={textColor}
-                      placeholder="Cedula"
-                    />
-                  )}
-                  name="ci"
-                  control={control}
-                  defaultValue={data?.Person.ci}
+                <Input
+                  {...register("ci")}
+                  id="ci_label"
+                  color={textColor}
+                  placeholder="Cedula"
                 />
-
-                {errors && errors.ci && (
-                  <FormErrorMessage ps={1} mb="24px">
-                    {errors.ci.message}
-                  </FormErrorMessage>
-                )}
+                <FormErrorMessage>{errors.ci?.message}</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={!!errors.firstname}>
-                <FormLabel display="flex" gap={1}>
-                  Nombre(s) <Text color="brand.500">*</Text>
+              <FormControl isRequired isInvalid={!!errors.firstname}>
+                <FormLabel htmlFor="firstname_label" display="flex" gap={1}>
+                  Nombre(s)
                 </FormLabel>
-                <Controller
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      color={textColor}
-                      placeholder="Nombre(s)"
-                    />
-                  )}
-                  name="firstname"
-                  control={control}
-                  defaultValue={data?.Person.firstname}
+                <Input
+                  {...register("firstname")}
+                  id="firstname_label"
+                  color={textColor}
+                  placeholder="Nombre(s)"
                 />
 
                 {errors && errors.firstname && (
@@ -130,21 +173,15 @@ const EditClient = () => {
                   </FormErrorMessage>
                 )}
               </FormControl>
-              <FormControl isInvalid={!!errors.lastname}>
-                <FormLabel display="flex" gap={1}>
-                  Apellido(s) <Text color="brand.500">*</Text>
+              <FormControl isRequired isInvalid={!!errors.lastname}>
+                <FormLabel htmlFor="lastname_label" display="flex" gap={1}>
+                  Apellido(s)
                 </FormLabel>
-                <Controller
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      color={textColor}
-                      placeholder="Apellido(s)"
-                    />
-                  )}
-                  name="lastname"
-                  control={control}
-                  defaultValue={data?.Person.lastname}
+                <Input
+                  {...register("lastname")}
+                  id="lastname_label"
+                  color={textColor}
+                  placeholder="Apellido(s)"
                 />
 
                 {errors && errors.lastname && (
@@ -155,28 +192,26 @@ const EditClient = () => {
               </FormControl>
               <FormControl>
                 <FormLabel>Fecha de Nacimiento</FormLabel>
-                <Input
-                  id="birthdate"
-                  type="date"
-                  {...register("birthdate")}
-                  color={textColor}
-                  placeholder="Fecha de nacimiento"
+                <Controller
+                  name="birthdate"
+                  control={control}
+                  render={({ field: { value, onChange } }) => (
+                    <DatePicker
+                      setDate={onChange}
+                      date={value}
+                      name="birthdate"
+                    />
+                  )}
                 />
               </FormControl>
             </SimpleGrid>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} mb={4}>
-              <FormControl isInvalid={!!errors.genre}>
+              <FormControl isRequired isInvalid={!!errors.Genre}>
                 <FormLabel display="flex" gap={1}>
-                  Genero<Text color="brand.500">*</Text>
+                  Genero
                 </FormLabel>
                 <Controller
-                  name="genre"
-                  rules={{
-                    required: {
-                      value: true,
-                      message: "El genero es requerido",
-                    },
-                  }}
+                  name="Genre"
                   control={control}
                   render={({
                     field: { value, onChange, onBlur, name, ref },
@@ -188,21 +223,92 @@ const EditClient = () => {
                       options={genres || []}
                       selectedOptionColorScheme="brandScheme"
                       placeholder="Seleccionar"
-                      // isDisabled={!isEditing}
                       onChange={onChange}
                       onBlur={onBlur}
-                      value={value || ""}
+                      value={value}
                       focusBorderColor="brand.400"
                       isClearable
                     />
                   )}
                 />
-                {errors && errors.genre && (
+                {errors && errors.Genre && (
                   <FormErrorMessage ps={1} mb="24px">
-                    {errors.genre.message}
+                    {errors.Genre.message}
                   </FormErrorMessage>
                 )}
               </FormControl>
+              <FormControl>
+                <FormLabel htmlFor="email_label">Correo</FormLabel>
+                <Input
+                  {...register("email")}
+                  id="email_label"
+                  color={textColor}
+                  placeholder="Correo"
+                />
+
+                {errors && errors.email && (
+                  <FormErrorMessage ps={1} mb="24px">
+                    {errors.email.message}
+                  </FormErrorMessage>
+                )}
+              </FormControl>
+              <FormControl isRequired isInvalid={!!errors.phone}>
+                <FormLabel htmlFor="phone_label" display="flex" gap={1}>
+                  Celular
+                </FormLabel>
+                <Input
+                  {...register("phone", { valueAsNumber: true })}
+                  type="number"
+                  id="phone_label"
+                  color={textColor}
+                  placeholder="Celular"
+                />
+
+                {errors && errors.phone && (
+                  <FormErrorMessage ps={1} mb="24px">
+                    {errors.phone.message}
+                  </FormErrorMessage>
+                )}
+              </FormControl>
+            </SimpleGrid>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} mb={4}>
+              <FormControl>
+                <FormLabel>Altura</FormLabel>
+                <NumberInput defaultValue={1.5} precision={2} step={0.1}>
+                  <NumberInputField
+                    {...register("height", { valueAsNumber: true })}
+                    color={textColor}
+                  />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormControl>
+              <FormControl>
+                <FormLabel>Peso</FormLabel>
+                <NumberInput defaultValue={50.5} precision={2} step={0.1}>
+                  <NumberInputField
+                    {...register("weight", { valueAsNumber: true })}
+                    color={textColor}
+                  />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormControl>
+            </SimpleGrid>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 1 }} spacing={2}>
+              <Flex flexDirection="column" gap={2}>
+                <FormLabel>Foto</FormLabel>
+                <DragAndDropInput
+                  file={file}
+                  setFile={setFile}
+                  setImage={setImage}
+                  image={image}
+                />
+              </Flex>
             </SimpleGrid>
             <Flex justifyContent="flex-end" mt={3}>
               <Button
@@ -210,7 +316,7 @@ const EditClient = () => {
                 fontWeight={400}
                 fontSize="small"
                 borderRadius={8}
-                isLoading={isSubmitting}
+                isLoading={isPending}
                 type="submit"
                 color="white"
               >

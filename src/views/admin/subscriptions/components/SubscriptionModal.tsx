@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   Flex,
   FormControl,
@@ -51,6 +52,8 @@ const SubscriptionModal = ({
 }: ISubscriptionModal) => {
   const navigate = useNavigate();
   const bgSchemeColor = useColorModeValue(lightBrandBgColor, darkBrandBgColor);
+  const bgCardModal = useColorModeValue("white", "navy.900");
+
   const [filters, setFilters] = useState<IClientDataFilters>(intialFilters);
   const { register, handleSubmit } = useForm<IClientDataFilters>();
   const { mutate: getClients, isPending: areClientsFetching } = useAllClients();
@@ -73,6 +76,17 @@ const SubscriptionModal = ({
   }, [filters, getClients]);
 
   const clientsColumns: ColumnDef<IClientDataTable>[] = [
+    {
+      header: "FOTO",
+      accessorKey: "photo",
+      cell: ({ row }) => (
+        <Avatar
+          size="sm"
+          name={row.original.firstname}
+          src={row.original.photo}
+        />
+      ),
+    },
     {
       header: ({ column }) => (
         <CustomHeaderColumn column={column} columnText="CEDULA" />
@@ -131,7 +145,7 @@ const SubscriptionModal = ({
       size="xl"
     >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent bg={bgCardModal}>
         <ModalHeader>Seleccionar Cliente</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
@@ -175,8 +189,9 @@ const SubscriptionModal = ({
             isLoading={areClientsFetching}
             data={clientsData}
             tableSize="md"
-            tableVariant="striped"
+            tableVariant="simple"
             setSelectedItem={setClientSelected}
+            maxH="200px"
           />
         </ModalBody>
 
@@ -184,6 +199,7 @@ const SubscriptionModal = ({
           <Button
             isDisabled={!clientSelected}
             colorScheme="brandScheme"
+            color="white"
             mr={3}
             borderRadius={8}
             onClick={handleNavigate}

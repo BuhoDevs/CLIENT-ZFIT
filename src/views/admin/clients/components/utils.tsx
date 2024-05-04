@@ -8,7 +8,10 @@ import {
   FaImage,
   FaVideo,
 } from "react-icons/fa";
-import { IClientRequestBody } from "../../../../types/client";
+import {
+  IClientByIdEdition,
+  IClientRequestBody,
+} from "../../../../types/client";
 
 export const iconByFileType: {
   [key: string]: IconType;
@@ -108,6 +111,36 @@ export const parseToFormdata = ({
 
   if (genre) {
     formData.append("genreId", String(genre.id));
+  }
+
+  if (file) {
+    formData.append("photo", file);
+  }
+
+  return formData;
+};
+
+export const parseToFormdataEditClient = ({
+  values,
+  file,
+}: {
+  values: IClientByIdEdition;
+  file: File | null;
+}): FormData => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { Genre, ...restValues } = values;
+  const formData = new FormData();
+  for (const key in restValues) {
+    if (Object.prototype.hasOwnProperty.call(restValues, key)) {
+      formData.append(
+        key,
+        String(restValues[key as keyof Omit<IClientByIdEdition, "Genre">])
+      );
+    }
+  }
+
+  if (Genre) {
+    formData.append("genreId", String(Genre.id));
   }
 
   if (file) {

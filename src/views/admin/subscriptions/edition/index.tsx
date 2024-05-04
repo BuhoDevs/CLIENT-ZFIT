@@ -19,17 +19,42 @@ import {
   marginTopDefault,
   marginTopMobile,
 } from "../../../../layouts/contants";
-import NewsubscriptionContainer from "./NewsubscriptionContainer";
-import { useClientById } from "../../../../hooks/client";
+import { useGetSubscriptionsById } from "../../../../hooks/subscriptions";
+import SubscriptionsEditionContainer from "./SubscriptionsEditionContainer";
+import { useEffect, useState } from "react";
+import { IFormSuscriptionData } from "../../../../types/suscription";
+import moment from "moment";
 
-const NewSubscription = () => {
-  const { clientId } = useParams();
+const SubscriptionEdition = () => {
+  const { subscriptionId } = useParams();
   const navigate = useNavigate();
   const bgTabIndicator = useColorModeValue(lightBrandBgColor, darkBrandBgColor);
-  const { data: clientData } = useClientById({
-    clientId: Number(clientId),
-    isReadyTofetch: !!clientId,
+  const [subscriptionInfo, setSubscriptionInfo] =
+    useState<IFormSuscriptionData>();
+  const { data: subscriptionData } = useGetSubscriptionsById({
+    id: Number(subscriptionId),
+    isReadyToFetch: Boolean(subscriptionId),
   });
+
+  useEffect(() => {
+    if (subscriptionData) {
+      setSubscriptionInfo({
+        dateIn: moment
+          .utc(subscriptionData.dateIn)
+          .locale("es")
+          .format("yyyy-MM-DD"),
+        dateOut: moment
+          .utc(subscriptionData.dateOut)
+          .locale("es")
+          .format("yyyy-MM-DD"),
+        outstanding: subscriptionData.Payment[0].outstanding,
+        totalAmmount: subscriptionData.Payment[0].totalAmmount,
+        transactionAmmount: subscriptionData.Payment[0].transactionAmmount,
+        subscriptionType: subscriptionData.SubsType,
+        discipline: subscriptionData.Discipline,
+      });
+    }
+  }, [subscriptionData]);
 
   return (
     <Box pt={{ base: marginTopMobile, md: "80px", xl: marginTopDefault }}>
@@ -52,7 +77,7 @@ const NewSubscription = () => {
         <Box borderRadius={8} mt={1}>
           <Tabs variant="unstyled" isLazy>
             <TabList>
-              <Tab>Nueva suscripción</Tab>
+              <Tab>Editar suscripción</Tab>
             </TabList>
             <TabIndicator
               mt="-1.5px"
@@ -64,7 +89,10 @@ const NewSubscription = () => {
             />
             <TabPanels>
               <TabPanel p={0}>
-                <NewsubscriptionContainer clientsData={clientData} />
+                <SubscriptionsEditionContainer
+                  clientData={subscriptionData?.Client}
+                  subscriptionInfo={subscriptionInfo}
+                />
               </TabPanel>
             </TabPanels>
           </Tabs>
@@ -74,4 +102,4 @@ const NewSubscription = () => {
   );
 };
 
-export default NewSubscription;
+export default SubscriptionEdition;

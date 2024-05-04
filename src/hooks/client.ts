@@ -1,12 +1,22 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getClientById,
+  getClientByIdEdition,
   getClients,
   saveClient,
+  updateClientById,
 } from "../services/clients/clients.service";
 
 export const useClient = () => {
-  return useMutation({ mutationFn: saveClient });
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: saveClient,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["clients-filters"],
+      });
+    },
+  });
 };
 
 export const useAllClients = () => {
@@ -16,9 +26,41 @@ export const useAllClients = () => {
   });
 };
 
-export const useClientId = (clientId: number) => {
+export const useClientById = ({
+  clientId,
+  isReadyTofetch,
+}: {
+  clientId: number;
+  isReadyTofetch: boolean;
+}) => {
   return useQuery({
-    queryKey: ["client", clientId],
-    queryFn: () => getClientById(clientId),
+    queryKey: ["client-by-id"],
+    queryFn: () => getClientById({ clientId }),
+    enabled: isReadyTofetch,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useClientByIdEdition = ({
+  clientId,
+  isReadyTofetch,
+}: {
+  clientId: number;
+  isReadyTofetch: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["client-info"],
+    queryFn: () => getClientByIdEdition({ clientId }),
+    enabled: isReadyTofetch,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useClientUpdate = () => {
+  return useMutation({
+    mutationFn: updateClientById,
+    mutationKey: ["client-update"],
   });
 };
