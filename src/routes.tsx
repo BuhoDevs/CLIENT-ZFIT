@@ -27,11 +27,8 @@ import AuthLayout from "./layouts/auth";
 import NewClient from "./views/admin/clients/components/newClient";
 import SubscriptionsDashLazy from "./lazyexports/SubscriptionsDashboard";
 import NewSubscriptionLazy from "./lazyexports/NewSubscriptionDashboard";
-<<<<<<< HEAD
 import ConfigDashLazy from "./lazyexports/ConfigDashboard";
-=======
 import SubscriptionEditionLazy from "./lazyexports/SubscriptionEditionDashboard";
->>>>>>> origin/develop
 
 export const routes: RoutesType[] = [
   {
@@ -131,13 +128,10 @@ export const renderRoutes = () => {
               element={<SubscriptionEditionLazy />}
             />
             <Route path="profile" element={<ProfileDashLazy />} />
-<<<<<<< HEAD
             <Route path="config" element={<ConfigDashLazy />} />
             {/*
             <Route path="users" element={<UsersDashboard />} />
-=======
-            {/* 
->>>>>>> origin/develop
+            {/*
             <Route path="listUsers" element={<ListUsersDashboard />} />
             <Route
               path="listJobPosition"
@@ -183,8 +177,8 @@ export const renderRoutes = () => {
             />
             <Route path="assinmentLaw" element={<AssingmentLawDashboard />} />
           */}
-          </Route>
-        </Route>
+          </Route >
+        </Route >
 
         <Route element={<PublicGuard />}>
           <Route key={"authKey"} path="/login" element={<AuthLayout />}>
@@ -195,7 +189,7 @@ export const renderRoutes = () => {
             <Route path="resetPassword" element={<ResetPasswordDashboard />} /> */}
           </Route>
         </Route>
-      </Routes>
-    </Suspense>
+      </Routes >
+    </Suspense >
   );
 };
