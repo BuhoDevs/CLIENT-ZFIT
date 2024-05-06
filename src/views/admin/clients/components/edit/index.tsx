@@ -20,54 +20,86 @@ import {
   marginTopDefault,
   marginTopMobile,
 } from "../../../../../layouts/contants";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   darkBgForm,
   darkTextColor,
   lightBgForm,
   lightTextColor,
 } from "../../../../../components/form/variables";
-
+import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { Select as CkakraSelect } from "chakra-react-select";
-import { Controller, useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-import { useGenre } from "../../../../../hooks/genre";
-import { useClient } from "../../../../../hooks/client";
-import { IClientRequestBody } from "../../../../../types/client";
-import DragAndDropInput from "../DragAndDropInput";
-import { parseToFormdata } from "../utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { schemaClient } from "./validations";
 
-const NewClient = () => {
+import { useGenre } from "../../../../../hooks/genre";
+import {
+  useClientByIdEdition,
+  useClientUpdate,
+} from "../../../../../hooks/client";
+import DatePicker from "../../../../../components/calendar/SingleDatePicker";
+import { useEffect, useState } from "react";
+import { IClientByIdEdition } from "../../../../../types/client";
+import moment from "moment";
+import DragAndDropInput from "../DragAndDropInput";
+import { parseToFormdataEditClient } from "../utils";
+
+const EditClient = () => {
+  const params = useParams();
+  const { clientId } = params;
+  const { data: client, isLoading } = useClientByIdEdition({
+    clientId: Number(clientId),
+    isReadyTofetch: Boolean(clientId),
+  });
+
+  const { data: genres } = useGenre();
+  const toast = useToast();
   const navigate = useNavigate();
   const formBg = useColorModeValue(lightBgForm, darkBgForm);
   const textColor = useColorModeValue(lightTextColor, darkTextColor);
   const [image, setImage] = useState<string>();
   const [file, setFile] = useState<File | null>(null);
 
-  const toast = useToast();
-
-  const { data: genres } = useGenre();
+  const { mutate: onMutationUpdate, isPending } = useClientUpdate();
 
   const {
-    register,
-    handleSubmit,
     control,
+    handleSubmit,
+    register,
     reset,
     formState: { errors },
-  } = useForm<IClientRequestBody>();
+  } = useForm<IClientByIdEdition>({
+    mode: "onChange",
+    resolver: zodResolver(schemaClient),
+  });
 
-  const { mutate: onClientMutate, isPending: isClientCreating } = useClient();
-
-  const onSubmitClient = handleSubmit((values: IClientRequestBody) => {
-    onClientMutate(
+  useEffect(() => {
+    if (client) {
+      reset({
+        ...client,
+        birthdate: moment
+          .utc(client.birthdate)
+          .locale("es")
+          .format("yyyy-MM-DD"),
+      });
+      setImage(client.photo);
+    }
+  }, [client, reset]);
+  console.log("imagen", image);
+  const onSubmit: SubmitHandler<IClientByIdEdition> = (
+    values: IClientByIdEdition
+  ) => {
+    if (!clientId) return;
+    onMutationUpdate(
       {
-        bodyData: parseToFormdata({ values, file }),
+        bodyData: parseToFormdataEditClient({ values, file }),
+        clientId: Number(clientId),
       },
       {
-        onSuccess: () => {
+        onSuccess: ({ message }) => {
           toast({
-            title: `Registro de Cliente`,
-            description: `Datos guardados exitosamente!`,
+            title: `Edicion de Cliente`,
+            description: message,
             status: "success",
             duration: 2000,
             isClosable: true,
@@ -77,28 +109,20 @@ const NewClient = () => {
           setFile(null);
           navigate("/dashboard/clients");
         },
-        onError: (error) => {
-          toast({
-            title: "Registro de Cliente",
-            description: `Ups! Algo salió mal ${error?.message}`,
-            status: "error",
-            duration: 3000,
-            isClosable: true,
-          });
-        },
       }
     );
-  });
+  };
 
-  useEffect(() => {
-    if (file) {
-      setImage(URL.createObjectURL(file));
-    }
-  }, [file]);
+  if (isLoading)
+    return (
+      <Box pt={{ base: marginTopMobile, md: "80px", xl: marginTopDefault }}>
+        Loading...
+      </Box>
+    );
 
   return (
     <Box pt={{ base: marginTopMobile, md: "80px", xl: marginTopDefault }}>
-      <Box px="1rem">
+      <Box px={1} mx={6}>
         <Flex alignItems="center" justifyContent="space-between">
           <Button
             borderRadius="none"
@@ -114,72 +138,52 @@ const NewClient = () => {
             👈🏻 Volver
           </Button>
           <Text align="center" fontSize="medium">
-            Nuevo Cliente
+            Modificar Cliente
           </Text>
         </Flex>
         <Box bgColor={formBg} borderRadius={8} p={4}>
-          <form onSubmit={onSubmitClient}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} mb={4}>
-              <FormControl isInvalid={!!errors.ci}>
-                <FormLabel display="flex" gap={1}>
-                  Nro Cedula <Text color="brand.500">*</Text>
+              <FormControl isRequired isInvalid={!!errors.ci}>
+                <FormLabel htmlFor="ci_label" display="flex" gap={1}>
+                  Nro Cedula
                 </FormLabel>
                 <Input
-                  id="ci"
-                  type="text"
-                  {...register("ci", {
-                    required: {
-                      value: true,
-                      message: "El carnet es requerido",
-                    },
-                  })}
-                  placeholder="Cedula.."
+                  {...register("ci")}
+                  id="ci_label"
                   color={textColor}
+                  placeholder="Cedula"
                 />
-                {errors && errors.ci && (
-                  <FormErrorMessage ps={1} mb="24px">
-                    {errors.ci.message}
-                  </FormErrorMessage>
-                )}
+                <FormErrorMessage>{errors.ci?.message}</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={!!errors.firstname}>
-                <FormLabel display="flex" gap={1}>
-                  Nombre(s) <Text color="brand.500">*</Text>
+              <FormControl isRequired isInvalid={!!errors.firstname}>
+                <FormLabel htmlFor="firstname_label" display="flex" gap={1}>
+                  Nombre(s)
                 </FormLabel>
                 <Input
-                  id="firstname"
-                  type="text"
-                  {...register("firstname", {
-                    required: {
-                      value: true,
-                      message: "El nombre es requerido",
-                    },
-                  })}
+                  {...register("firstname")}
+                  id="firstname_label"
                   color={textColor}
-                  placeholder="Nombres"
+                  placeholder="Nombre(s)"
                 />
+
                 {errors && errors.firstname && (
                   <FormErrorMessage ps={1} mb="24px">
                     {errors.firstname.message}
                   </FormErrorMessage>
                 )}
               </FormControl>
-              <FormControl isInvalid={!!errors.lastname}>
-                <FormLabel display="flex" gap={1}>
-                  Apellido(s)<Text color="brand.500">*</Text>
+              <FormControl isRequired isInvalid={!!errors.lastname}>
+                <FormLabel htmlFor="lastname_label" display="flex" gap={1}>
+                  Apellido(s)
                 </FormLabel>
                 <Input
-                  id="lastname"
-                  type="text"
-                  {...register("lastname", {
-                    required: {
-                      value: true,
-                      message: "El apellido es requerido",
-                    },
-                  })}
+                  {...register("lastname")}
+                  id="lastname_label"
                   color={textColor}
-                  placeholder="Apellido"
+                  placeholder="Apellido(s)"
                 />
+
                 {errors && errors.lastname && (
                   <FormErrorMessage ps={1} mb="24px">
                     {errors.lastname.message}
@@ -188,27 +192,26 @@ const NewClient = () => {
               </FormControl>
               <FormControl>
                 <FormLabel>Fecha de Nacimiento</FormLabel>
-                <Input
-                  id="birthdate"
-                  type="date"
-                  {...register("birthdate")}
-                  color={textColor}
+                <Controller
+                  name="birthdate"
+                  control={control}
+                  render={({ field: { value, onChange } }) => (
+                    <DatePicker
+                      setDate={onChange}
+                      date={value}
+                      name="birthdate"
+                    />
+                  )}
                 />
               </FormControl>
             </SimpleGrid>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} mb={4}>
-              <FormControl isInvalid={!!errors.genre}>
+              <FormControl isRequired isInvalid={!!errors.Genre}>
                 <FormLabel display="flex" gap={1}>
-                  Genero<Text color="brand.500">*</Text>
+                  Genero
                 </FormLabel>
                 <Controller
-                  name="genre"
-                  rules={{
-                    required: {
-                      value: true,
-                      message: "El genero es requerido",
-                    },
-                  }}
+                  name="Genre"
                   control={control}
                   render={({
                     field: { value, onChange, onBlur, name, ref },
@@ -220,52 +223,47 @@ const NewClient = () => {
                       options={genres || []}
                       selectedOptionColorScheme="brandScheme"
                       placeholder="Seleccionar"
-                      // isDisabled={!isEditing}
                       onChange={onChange}
                       onBlur={onBlur}
-                      value={value || ""}
+                      value={value}
                       focusBorderColor="brand.400"
                       isClearable
                     />
                   )}
                 />
-                {errors && errors.genre && (
+                {errors && errors.Genre && (
                   <FormErrorMessage ps={1} mb="24px">
-                    {errors.genre.message}
+                    {errors.Genre.message}
                   </FormErrorMessage>
                 )}
               </FormControl>
               <FormControl>
-                <FormLabel>Correo</FormLabel>
+                <FormLabel htmlFor="email_label">Correo</FormLabel>
                 <Input
-                  id="email"
-                  type="text"
                   {...register("email")}
+                  id="email_label"
                   color={textColor}
                   placeholder="Correo"
                 />
+
+                {errors && errors.email && (
+                  <FormErrorMessage ps={1} mb="24px">
+                    {errors.email.message}
+                  </FormErrorMessage>
+                )}
               </FormControl>
-              <FormControl isInvalid={!!errors.phone}>
-                <FormLabel display="flex" gap={1}>
-                  Celular <Text color="brand.500">*</Text>
+              <FormControl isRequired isInvalid={!!errors.phone}>
+                <FormLabel htmlFor="phone_label" display="flex" gap={1}>
+                  Celular
                 </FormLabel>
                 <Input
-                  id="phone"
+                  {...register("phone", { valueAsNumber: true })}
                   type="number"
-                  {...register("phone", {
-                    required: {
-                      value: true,
-                      message: "El telefono es requerido",
-                    },
-                    maxLength: {
-                      value: 10,
-                      message:
-                        "El numero de celular no debe tener mas de 10 digitos",
-                    },
-                  })}
+                  id="phone_label"
                   color={textColor}
                   placeholder="Celular"
                 />
+
                 {errors && errors.phone && (
                   <FormErrorMessage ps={1} mb="24px">
                     {errors.phone.message}
@@ -277,7 +275,10 @@ const NewClient = () => {
               <FormControl>
                 <FormLabel>Altura</FormLabel>
                 <NumberInput defaultValue={1.5} precision={2} step={0.1}>
-                  <NumberInputField {...register("height")} />
+                  <NumberInputField
+                    {...register("height", { valueAsNumber: true })}
+                    color={textColor}
+                  />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />
@@ -287,7 +288,10 @@ const NewClient = () => {
               <FormControl>
                 <FormLabel>Peso</FormLabel>
                 <NumberInput defaultValue={50.5} precision={2} step={0.1}>
-                  <NumberInputField {...register("weight")} />
+                  <NumberInputField
+                    {...register("weight", { valueAsNumber: true })}
+                    color={textColor}
+                  />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />
@@ -312,11 +316,11 @@ const NewClient = () => {
                 fontWeight={400}
                 fontSize="small"
                 borderRadius={8}
-                isLoading={isClientCreating}
+                isLoading={isPending}
                 type="submit"
                 color="white"
               >
-                Registrar
+                Editar
               </Button>
             </Flex>
           </form>
@@ -325,4 +329,4 @@ const NewClient = () => {
     </Box>
   );
 };
-export default NewClient;
+export default EditClient;

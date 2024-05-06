@@ -1,4 +1,4 @@
-import { IGenrePromise } from "./genre";
+import { IGenreClientById, IGenrePromise } from "./genre";
 import { IPerson } from "./person";
 
 export interface IClient {
@@ -74,4 +74,19 @@ export interface IClientById {
   status: boolean;
   email: string;
   Person: IClientPerson;
+}
+
+export interface IClientByIdEdition extends Omit<IClientById, "Person"> {
+  ci: string;
+  birthdate: string;
+  firstname: string;
+  lastname: string;
+  phone: string;
+  photo: string;
+  Genre: IGenreClientById;
+}
+
+export interface IClientEditionResponse {
+  message: string;
+  updatedClient: IClientPerson;
 }

@@ -29,6 +29,7 @@ import { stateDiccionary } from "../../Table/utils";
 import { StateDiccionaryProps } from "../../../../../../types/table";
 import { MdSearch } from "react-icons/md";
 import { DataTable } from "../../Table/DataTable";
+import { useNavigate } from "react-router-dom";
 
 const intialFilters: IClientDataFilters = {
   ci: "",
@@ -37,6 +38,7 @@ const intialFilters: IClientDataFilters = {
 };
 
 const Clients = () => {
+  const navigate = useNavigate();
   const bgTableContainer = useColorModeValue(lightBgForm, darkBgForm);
   const textColor = useColorModeValue(lightTextColor, darkTextColor);
   const [filters, setFilters] = useState<IClientDataFilters>(intialFilters);
@@ -47,6 +49,7 @@ const Clients = () => {
   } = useForm<IClientDataFilters>();
   const { mutate: getClients, isPending: areClientsFetching } = useAllClients();
   const [clientsData, setClientsData] = useState<IClientDataTable[]>();
+  const [clientSelected, setClientSelected] = useState<IClientDataTable>();
 
   useEffect(() => {
     getClients(
@@ -118,6 +121,10 @@ const Clients = () => {
   const onSearchClients = (values: IClientDataFilters) => {
     setFilters(values);
   };
+
+  useEffect(() => {
+    if (clientSelected) navigate(`/dashboard/clients/${clientSelected.id}`);
+  }, [clientSelected, navigate]);
 
   return (
     <>
@@ -204,6 +211,8 @@ const Clients = () => {
           isLoading={areClientsFetching}
           data={clientsData}
           tableSize="md"
+          // tableVariant="striped"
+          setSelectedItem={setClientSelected}
           tableVariant="simple"
         />
       </SimpleGrid>

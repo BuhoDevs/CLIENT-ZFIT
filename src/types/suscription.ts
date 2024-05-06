@@ -82,3 +82,12 @@ export interface ISubscriptionByIdParams {
 export interface ISubscriptionByIdResponse extends ISubscriptionsKeys {
   Payment: IPayment[];
 }
+
+export interface IPutSubscription extends IBodySuscription {
+  id: number;
+}
+
+export interface IPutResponse extends IPostResponse {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  subscripEdit: any;
+}
