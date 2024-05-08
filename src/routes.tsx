@@ -29,9 +29,7 @@ import SubscriptionsDashLazy from "./lazyexports/SubscriptionsDashboard";
 import NewSubscriptionLazy from "./lazyexports/NewSubscriptionDashboard";
 
 import ConfigDashLazy from "./lazyexports/ConfigDashboard";
-
 import EditClient from "./lazyexports/EditClient";
-
 import SubscriptionEditionLazy from "./lazyexports/SubscriptionEditionDashboard";
 
 export const routes: RoutesType[] = [
@@ -116,8 +114,7 @@ export const renderRoutes = () => {
           <Route
             key={"dashKey"}
             path="/dashboard"
-            element={<DashboardLayout />}
-          >
+            element={<DashboardLayout />}>
             <Route index element={<HomeDashLazy />} />
             <Route path="balance" element={<MarketDashLazy />} />
             <Route path="clients" element={<ClientsDashLazy />} />
@@ -182,8 +179,8 @@ export const renderRoutes = () => {
             />
             <Route path="assinmentLaw" element={<AssingmentLawDashboard />} />
           */}
-          </Route >
-        </Route >
+          </Route>
+        </Route>
 
         <Route element={<PublicGuard />}>
           <Route key={"authKey"} path="/login" element={<AuthLayout />}>
@@ -194,7 +191,7 @@ export const renderRoutes = () => {
             <Route path="resetPassword" element={<ResetPasswordDashboard />} /> */}
           </Route>
         </Route>
-      </Routes >
-    </Suspense >
+      </Routes>
+    </Suspense>
   );
 };
