@@ -1,6 +1,9 @@
 import axiosApi from "../../config/axios";
 import { ISubscriptionsType } from "../../types/subscriptionsType";
-import { getSubscriptionsEndpoint } from "./subscriptionsType.endpoints";
+import {
+  deleteSubscriptionEndpoint,
+  getSubscriptionsEndpoint,
+} from "./subscriptionsType.endpoints";
 
 export const getSubscriptions = async (): Promise<ISubscriptionsType[]> => {
   const { data } = await axiosApi.get<ISubscriptionsType[]>(
@@ -8,4 +11,10 @@ export const getSubscriptions = async (): Promise<ISubscriptionsType[]> => {
   );
 
   return data;
+};
+
+export const deleteSubscriptionById = async (
+  subscriptionId: number
+): Promise<void> => {
+  await axiosApi.delete(deleteSubscriptionEndpoint(subscriptionId));
 };
