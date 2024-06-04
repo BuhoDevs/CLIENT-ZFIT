@@ -1,7 +1,6 @@
 // Chakra imports
 import {
   Avatar,
-  Box,
   Flex,
   HStack,
   Icon,
@@ -10,27 +9,36 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { IconType } from "react-icons";
 import Card from "../../../../components/card/Card";
 import {
   darkBrandBgColor,
   lightBrandBgColor,
 } from "../../../../components/form/variables";
-import { IoFitness } from "react-icons/io5";
-import { IoIosFitness, IoMdMusicalNote } from "react-icons/io";
+import {
+  ICurrentSubscriptionsResponse,
+  IPostCheckin,
+} from "../../../../types/suscription";
+import { DisciplinesIconTypes } from "../constants";
+
+export interface IIconTypes {
+  [x: string]: IconType;
+}
 
 export default function CheckinCard(props: {
-  banner: string;
-  avatar: string;
-  name: string;
-  job: string;
-  posts: number | string;
-  followers: number | string;
-  following: number | string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [x: string]: any;
+  gridArea: string;
+  onHandleSubmit: (values: { ci: string }) => void;
+  ciValue: string;
+  ClientAndSubscriptionData: ICurrentSubscriptionsResponse | undefined;
+  onDisciplineCheckin: (values: IPostCheckin) => void;
 }) {
-  const { banner, avatar, name, job, posts, followers, following, ...rest } =
-    props;
+  const {
+    onHandleSubmit,
+    ciValue,
+    ClientAndSubscriptionData,
+    onDisciplineCheckin,
+    ...rest
+  } = props;
   // Chakra Color Mode
   const textColorPrimary = useColorModeValue("secondaryGray.900", "white");
   const bgTabIndicator = useColorModeValue(lightBrandBgColor, darkBrandBgColor);
@@ -40,102 +48,95 @@ export default function CheckinCard(props: {
     "white !important",
     "#111C44 !important"
   );
+
+  const displayName = `${ClientAndSubscriptionData?.firstname || ""} ${
+    ClientAndSubscriptionData?.lastname || ""
+  }`;
+  const nameOrQuestion = displayName.trim() || "¿Quién eres?";
+
   return (
     <Card mb={{ base: "0px", lg: "20px" }} alignItems="center" {...rest}>
-      {/* <Box
-        bg={`url(${banner})`}
-        bgSize="cover"
-        borderRadius="16px"
-        h="131px"
-        w="100%"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      > */}
-      {/* <HStack>
-        <PinInput focusBorderColor={bgTabIndicator}>
-          <PinInputField color="white" />
-          <PinInputField color="white" />
-          <PinInputField color="white" />
-          <PinInputField color="white" />
-          <PinInputField color="white" />
-          <PinInputField color="white" />
-          <PinInputField color="white" />
-        </PinInput>
-      </HStack> */}
-      {/* </Box> */}
-
       <Avatar
         mx="auto"
-        src={avatar}
+        {...(ClientAndSubscriptionData?.photo && {
+          src: ClientAndSubscriptionData.photo,
+        })}
+        {...(ClientAndSubscriptionData?.firstname && {
+          name: ClientAndSubscriptionData.firstname,
+        })}
+        // src={ClientAndSubscriptionData?.photo || undefined}
         h="87px"
         w="87px"
         // mt="-43px"
         border="4px solid"
         borderColor={borderColor}
+        bg={bgTabIndicator}
       />
       <Text color={textColorPrimary} fontWeight="bold" fontSize="xl" mt="10px">
-        ¿Quién eres?
-        {/* {name} */}
+        {nameOrQuestion}
       </Text>
       <Text color={textColorSecondary} fontSize="sm" mt={2}>
         Ingresa tu CI
-        {/* {job} */}
       </Text>
       <HStack mt={2}>
-        <PinInput focusBorderColor={bgTabIndicator}>
-          <PinInputField color="white" />
-          <PinInputField color="white" />
-          <PinInputField color="white" />
-          <PinInputField color="white" />
-          <PinInputField color="white" />
-          <PinInputField color="white" />
-          <PinInputField color="white" />
+        <PinInput
+          focusBorderColor={bgTabIndicator}
+          onChange={(ci) => {
+            onHandleSubmit({ ci });
+          }}
+          value={ciValue}
+        >
+          <PinInputField color={textColorPrimary} />
+          <PinInputField color={textColorPrimary} />
+          <PinInputField color={textColorPrimary} />
+          <PinInputField color={textColorPrimary} />
+          <PinInputField color={textColorPrimary} />
+          <PinInputField color={textColorPrimary} />
+          <PinInputField
+            color={textColorPrimary}
+            onChange={({ target: { value } }) => {
+              const updatedCi = ciValue.slice(0, -1) + value;
+              if (updatedCi.length === 7) {
+                onHandleSubmit({ ci: updatedCi });
+              }
+            }}
+          />
         </PinInput>
       </HStack>
-      <Flex w="max-content" mx="auto" mt="26px">
-        <Flex mx="auto" me="60px" alignItems="center" flexDirection="column">
-          <Icon
-            as={IoIosFitness}
-            width="40px"
-            height="40px"
-            color={textColorSecondary}
-          />
-          <Text color={textColorPrimary} fontSize="2xl" fontWeight="700">
-            {posts}
-          </Text>
-          {/* <Text color={textColorSecondary} fontSize="sm" fontWeight="400">
-            Posts
-          </Text> */}
-        </Flex>
-        <Flex mx="auto" me="60px" alignItems="center" flexDirection="column">
-          <Icon
-            as={IoFitness}
-            width="40px"
-            height="40px"
-            color={textColorSecondary}
-          />
-          <Text color={textColorPrimary} fontSize="2xl" fontWeight="700">
-            {followers}
-          </Text>
-          {/* <Text color={textColorSecondary} fontSize="sm" fontWeight="400">
-            Followers
-          </Text> */}
-        </Flex>
-        <Flex mx="auto" alignItems="center" flexDirection="column">
-          <Icon
-            as={IoMdMusicalNote}
-            width="40px"
-            height="40px"
-            color={textColorSecondary}
-          />
-          <Text color={textColorPrimary} fontSize="2xl" fontWeight="700">
-            {following}
-          </Text>
-          {/* <Text color={textColorSecondary} fontSize="sm" fontWeight="400">
-            Following
-          </Text> */}
-        </Flex>
+      <Flex w="max-content" mx="auto" mt="26px" gap={3}>
+        {ClientAndSubscriptionData?.subscriptions.map((elem) => {
+          return (
+            <Flex
+              key={elem.id}
+              mx="auto"
+              alignItems="center"
+              flexDirection="column"
+              borderWidth={1}
+              rounded={"lg"}
+              px={3}
+              cursor={"pointer"}
+              onClick={() => {
+                if (!ciValue) {
+                  return;
+                }
+                onDisciplineCheckin({
+                  ci: ciValue,
+                  subscriptionId: elem.id,
+                });
+              }}
+            >
+              <Icon
+                as={DisciplinesIconTypes[elem.Discipline.label]}
+                width="40px"
+                height="40px"
+                color={textColorSecondary}
+              />
+              <Text color={textColorPrimary} fontSize="large" fontWeight="700">
+                {elem.Discipline.label}
+              </Text>
+            </Flex>
+          );
+        })}
       </Flex>
     </Card>
   );

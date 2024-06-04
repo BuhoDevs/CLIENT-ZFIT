@@ -1,11 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  getCurrentSubscriptionsByCi,
   getSubscriptionsByFilters,
   getSubscriptionsById,
   insertSubscription,
+  postDisciplineCheckin,
   updateSubscription,
 } from "../services/subscriptions/subscriptions.service";
-import { ISubscriptionByIdParams } from "../types/suscription";
+import {
+  ISubscriptionByCiParams,
+  ISubscriptionByIdParams,
+} from "../types/suscription";
 
 export const usePostSubscription = () => {
   return useMutation({
@@ -52,5 +57,40 @@ export const usePutSubscription = () => {
         }
       );
     },
+  });
+};
+
+export const useCurrentSubscriptionsByCi = ({
+  ci,
+  isReadyToFetch = false,
+}: ISubscriptionByCiParams) => {
+  return useQuery({
+    queryFn: () => getCurrentSubscriptionsByCi({ ci }),
+    queryKey: ["current-subscriptionsBy-ci"],
+    retry: 1,
+    refetchOnWindowFocus: false,
+    enabled: isReadyToFetch,
+  });
+};
+
+export const useCheckinPost = () => {
+  // const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["checkin"],
+    mutationFn: postDisciplineCheckin,
+    // onSuccess: async () => {
+    //   await queryClient.invalidateQueries(
+    //     {
+    //       queryKey: ["current-subscriptionsBy-ci"],
+    //       exact: true,
+    //       refetchType: "active",
+    //     },
+    //     {
+    //       throwOnError: true,
+    //       cancelRefetch: true,
+    //     }
+    //   );
+    // },
   });
 };
