@@ -149,7 +149,6 @@ const SubscriptionContainer = () => {
   ];
 
   const onSearchSubscriptions = (values: ISubscriptionDataFilters) => {
-    console.log(values, "valores");
     setPagination({ ...pagination, page: 1 });
     setFilters(values);
   };

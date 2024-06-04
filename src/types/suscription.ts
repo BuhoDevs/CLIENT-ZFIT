@@ -1,4 +1,4 @@
-import { IClientById } from "./client";
+import { IClientById, IClientPerson } from "./client";
 import { IDisciplines } from "./disciplines";
 import { IPayment } from "./payment";
 import { IPerson } from "./person";
@@ -90,4 +90,27 @@ export interface IPutSubscription extends IBodySuscription {
 export interface IPutResponse extends IPostResponse {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subscripEdit: any;
+}
+
+export interface ISubscriptionByCiParams {
+  ci: string;
+  isReadyToFetch?: boolean;
+}
+
+export interface IDisciplinesSubscription {
+  label: string;
+}
+export interface ICurrentSubscriptions {
+  id: number;
+  Discipline: IDisciplinesSubscription;
+}
+
+export interface ICurrentSubscriptionsResponse extends IClientPerson {
+  Client: Omit<IClientById, "Person">;
+  subscriptions: ICurrentSubscriptions[];
+}
+
+export interface IPostCheckin {
+  ci: string;
+  subscriptionId: number;
 }

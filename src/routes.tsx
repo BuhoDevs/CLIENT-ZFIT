@@ -1,5 +1,5 @@
 import { Icon } from "@chakra-ui/react";
-import { MdHome } from "react-icons/md";
+import { MdHome, MdLogin } from "react-icons/md";
 
 import { FaClipboardList, FaUser } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
@@ -31,6 +31,7 @@ import NewSubscriptionLazy from "./lazyexports/NewSubscriptionDashboard";
 import ConfigDashLazy from "./lazyexports/ConfigDashboard";
 import EditClient from "./lazyexports/EditClient";
 import SubscriptionEditionLazy from "./lazyexports/SubscriptionEditionDashboard";
+import CheckinDashLazy from "./lazyexports/CheckinDashboard";
 
 export const routes: RoutesType[] = [
   {
@@ -58,6 +59,13 @@ export const routes: RoutesType[] = [
     ),
     path: "subscriptions",
     component: lazy(() => import("./views/admin/subscriptions")),
+  },
+  {
+    name: "Asistencia",
+    layout: "/dashboard",
+    icon: <Icon as={MdLogin} width="20px" height="20px" color="inherit" />,
+    path: "checkin",
+    component: lazy(() => import("./views/admin/checkin")),
   },
 
   {
@@ -114,7 +122,8 @@ export const renderRoutes = () => {
           <Route
             key={"dashKey"}
             path="/dashboard"
-            element={<DashboardLayout />}>
+            element={<DashboardLayout />}
+          >
             <Route index element={<HomeDashLazy />} />
             <Route path="balance" element={<MarketDashLazy />} />
             <Route path="clients" element={<ClientsDashLazy />} />
@@ -129,6 +138,7 @@ export const renderRoutes = () => {
               path="subscriptions/edition/:subscriptionId"
               element={<SubscriptionEditionLazy />}
             />
+            <Route path="checkin" element={<CheckinDashLazy />} />
             <Route path="profile" element={<ProfileDashLazy />} />
             <Route path="config" element={<ConfigDashLazy />} />
             {/*

@@ -1,15 +1,20 @@
 import axiosApi from "../../config/axios";
 import {
   IBodySuscription,
+  ICurrentSubscriptionsResponse,
   IGetSubscriptionsPromise,
+  IPostCheckin,
   IPostResponse,
   IPutResponse,
   IPutSubscription,
+  ISubscriptionByCiParams,
   ISubscriptionByIdParams,
   ISubscriptionByIdResponse,
   ISubscriptionFilters,
 } from "../../types/suscription";
 import {
+  ICheckinEndpoint,
+  getCurrentSubscriptionsByCiEndpoint,
   insertSubscriptionEndpoint,
   putSubscriptionsEndpoint,
   subscriptionsByIdEndpoint,
@@ -58,4 +63,24 @@ export const updateSubscription = async ({
   );
 
   return putResponse;
+};
+
+export const getCurrentSubscriptionsByCi = async ({
+  ci,
+}: ISubscriptionByCiParams): Promise<ICurrentSubscriptionsResponse> => {
+  const { data } = await axiosApi.get<ICurrentSubscriptionsResponse>(
+    getCurrentSubscriptionsByCiEndpoint({ ci })
+  );
+  return data;
+};
+
+export const postDisciplineCheckin = async ({
+  ci,
+  subscriptionId,
+}: IPostCheckin): Promise<IPostResponse> => {
+  const { data } = await axiosApi.post<IPostResponse>(
+    ICheckinEndpoint({ ci, subscriptionId })
+  );
+
+  return data;
 };

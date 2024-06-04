@@ -39,8 +39,6 @@ export function SidebarLinks(props: { routes: RoutesType[] }) {
         const pathURL = route.isIndex
           ? "/dashboard"
           : `${route.layout}/${route.path}`;
-        // console.log(pathURL, "PATHH");
-        // console.log(route.isIndex);
 
         const isActiveRoute = activeRoute(
           route.isIndex ? "dashboard" : route.path.toLowerCase()

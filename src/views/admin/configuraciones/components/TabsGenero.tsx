@@ -59,7 +59,6 @@ const GenresComponent = () => {
           genreId: editedGenre.id,
           editedGenreData: editedGenre,
         });
-        console.log("Datos editados:", editedGenre);
         onClose();
       } else {
         console.error('Error: editedGenre no tiene la propiedad "id"');
@@ -81,7 +80,8 @@ const GenresComponent = () => {
             mt={4}
             onClick={() =>
               genres && genres.length > 0 && handleRowClick(genres[0])
-            }>
+            }
+          >
             <Thead>
               <Tr>
                 <Th>Nombre</Th>

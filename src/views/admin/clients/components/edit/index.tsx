@@ -85,7 +85,6 @@ const EditClient = () => {
       setImage(client.photo);
     }
   }, [client, reset]);
-  console.log("imagen", image);
   const onSubmit: SubmitHandler<IClientByIdEdition> = (
     values: IClientByIdEdition
   ) => {
