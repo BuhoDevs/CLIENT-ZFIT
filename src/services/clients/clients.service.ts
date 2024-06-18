@@ -1,7 +1,6 @@
 import axiosApi from "../../config/axios";
 import {
   IClient,
-  IClientById,
   IClientByIdEdition,
   IClientDataTable,
   IClientEditionResponse,
@@ -44,8 +43,8 @@ export const getClientById = async ({
   clientId,
 }: {
   clientId: number;
-}): Promise<IClientById> => {
-  const { data } = await axiosApi.get<IClientById>(
+}): Promise<IClientByIdEdition> => {
+  const { data } = await axiosApi.get<IClientByIdEdition>(
     clientsEndpointGetById({ clientId })
   );
 

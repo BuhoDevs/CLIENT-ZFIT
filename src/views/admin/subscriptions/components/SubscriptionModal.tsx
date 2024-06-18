@@ -167,7 +167,6 @@ const SubscriptionModal = ({
           {/* Search client */}
           <form onSubmit={handleSubmit(onSearchClients)}>
             <FormControl>
-              {/* <FormLabel fontSize="sm">Búsqueda</FormLabel> */}
               <InputGroup>
                 <InputLeftElement pointerEvents="none">
                   <Icon as={FaSearch} w="16px" h="16px" color="gray.300" />
@@ -175,7 +174,6 @@ const SubscriptionModal = ({
                 <Input
                   {...register("ci")}
                   fontSize="small"
-                  //   ref={initialRef}
                   placeholder="Buscar por cédula"
                   focusBorderColor={bgSchemeColor}
                 />

@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getCurrentSubscriptionsByCi,
+  getIncomeExpenseReport,
   getSubscriptionsByFilters,
   getSubscriptionsById,
   insertSubscription,
@@ -11,6 +12,7 @@ import {
   ISubscriptionByCiParams,
   ISubscriptionByIdParams,
 } from "../types/suscription";
+import { IBalanceFilter } from "../types/balance";
 
 export const usePostSubscription = () => {
   return useMutation({
@@ -92,5 +94,14 @@ export const useCheckinPost = () => {
     //     }
     //   );
     // },
+  });
+};
+
+export const useIncomeExpense = ({ startDate, endDate }: IBalanceFilter) => {
+  return useQuery({
+    queryKey: ["income-expense"],
+    queryFn: () => getIncomeExpenseReport({ startDate, endDate }),
+    retry: 1,
+    refetchOnWindowFocus: false,
   });
 };

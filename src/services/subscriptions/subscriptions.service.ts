@@ -1,4 +1,5 @@
 import axiosApi from "../../config/axios";
+import { IBalanceFilter, IPromiseIncomeExpense } from "../../types/balance";
 import {
   IBodySuscription,
   ICurrentSubscriptionsResponse,
@@ -14,6 +15,7 @@ import {
 } from "../../types/suscription";
 import {
   ICheckinEndpoint,
+  IncomeExpenseEndpoint,
   getCurrentSubscriptionsByCiEndpoint,
   insertSubscriptionEndpoint,
   putSubscriptionsEndpoint,
@@ -80,6 +82,17 @@ export const postDisciplineCheckin = async ({
 }: IPostCheckin): Promise<IPostResponse> => {
   const { data } = await axiosApi.post<IPostResponse>(
     ICheckinEndpoint({ ci, subscriptionId })
+  );
+
+  return data;
+};
+
+export const getIncomeExpenseReport = async ({
+  endDate,
+  startDate,
+}: IBalanceFilter): Promise<IPromiseIncomeExpense> => {
+  const { data } = await axiosApi.get<IPromiseIncomeExpense>(
+    IncomeExpenseEndpoint({ startDate, endDate })
   );
 
   return data;

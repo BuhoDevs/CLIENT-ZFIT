@@ -2,7 +2,7 @@ import { Button, Flex, useColorModeValue, useToast } from "@chakra-ui/react";
 import { darkBgForm, lightBgForm } from "../../../../components/form/variables";
 import ClientData from "./ClientData";
 import SubscriptionData from "./SubscriptionData";
-import { IClientById } from "../../../../types/client";
+import { IClientByIdEdition } from "../../../../types/client";
 import { useForm } from "react-hook-form";
 import { usePostSubscription } from "../../../../hooks/subscriptions";
 import { IFormSuscriptionData } from "../../../../types/suscription";
@@ -11,7 +11,7 @@ import { getUserInfo } from "../../../../utilities";
 import { useNavigate } from "react-router-dom";
 
 interface INewsubscriptionContainer {
-  clientsData: IClientById | undefined;
+  clientsData: IClientByIdEdition | undefined;
 }
 const NewsubscriptionContainer = ({
   clientsData,

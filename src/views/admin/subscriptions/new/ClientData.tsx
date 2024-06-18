@@ -9,10 +9,10 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { IClientById } from "../../../../types/client";
+import { IClientByIdEdition } from "../../../../types/client";
 interface IClientData {
   bgContainer: string;
-  clientsData: IClientById | undefined;
+  clientsData: IClientByIdEdition | undefined;
 }
 
 const ClientData = ({ bgContainer, clientsData }: IClientData) => {
@@ -27,8 +27,8 @@ const ClientData = ({ bgContainer, clientsData }: IClientData) => {
       >
         <Avatar
           size="2xl"
-          name={clientsData?.Person.firstname}
-          src={clientsData?.Person?.photo}
+          name={clientsData?.firstname}
+          src={clientsData?.photo}
           alignSelf={{
             base: "center",
           }}
@@ -50,19 +50,19 @@ const ClientData = ({ bgContainer, clientsData }: IClientData) => {
                 <FormLabel fontSize="medium" fontWeight="bold">
                   Cédula:
                 </FormLabel>
-                <Text py="2">{clientsData?.Person.ci}</Text>
+                <Text py="2">{clientsData?.ci}</Text>
               </FormControl>
               <FormControl>
                 <FormLabel fontSize="medium" fontWeight="bold">
                   Nombre(s):
                 </FormLabel>
-                <Text py="2">{clientsData?.Person.firstname}</Text>
+                <Text py="2">{clientsData?.firstname}</Text>
               </FormControl>
               <FormControl>
                 <FormLabel fontSize="medium" fontWeight="bold">
                   Apellido(s):
                 </FormLabel>
-                <Text py="2">{clientsData?.Person.lastname}</Text>
+                <Text py="2">{clientsData?.lastname}</Text>
               </FormControl>
             </SimpleGrid>
 
@@ -79,7 +79,7 @@ const ClientData = ({ bgContainer, clientsData }: IClientData) => {
                 <FormLabel fontSize="medium" fontWeight="bold">
                   Celular:
                 </FormLabel>
-                <Text py="2">{clientsData?.Person?.phone || "-"}</Text>
+                <Text py="2">{clientsData?.phone || "-"}</Text>
               </FormControl>
               <FormControl>
                 <FormLabel fontSize="medium" fontWeight="bold">

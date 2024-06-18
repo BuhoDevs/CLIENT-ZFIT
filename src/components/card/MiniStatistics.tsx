@@ -16,13 +16,14 @@ export default function Default(props: {
   name: string;
   growth?: string | number;
   value: string | number;
+  borderRadius?: number;
 }) {
-  const { startContent, endContent, name, growth, value } = props;
+  const { startContent, endContent, name, growth, value, ...restprops } = props;
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const textColorSecondary = "secondaryGray.600";
 
   return (
-    <Card py="15px">
+    <Card py="15px" {...restprops}>
       <Flex
         my="auto"
         h="100%"
