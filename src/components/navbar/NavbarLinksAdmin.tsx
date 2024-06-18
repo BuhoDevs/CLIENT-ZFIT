@@ -14,16 +14,13 @@ import {
 } from "@chakra-ui/react";
 // Custom Components
 import PropTypes from "prop-types";
-import { ItemContent } from "../../components/menu/ItemContent";
-import { SearchBar } from "../../components/navbar/searchBar/SearchBar";
 import { SidebarResponsive } from "../../components/sidebar/Sidebar";
 // Assets
 import { FaEthereum } from "react-icons/fa";
 import { IoMdMoon, IoMdSunny } from "react-icons/io";
-import { MdNotificationsNone } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import { routes } from "../../routes";
 import { getUserInfo, logOut } from "../../utilities";
-import { useNavigate } from "react-router-dom";
 export default function HeaderLinks(props: { secondary: boolean }) {
   const navigate = useNavigate();
   const userInfo = getUserInfo();
@@ -33,7 +30,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
   const navbarIcon = useColorModeValue("gray.400", "white");
   const menuBg = useColorModeValue("white", "navy.800");
   const textColor = useColorModeValue("secondaryGray.900", "white");
-  const textColorBrand = useColorModeValue("brand.700", "brand.400");
+  // const textColorBrand = useColorModeValue("brand.700", "brand.400");
   const ethColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("#E6ECFA", "rgba(135, 140, 189, 0.3)");
   const ethBg = useColorModeValue("secondaryGray.300", "navy.900");
@@ -54,11 +51,12 @@ export default function HeaderLinks(props: { secondary: boolean }) {
       flexDirection="row"
       bg={menuBg}
       flexWrap={secondary ? { base: "wrap", md: "nowrap" } : "unset"}
-      p="10px"
+      py="10px"
+      px={8}
       borderRadius="30px"
       boxShadow={shadow}
     >
-      <SearchBar
+      {/* <SearchBar
         mb={() => {
           if (secondary) {
             return { base: "10px", md: "unset" };
@@ -67,7 +65,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
         }}
         me="10px"
         borderRadius="30px"
-      />
+      /> */}
       <Flex
         bg={ethBg}
         display={secondary ? "flex" : "none"}
@@ -103,7 +101,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
         </Text>
       </Flex>
       <SidebarResponsive routes={routes} />
-      <Menu>
+      {/* <Menu>
         <MenuButton p="0px">
           <Icon
             mt="6px"
@@ -149,7 +147,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
             >
               <ItemContent info="Subscripciones" />
             </MenuItem>
-            {/* <MenuItem
+            <MenuItem
               _hover={{ bg: "none" }}
               _focus={{ bg: "none" }}
               px="0"
@@ -157,10 +155,10 @@ export default function HeaderLinks(props: { secondary: boolean }) {
               mb="10px"
             >
               <ItemContent info="Horizon Design System Free" />
-            </MenuItem> */}
+            </MenuItem>
           </Flex>
         </MenuList>
-      </Menu>
+      </Menu> */}
 
       {/* <Menu>
         <MenuButton p="0px">

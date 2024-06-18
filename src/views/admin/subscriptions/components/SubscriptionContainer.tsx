@@ -124,6 +124,12 @@ const SubscriptionContainer = () => {
     },
     {
       header: ({ column }) => (
+        <CustomHeaderColumn column={column} columnText="DISCIPLINA" />
+      ),
+      accessorKey: "Discipline.label",
+    },
+    {
+      header: ({ column }) => (
         <CustomHeaderColumn column={column} columnText="FECHA INICIO" />
       ),
       accessorFn: (row) =>

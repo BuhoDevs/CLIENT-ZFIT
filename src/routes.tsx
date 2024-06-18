@@ -18,7 +18,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 // lazy imports
 import HomeDashLazy from "./lazyexports/HomeDashboard";
-import MarketDashLazy from "./lazyexports/MarketPlace";
+import BalanceDashLazy from "./lazyexports/BalanceDashboard";
 import ClientsDashLazy from "./lazyexports/ClientsDashboard";
 import ProfileDashLazy from "./lazyexports/ProfileDashboard";
 import LoginDashLazy from "./lazyexports/LoginDashboard";
@@ -125,7 +125,7 @@ export const renderRoutes = () => {
             element={<DashboardLayout />}
           >
             <Route index element={<HomeDashLazy />} />
-            <Route path="balance" element={<MarketDashLazy />} />
+            <Route path="balance" element={<BalanceDashLazy />} />
             <Route path="clients" element={<ClientsDashLazy />} />
             <Route path="clients/new" element={<NewClient />} />
             <Route path="clients/:clientId" element={<EditClient />} />
