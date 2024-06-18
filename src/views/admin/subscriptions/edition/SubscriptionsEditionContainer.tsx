@@ -1,6 +1,6 @@
 import { useColorModeValue, useToast } from "@chakra-ui/react";
 import { darkBgForm, lightBgForm } from "../../../../components/form/variables";
-import { IClientById } from "../../../../types/client";
+import { IClientByIdEdition } from "../../../../types/client";
 import ClientData from "../new/ClientData";
 import { useForm } from "react-hook-form";
 import { IFormSuscriptionData } from "../../../../types/suscription";
@@ -13,7 +13,7 @@ import { subscriptionDataExtractor } from "../util";
 import { getUserInfo } from "../../../../utilities";
 
 interface ISubscriptionsEditionContainer {
-  clientData: IClientById | undefined;
+  clientData: IClientByIdEdition | undefined;
   subscriptionInfo: IFormSuscriptionData | undefined;
   subscriptionId: string | undefined;
 }

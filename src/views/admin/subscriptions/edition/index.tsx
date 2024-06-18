@@ -90,7 +90,13 @@ const SubscriptionEdition = () => {
             <TabPanels>
               <TabPanel p={0}>
                 <SubscriptionsEditionContainer
-                  clientData={subscriptionData?.Client}
+                  clientData={
+                    {
+                      ...subscriptionData?.Client.Person,
+                      email: subscriptionData?.Client.email,
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    } as any
+                  }
                   subscriptionInfo={subscriptionInfo}
                   subscriptionId={subscriptionId}
                 />
