@@ -7,13 +7,15 @@ import {
   IExpenseBalanceDataTable,
   ISubscriptionBalanceDataTable,
 } from "../../../../../types/balance";
+import { IExpenseDataTable } from "../../../../../types/expense";
 
 interface ICustomHeaderColumn {
   column:
     | Column<IClientDataTable, unknown>
     | Column<ISubscriptionBalanceDataTable, unknown>
     | Column<IExpenseBalanceDataTable, unknown>
-    | Column<ISubscriptionDataTable, unknown>;
+    | Column<ISubscriptionDataTable, unknown>
+    | Column<IExpenseDataTable, unknown>;
   columnText: string;
 }
 

@@ -40,10 +40,10 @@ moment.locale("es");
 // Calcular fechas por defecto
 const defaultStartDate = moment()
   .subtract(1, "month")
-  .date(11)
+  .date(12)
   .format("YYYY-MM-DD");
 const defaultEndDate = moment().format("YYYY-MM-DD");
-console.log(defaultStartDate, defaultEndDate);
+
 const initialFilters: IBalanceFilter = {
   startDate: defaultStartDate,
   endDate: defaultEndDate,
@@ -56,14 +56,7 @@ const BalanceContainer = () => {
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
 
   const [filters, setFilters] = useState<IBalanceFilter>(initialFilters);
-  const {
-    register,
-    handleSubmit,
-    reset,
-    control,
-    formState: { errors },
-  } = useForm<IBalanceFilter>();
-  console.log(errors, "ERRORES");
+  const { register, handleSubmit, reset, control } = useForm<IBalanceFilter>();
 
   const {
     data: incomeExpenseData,
