@@ -1,6 +1,14 @@
 import axiosApi from "../../config/axios";
-import { IExpenseBodyFilters, IGetExpensesPromise } from "../../types/expense";
-import { expenseByFiltersEndpoint } from "./expense.endpoints";
+import {
+  ICreateExpense,
+  IExpenseBodyFilters,
+  IGetExpensesPromise,
+} from "../../types/expense";
+import { IPostResponse } from "../../types/suscription";
+import {
+  createExpenseEndpoint,
+  expenseByFiltersEndpoint,
+} from "./expense.endpoints";
 import { expenseFilterParsed } from "./utils";
 
 export const findExpenseByFilters = async ({
@@ -13,5 +21,12 @@ export const findExpenseByFilters = async ({
     expenseFilterParsed({ expenseData, skip, take })
   );
 
+  return data;
+};
+
+export const insertExpense = async (
+  bodyData: ICreateExpense
+): Promise<IPostResponse> => {
+  const { data } = await axiosApi.post(createExpenseEndpoint(), bodyData);
   return data;
 };

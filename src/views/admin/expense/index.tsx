@@ -13,15 +13,14 @@ import {
 } from "@chakra-ui/react";
 import { marginTopDefault, marginTopMobile } from "../../../layouts/contants";
 
-// import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
-import { FaAddressCard } from "react-icons/fa";
 import {
   darkBrandBgColor,
   lightBrandBgColor,
 } from "../../../components/form/variables";
 import ExpenseContainer from "./components/ExpenseContainer";
-import SubscriptionModal from "./components/SubscriptionModal";
+import { BiMoneyWithdraw } from "react-icons/bi";
+import NewExpenseModal from "./components/NewExpenseModal";
 
 export default function SubscriptionView() {
   // Chakra Color Mode
@@ -47,13 +46,13 @@ export default function SubscriptionView() {
           <Button
             colorScheme="brandScheme"
             width={{ base: "full", md: "160px" }}
-            leftIcon={<FaAddressCard />}
+            leftIcon={<BiMoneyWithdraw />}
             borderRadius="10px"
             variant="outline"
             onClick={onOpen}
             fontSize="sm"
           >
-            Nueva Suscripción
+            Nuevo gasto
           </Button>
         </Flex>
         <TabIndicator
@@ -71,7 +70,7 @@ export default function SubscriptionView() {
           </TabPanel>
         </TabPanels>
       </Tabs>
-      <SubscriptionModal
+      <NewExpenseModal
         initialRef={initialRef}
         isOpen={isOpen}
         onClose={onClose}

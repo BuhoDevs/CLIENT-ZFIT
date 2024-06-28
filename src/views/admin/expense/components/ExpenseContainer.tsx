@@ -20,11 +20,11 @@ import { useAllExpenseCategories } from "../../../../hooks/expenseCategories";
 import {
   IExpenseDataTable,
   IExpenseFormFilter,
-  IGetExpensesPromise,
 } from "../../../../types/expense";
 import CustomHeaderColumn from "../../clients/components/Table/CustomHeaderColumn";
 import { DataTable } from "../../clients/components/Table/DataTable";
 import ExpenseFormFilters from "./ExpenseFormFilters";
+import { expenseFiltersParser, numericComparator } from "../utils";
 
 moment.locale("es");
 
@@ -36,14 +36,8 @@ const defaultStartDate = moment()
 const defaultEndDate = moment().format("YYYY-MM-DD");
 
 const initialFilters: IExpenseFormFilter = {
-  Category: {
-    value: 0,
-    label: "",
-    id: 0,
-    name: "",
-    status: false,
-  },
-  description: "",
+  Category: undefined,
+  description: undefined,
   startDate: defaultStartDate,
   endDate: defaultEndDate,
 };
@@ -53,19 +47,30 @@ const ExpenseContainer = () => {
   const navigate = useNavigate();
   const bgFilters = useColorModeValue(lightBgForm, darkBgForm);
   const [filters, setFilters] = useState<IExpenseFormFilter>(initialFilters);
-  const { register, handleSubmit, reset, control } =
-    useForm<IExpenseFormFilter>();
-
-  const { data: expenseCategoriesData } = useAllExpenseCategories();
-
-  const { mutate: getExpenses, isPending: areExpensesFetching } =
-    useGetExpenseByFilters();
-  const [expensesData, setExpensesData] = useState<IGetExpensesPromise>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm<IExpenseFormFilter>({
+    defaultValues: initialFilters,
+  });
 
   const [pagination, setPagination] = useState({
     page: 1,
     size: 10,
   });
+  const { data: expenseCategoriesData } = useAllExpenseCategories();
+
+  const { data: expensesData, isPending: areExpensesFetching } =
+    useGetExpenseByFilters({
+      expenseData: expenseFiltersParser(filters),
+      skip: pagination.page,
+      take: pagination.size,
+      isReadyToFetch: Boolean(pagination.page && pagination.size),
+    });
+  // const [expensesData, setExpensesData] = useState<IGetExpensesPromise>();
 
   const [subscriptionSelected, setSubscriptionSelected] =
     useState<IExpenseDataTable>();
@@ -75,42 +80,17 @@ const ExpenseContainer = () => {
   };
 
   useEffect(() => {
-    getExpenses(
-      {
-        expenseData: filters,
-        skip: pagination.page,
-        take: pagination.size,
-      },
-      {
-        onSuccess: (expensesCollection) => {
-          setExpensesData(expensesCollection);
-        },
-      }
-    );
-  }, [filters, getExpenses, pagination.page, pagination.size]);
-
-  useEffect(() => {
     if (subscriptionSelected) {
       navigate(`/dashboard/subscriptions/edition/${subscriptionSelected.id}`);
     }
   }, [navigate, subscriptionSelected]);
 
   const expensesColumns: ColumnDef<IExpenseDataTable>[] = [
-    // {
-    //   header: "FOTO",
-    //   accessorKey: "Client.Person.photo",
-    //   cell: ({ row }) => (
-    //     <Avatar
-    //       size="sm"
-    //       name={row.original.Client.Person.firstname}
-    //       src={row.original.Client.Person.photo}
-    //     />
-    //   ),
-    // },
     {
       header: ({ column }) => (
         <CustomHeaderColumn column={column} columnText="CANTIDAD BS" />
       ),
+      sortingFn: numericComparator,
       accessorKey: "amount",
     },
     {
@@ -133,25 +113,9 @@ const ExpenseContainer = () => {
         moment.utc(row.createdAt).locale("es").format("DD/MM/YYYY"),
       accessorKey: "createdAt",
     },
-    // {
-    //   header: ({ column }) => (
-    //     <CustomHeaderColumn column={column} columnText="FECHA FIN" />
-    //   ),
-    //   accessorFn: (row) =>
-    //     moment.utc(row.dateOut).locale("es").format("DD/MM/YYYY"),
-    //   accessorKey: "dateOut",
-    // },
-    // {
-    //   header: ({ column }) => (
-    //     <CustomHeaderColumn column={column} columnText="ESTADO" />
-    //   ),
-    //   accessorFn: (row) =>
-    //     stateDiccionary[String(row.status) as keyof StateDiccionaryProps],
-    //   accessorKey: "status",
-    // },
   ];
 
-  const onSearchSubscriptions = (values: IExpenseFormFilter) => {
+  const onSearchExpenses = (values: IExpenseFormFilter) => {
     setPagination({ ...pagination, page: 1 });
     setFilters(values);
   };
@@ -161,11 +125,12 @@ const ExpenseContainer = () => {
     reset();
   };
 
+  console.log(errors, "errores");
   return (
     <>
       <Box p={1} bg={bgFilters} borderRadius={8}>
         {/* filtros */}
-        <form onSubmit={handleSubmit(onSearchSubscriptions)}>
+        <form onSubmit={handleSubmit(onSearchExpenses)}>
           <ExpenseFormFilters
             register={register}
             control={control}

@@ -39,15 +39,15 @@ const ExpenseFormFilters = ({
         />
       </FormControl>
       <FormControl>
-        <FormLabel>Categorías</FormLabel>
+        <FormLabel>Tipo de gasto</FormLabel>
         <Controller
           name="Category"
-          rules={{
-            required: {
-              value: true,
-              message: "La disciplina es requerida",
-            },
-          }}
+          // rules={{
+          //   required: {
+          //     value: true,
+          //     message: "La disciplina es requerida",
+          //   },
+          // }}
           control={control}
           render={({ field: { value, onChange, onBlur, name, ref } }) => (
             <CkakraSelect
