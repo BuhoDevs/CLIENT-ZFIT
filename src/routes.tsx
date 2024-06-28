@@ -3,7 +3,7 @@ import { MdHome, MdLogin } from "react-icons/md";
 
 import { FaClipboardList, FaUser } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
-import { BiSolidBarChartAlt2 } from "react-icons/bi";
+import { BiMoneyWithdraw, BiSolidBarChartAlt2 } from "react-icons/bi";
 // layout imports
 import DashboardLayout from "./layouts/dashboard";
 
@@ -32,6 +32,7 @@ import ConfigDashLazy from "./lazyexports/ConfigDashboard";
 import EditClient from "./lazyexports/EditClient";
 import SubscriptionEditionLazy from "./lazyexports/SubscriptionEditionDashboard";
 import CheckinDashLazy from "./lazyexports/CheckinDashboard";
+import ExpenseDashLazy from "./lazyexports/ExpenseDashboard";
 
 export const routes: RoutesType[] = [
   {
@@ -66,6 +67,15 @@ export const routes: RoutesType[] = [
     icon: <Icon as={MdLogin} width="20px" height="20px" color="inherit" />,
     path: "checkin",
     component: lazy(() => import("./views/admin/checkin")),
+  },
+  {
+    name: "Egresos/Gastos",
+    layout: "/dashboard",
+    icon: (
+      <Icon as={BiMoneyWithdraw} width="20px" height="20px" color="inherit" />
+    ),
+    path: "expenses",
+    component: lazy(() => import("./views/admin/expense")),
   },
 
   {
@@ -138,6 +148,7 @@ export const renderRoutes = () => {
               path="subscriptions/edition/:subscriptionId"
               element={<SubscriptionEditionLazy />}
             />
+            <Route path="expenses" element={<ExpenseDashLazy />} />
             <Route path="checkin" element={<CheckinDashLazy />} />
             <Route path="profile" element={<ProfileDashLazy />} />
             <Route path="config" element={<ConfigDashLazy />} />
