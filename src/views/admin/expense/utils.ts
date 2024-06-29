@@ -1,6 +1,9 @@
 import {
   ICreateExpense,
   ICreateExpenseForm,
+  IEditionExpenseForm,
+  IEditionRequestData,
+  IExpenseDataTable,
   IExpenseFilterData,
   IExpenseFormFilter,
 } from "../../../types/expense";
@@ -44,4 +47,31 @@ export const numericComparator = (rowA: any, rowB: any, columnId: string) => {
   }
 
   return a > b ? 1 : -1;
+};
+
+export const parseToEditionExpenseData = (
+  values: IExpenseDataTable
+): IEditionExpenseForm => {
+  return {
+    id: values.id,
+    amount: values.amount,
+    description: values.description,
+    Category: values.category,
+  };
+};
+
+export const expenseEditionParser = ({
+  amount,
+  description,
+  Category,
+  id,
+}: IEditionExpenseForm): IEditionRequestData => {
+  return {
+    id: id || 0,
+    bodyData: {
+      amount,
+      description,
+      categoryId: Category.value,
+    },
+  };
 };

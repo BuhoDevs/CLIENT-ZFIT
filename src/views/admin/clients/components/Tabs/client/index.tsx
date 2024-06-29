@@ -204,6 +204,8 @@ const Clients = () => {
         columns={{ base: 1, md: 1 }}
         spacing={{ base: "20px", xl: "20px" }}
         bg={bgTableContainer}
+        borderRadius="2xl"
+        p={1}
       >
         <DataTable
           columns={columns}
@@ -211,7 +213,6 @@ const Clients = () => {
           isLoading={areClientsFetching}
           data={clientsData}
           tableSize="md"
-          // tableVariant="striped"
           setSelectedItem={setClientSelected}
           tableVariant="simple"
         />

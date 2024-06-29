@@ -23,7 +23,7 @@ export interface IExpenseBodyFilters {
 
 export interface IExpenseDataTable {
   id: number;
-  amount: string;
+  amount: number;
   description: string;
   categoryId: number;
   createdAt: string;
@@ -36,6 +36,7 @@ export interface IGetExpensesPromise {
 }
 
 export interface ICreateExpenseForm {
+  id?: number;
   amount: number;
   description: string;
   Category: IExpenseCategories;
@@ -44,4 +45,12 @@ export interface ICreateExpense {
   amount: number;
   description: string;
   categoryId: number;
+}
+
+export interface IEditionExpenseForm extends ICreateExpenseForm {}
+export interface IEditionExpense extends ICreateExpense {}
+
+export interface IEditionRequestData {
+  id: number;
+  bodyData: IEditionExpense;
 }
