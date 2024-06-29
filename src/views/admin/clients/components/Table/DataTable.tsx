@@ -56,7 +56,7 @@ export function DataTable<TData, TValue>({
   isLoading,
   data,
   tableSize = "sm",
-  tableVariant = "simple",
+  tableVariant = "unstyled",
   setSelectedItem,
   maxH = "auto",
 }: DataTableProps<TData, TValue>) {
@@ -95,7 +95,11 @@ export function DataTable<TData, TValue>({
       className="customScroll"
       overflowY="auto"
     >
-      <Table variant={tableVariant} size={tableSize} colorScheme="brandScheme">
+      <Table
+        variant={tableVariant}
+        size={tableSize}
+        colorScheme="secondaryGray"
+      >
         <Thead position="sticky" top={0} bg={bgThead} zIndex={1}>
           {table.getHeaderGroups().map((headerGroup) => (
             <Tr key={headerGroup.id}>

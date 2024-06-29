@@ -23,7 +23,7 @@ export interface IExpenseBodyFilters {
 
 export interface IExpenseDataTable {
   id: number;
-  amount: string;
+  amount: number;
   description: string;
   categoryId: number;
   createdAt: string;
@@ -45,3 +45,5 @@ export interface ICreateExpense {
   description: string;
   categoryId: number;
 }
+
+export interface IEditionExpenseForm extends ICreateExpenseForm {}

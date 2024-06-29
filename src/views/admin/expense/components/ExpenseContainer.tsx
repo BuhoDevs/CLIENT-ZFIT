@@ -1,11 +1,17 @@
-import { Box, Button, Flex, Icon, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Icon,
+  useColorModeValue,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
 import moment from "moment";
 import "moment/locale/es";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaSearch } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import { darkBgForm, lightBgForm } from "../../../../components/form/variables";
 import {
   Pagination,
@@ -18,13 +24,19 @@ import {
 import { useGetExpenseByFilters } from "../../../../hooks/expense";
 import { useAllExpenseCategories } from "../../../../hooks/expenseCategories";
 import {
+  IEditionExpenseForm,
   IExpenseDataTable,
   IExpenseFormFilter,
 } from "../../../../types/expense";
 import CustomHeaderColumn from "../../clients/components/Table/CustomHeaderColumn";
 import { DataTable } from "../../clients/components/Table/DataTable";
+import {
+  expenseFiltersParser,
+  numericComparator,
+  parseToEditionExpenseData,
+} from "../utils";
+import EditionExpenseModal from "./EditionExpenseModal";
 import ExpenseFormFilters from "./ExpenseFormFilters";
-import { expenseFiltersParser, numericComparator } from "../utils";
 
 moment.locale("es");
 
@@ -44,18 +56,12 @@ const initialFilters: IExpenseFormFilter = {
 
 moment.locale("es");
 const ExpenseContainer = () => {
-  const navigate = useNavigate();
   const bgFilters = useColorModeValue(lightBgForm, darkBgForm);
   const [filters, setFilters] = useState<IExpenseFormFilter>(initialFilters);
-  const {
-    register,
-    handleSubmit,
-    reset,
-    control,
-    formState: { errors },
-  } = useForm<IExpenseFormFilter>({
-    defaultValues: initialFilters,
-  });
+  const { register, handleSubmit, reset, control } =
+    useForm<IExpenseFormFilter>({
+      defaultValues: initialFilters,
+    });
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -70,20 +76,25 @@ const ExpenseContainer = () => {
       take: pagination.size,
       isReadyToFetch: Boolean(pagination.page && pagination.size),
     });
-  // const [expensesData, setExpensesData] = useState<IGetExpensesPromise>();
 
-  const [subscriptionSelected, setSubscriptionSelected] =
-    useState<IExpenseDataTable>();
+  const {
+    isOpen: isEditionOpen,
+    onOpen: onEditionOpen,
+    onClose: onEditionClose,
+  } = useDisclosure();
+  const initialEditionRef = useRef<HTMLInputElement>(null);
+
+  const [expenseSelected, setExpenseSelected] = useState<IEditionExpenseForm>();
 
   const setExpensesPage = (page: number) => {
     setPagination({ ...pagination, page });
   };
 
-  useEffect(() => {
-    if (subscriptionSelected) {
-      navigate(`/dashboard/subscriptions/edition/${subscriptionSelected.id}`);
-    }
-  }, [navigate, subscriptionSelected]);
+  // useEffect(() => {
+  //   if (subscriptionSelected) {
+  //     navigate(`/dashboard/subscriptions/edition/${subscriptionSelected.id}`);
+  //   }
+  // }, [navigate, subscriptionSelected]);
 
   const expensesColumns: ColumnDef<IExpenseDataTable>[] = [
     {
@@ -125,7 +136,11 @@ const ExpenseContainer = () => {
     reset();
   };
 
-  console.log(errors, "errores");
+  const handleExpenseSelected = (expenseSelected: IExpenseDataTable) => {
+    setExpenseSelected(parseToEditionExpenseData(expenseSelected));
+    onEditionOpen();
+  };
+
   return (
     <>
       <Box p={1} bg={bgFilters} borderRadius={8}>
@@ -190,7 +205,8 @@ const ExpenseContainer = () => {
           isLoading={false}
           tableVariant="simple"
           data={expensesData?.expenses}
-          setSelectedItem={setSubscriptionSelected}
+          // setSelectedItem={setSubscriptionSelected}
+          setSelectedItem={handleExpenseSelected}
         />
         <Box
           p="2"
@@ -212,6 +228,14 @@ const ExpenseContainer = () => {
           </Pagination>
         </Box>
       </Box>
+      {expenseSelected && (
+        <EditionExpenseModal
+          expenseDataForm={expenseSelected}
+          initialRef={initialEditionRef}
+          isOpen={isEditionOpen}
+          onClose={onEditionClose}
+        />
+      )}
     </>
   );
 };
