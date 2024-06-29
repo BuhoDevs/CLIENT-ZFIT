@@ -16,17 +16,17 @@ import {
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
+import { Select as CkakraSelect } from "chakra-react-select";
 import { RefObject, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   darkBrandBgColor,
   lightBrandBgColor,
 } from "../../../../components/form/variables";
-import { usePostExpense } from "../../../../hooks/expense";
-import { IEditionExpenseForm } from "../../../../types/expense";
-import { expenseCreateParser } from "../utils";
-import { Select as CkakraSelect } from "chakra-react-select";
+import { useEditionExpense } from "../../../../hooks/expense";
 import { useAllExpenseCategories } from "../../../../hooks/expenseCategories";
+import { IEditionExpenseForm } from "../../../../types/expense";
+import { expenseEditionParser } from "../utils";
 
 interface IEditionExpenseModal {
   isOpen: boolean;
@@ -53,36 +53,33 @@ const EditionExpenseModal = ({
     formState: { errors },
     reset,
     control,
-    resetField: setValue,
   } = useForm<IEditionExpenseForm>();
   const { data: expenseCategoriesData } = useAllExpenseCategories();
-  const { mutate: insertExpenseMutation, isPending: areExpenseCreating } =
-    usePostExpense();
+  const { mutate: editExpenseMutate, isPending: isExpensePatching } =
+    useEditionExpense();
 
-  const onSearchClients = (values: IEditionExpenseForm) => {
-    insertExpenseMutation(expenseCreateParser(values), {
+  const onPatchExpense = (values: IEditionExpenseForm) => {
+    const expenseEditionRequestBody = expenseEditionParser(values);
+    editExpenseMutate(expenseEditionRequestBody, {
       onSuccess: ({ message }) => {
         toast({
-          title: `Subscripción exitosa`,
+          title: `Edición exitosa`,
           description: message,
           status: "success",
           duration: 2000,
           isClosable: true,
         });
-        setValue("Category", undefined);
         reset();
         onClose();
       },
       onError: (error) => {
         toast({
-          title: `Error en subscripción`,
+          title: `Error en edición`,
           description: error.message,
           status: "error",
           duration: 2000,
           isClosable: true,
         });
-        setValue("Category", undefined);
-
         reset();
       },
     });
@@ -98,11 +95,7 @@ const EditionExpenseModal = ({
     <Modal
       initialFocusRef={initialRef}
       isOpen={isOpen}
-      onClose={() => {
-        console.log("valor");
-        setValue("Category", undefined);
-        onClose();
-      }}
+      onClose={onClose}
       isCentered
       size="xl"
     >
@@ -112,7 +105,7 @@ const EditionExpenseModal = ({
         <ModalCloseButton />
         <ModalBody pb={6}>
           {/* Search client */}
-          <form onSubmit={handleSubmit(onSearchClients)}>
+          <form onSubmit={handleSubmit(onPatchExpense)}>
             <SimpleGrid columns={{ base: 1 }} spacing={2}>
               <FormControl isInvalid={!!errors.Category}>
                 <FormLabel>Tipo de gasto</FormLabel>
@@ -203,7 +196,7 @@ const EditionExpenseModal = ({
                   color="white"
                   mr={3}
                   borderRadius={8}
-                  isLoading={areExpenseCreating}
+                  isLoading={isExpensePatching}
                   type="submit"
                 >
                   Confirmar edición

@@ -36,6 +36,7 @@ export interface IGetExpensesPromise {
 }
 
 export interface ICreateExpenseForm {
+  id?: number;
   amount: number;
   description: string;
   Category: IExpenseCategories;
@@ -47,3 +48,9 @@ export interface ICreateExpense {
 }
 
 export interface IEditionExpenseForm extends ICreateExpenseForm {}
+export interface IEditionExpense extends ICreateExpense {}
+
+export interface IEditionRequestData {
+  id: number;
+  bodyData: IEditionExpense;
+}
