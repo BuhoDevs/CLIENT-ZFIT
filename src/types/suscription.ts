@@ -1,3 +1,4 @@
+import { IAttendanceData, ICurrentAttendanceParams } from "./checkin";
 import { IClientById, IClientPerson } from "./client";
 import { IDisciplines } from "./disciplines";
 import { IPayment } from "./payment";
@@ -113,4 +114,26 @@ export interface ICurrentSubscriptionsResponse extends IClientPerson {
 export interface IPostCheckin {
   ci: string;
   subscriptionId: number;
+}
+
+export interface IExpiringsoonParams extends ICurrentAttendanceParams {}
+
+interface IExpiringSoonData extends Omit<IAttendanceData, "createdAt"> {
+  dateIn: string;
+  dateOut: string;
+}
+
+export interface IExpiringSoonResponse {
+  membershipsExpiringSoon: IExpiringSoonData[];
+  totalLength: number;
+}
+
+export interface IExpiringSoonDatatable extends IExpiringSoonData {}
+
+export interface IActiveMembersResponse {
+  totalActiveMembers: number;
+}
+
+export interface INewMembersResponse {
+  totalNewMembersThisMonth: number;
 }

@@ -6,9 +6,11 @@ import {
   StatNumber,
   useColorModeValue,
   Text,
+  Spinner,
 } from "@chakra-ui/react";
 // Custom components
 import Card from "../../components/card/Card";
+import { darkBrandBgColor, lightBrandBgColor } from "../form/variables";
 
 export default function Default(props: {
   startContent?: JSX.Element;
@@ -17,10 +19,20 @@ export default function Default(props: {
   growth?: string | number;
   value: string | number;
   borderRadius?: number;
+  isLoading?: boolean;
 }) {
-  const { startContent, endContent, name, growth, value, ...restprops } = props;
+  const {
+    startContent,
+    endContent,
+    name,
+    growth,
+    value,
+    isLoading = false,
+    ...restprops
+  } = props;
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const textColorSecondary = "secondaryGray.600";
+  const bgBrand = useColorModeValue(lightBrandBgColor, darkBrandBgColor);
 
   return (
     <Card py="15px" {...restprops}>
@@ -48,7 +60,7 @@ export default function Default(props: {
               base: "2xl",
             }}
           >
-            {value}
+            {isLoading ? <Spinner color={bgBrand} /> : value}
           </StatNumber>
           {growth ? (
             <Flex align="center">

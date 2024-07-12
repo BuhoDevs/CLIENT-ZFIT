@@ -1,6 +1,7 @@
 import { apiUrls } from "../../config/urls";
 import { IBalanceExport, IBalanceFilter } from "../../types/balance";
 import {
+  IExpiringsoonParams,
   IPostCheckin,
   ISubscriptionByCiParams,
   ISubscriptionByIdParams,
@@ -52,3 +53,9 @@ export const BalanceExportEndpoint = ({
 
   return URL;
 };
+
+export const expiringSoonEndpoint = ({ skip, take }: IExpiringsoonParams) =>
+  `/subscriptions/expiring/soon?skip=${skip}&take=${take}`;
+
+export const activeMembersEndpoint = () => `/subscriptions/acive/total`;
+export const totalNewMembersEndpoint = () => `/subscriptions/new/total`;

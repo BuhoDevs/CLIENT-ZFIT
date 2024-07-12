@@ -2,12 +2,16 @@ import { Flex } from "@chakra-ui/react";
 import { SorterArrowIcon } from "./SorterArrowIcon";
 import { IClientDataTable } from "../../../../../types/client";
 import { Column } from "@tanstack/react-table";
-import { ISubscriptionDataTable } from "../../../../../types/suscription";
+import {
+  IExpiringSoonDatatable,
+  ISubscriptionDataTable,
+} from "../../../../../types/suscription";
 import {
   IExpenseBalanceDataTable,
   ISubscriptionBalanceDataTable,
 } from "../../../../../types/balance";
 import { IExpenseDataTable } from "../../../../../types/expense";
+import { ICurrentAttendanceDatatable } from "../../../../../types/checkin";
 
 interface ICustomHeaderColumn {
   column:
@@ -15,6 +19,8 @@ interface ICustomHeaderColumn {
     | Column<ISubscriptionBalanceDataTable, unknown>
     | Column<IExpenseBalanceDataTable, unknown>
     | Column<ISubscriptionDataTable, unknown>
+    | Column<ICurrentAttendanceDatatable, unknown>
+    | Column<IExpiringSoonDatatable, unknown>
     | Column<IExpenseDataTable, unknown>;
   columnText: string;
 }
