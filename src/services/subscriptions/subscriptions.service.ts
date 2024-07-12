@@ -1,9 +1,13 @@
 import axiosApi from "../../config/axios";
 import { IBalanceFilter, IPromiseIncomeExpense } from "../../types/balance";
 import {
+  IActiveMembersResponse,
   IBodySuscription,
   ICurrentSubscriptionsResponse,
+  IExpiringSoonResponse,
+  IExpiringsoonParams,
   IGetSubscriptionsPromise,
+  INewMembersResponse,
   IPostCheckin,
   IPostResponse,
   IPutResponse,
@@ -16,11 +20,14 @@ import {
 import {
   ICheckinEndpoint,
   IncomeExpenseEndpoint,
+  activeMembersEndpoint,
+  expiringSoonEndpoint,
   getCurrentSubscriptionsByCiEndpoint,
   insertSubscriptionEndpoint,
   putSubscriptionsEndpoint,
   subscriptionsByIdEndpoint,
   subscriptionsFiltersEndpoint,
+  totalNewMembersEndpoint,
 } from "./subscriptions.endpoints";
 import { subscriptionFiltersParsed } from "./utils";
 
@@ -97,3 +104,29 @@ export const getIncomeExpenseReport = async ({
 
   return data;
 };
+
+export const getExpiringSoon = async ({
+  skip,
+  take,
+}: IExpiringsoonParams): Promise<IExpiringSoonResponse> => {
+  const { data } = await axiosApi.get<IExpiringSoonResponse>(
+    expiringSoonEndpoint({ skip, take })
+  );
+  return data;
+};
+
+export const getTotalActiveMembers =
+  async (): Promise<IActiveMembersResponse> => {
+    const { data } = await axiosApi.get<IActiveMembersResponse>(
+      activeMembersEndpoint()
+    );
+    return data;
+  };
+
+export const getTotalNewMembersThisMonth =
+  async (): Promise<INewMembersResponse> => {
+    const { data } = await axiosApi.get<INewMembersResponse>(
+      totalNewMembersEndpoint()
+    );
+    return data;
+  };

@@ -1,14 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getCurrentSubscriptionsByCi,
+  getExpiringSoon,
   getIncomeExpenseReport,
   getSubscriptionsByFilters,
   getSubscriptionsById,
+  getTotalActiveMembers,
+  getTotalNewMembersThisMonth,
   insertSubscription,
   postDisciplineCheckin,
   updateSubscription,
 } from "../services/subscriptions/subscriptions.service";
 import {
+  IExpiringsoonParams,
   ISubscriptionByCiParams,
   ISubscriptionByIdParams,
 } from "../types/suscription";
@@ -76,24 +80,9 @@ export const useCurrentSubscriptionsByCi = ({
 };
 
 export const useCheckinPost = () => {
-  // const queryClient = useQueryClient();
-
   return useMutation({
     mutationKey: ["checkin"],
     mutationFn: postDisciplineCheckin,
-    // onSuccess: async () => {
-    //   await queryClient.invalidateQueries(
-    //     {
-    //       queryKey: ["current-subscriptionsBy-ci"],
-    //       exact: true,
-    //       refetchType: "active",
-    //     },
-    //     {
-    //       throwOnError: true,
-    //       cancelRefetch: true,
-    //     }
-    //   );
-    // },
   });
 };
 
@@ -103,5 +92,34 @@ export const useIncomeExpense = ({ startDate, endDate }: IBalanceFilter) => {
     queryFn: () => getIncomeExpenseReport({ startDate, endDate }),
     retry: 1,
     refetchOnWindowFocus: false,
+  });
+};
+
+export const useGetExpiringSoon = (params: IExpiringsoonParams) => {
+  return useQuery({
+    queryKey: ["expiring-soon"],
+    queryFn: () => getExpiringSoon(params),
+    retry: 1,
+    refetchOnWindowFocus: true,
+    enabled: true,
+  });
+};
+
+export const useGetTotalActiveMembers = () => {
+  return useQuery({
+    queryKey: ["active-members"],
+    queryFn: getTotalActiveMembers,
+    retry: 1,
+    refetchOnWindowFocus: true,
+    enabled: true,
+  });
+};
+export const useGetTotalNewMembersThisMonth = () => {
+  return useQuery({
+    queryKey: ["new-members-thisMonth"],
+    queryFn: getTotalNewMembersThisMonth,
+    retry: 1,
+    refetchOnWindowFocus: true,
+    enabled: true,
   });
 };

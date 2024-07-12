@@ -285,11 +285,11 @@ const BalanceContainer = () => {
           w={{
             base: "100%",
             sm: "100%",
-            md: "100px",
+            md: "120px",
           }}
           h={8}
         >
-          Exportar
+          Exportar balance
         </Button>
       </Flex>
       <Box mt={1} p={1} bg={bgFilters} borderRadius={8}>
@@ -302,7 +302,7 @@ const BalanceContainer = () => {
         />
       </Box>
       <Flex mt={5} justifyContent="space-between" alignItems="center">
-        <Button
+        {/* <Button
           borderRadius={3}
           leftIcon={<Icon as={BiMoneyWithdraw} color={brandColors} />}
           _hover="none"
@@ -314,8 +314,8 @@ const BalanceContainer = () => {
           h={8}
         >
           Egresos
-        </Button>
-        <Button
+        </Button> */}
+        {/* <Button
           borderRadius={3}
           leftIcon={<Icon as={FaFileExport} bg={brandColors} />}
           colorScheme="brandScheme"
@@ -330,7 +330,7 @@ const BalanceContainer = () => {
           h={8}
         >
           Exportar
-        </Button>
+        </Button> */}
       </Flex>
       <Box mt={1} p={1} bg={bgFilters} borderRadius={8}>
         <DataTable
@@ -356,7 +356,7 @@ const BalanceContainer = () => {
         >
           Blance Total
         </Button>
-        <Button
+        {/* <Button
           borderRadius={3}
           leftIcon={<Icon as={FaFileExport} bg={brandColors} />}
           colorScheme="brandScheme"
@@ -371,7 +371,7 @@ const BalanceContainer = () => {
           h={8}
         >
           Exportar
-        </Button>
+        </Button> */}
       </Flex>
       <Box mt={1}>
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap="20px" mb="20px">
