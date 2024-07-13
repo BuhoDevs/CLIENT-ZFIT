@@ -2,10 +2,6 @@ import {
   Box,
   Button,
   Flex,
-  FormControl,
-  FormLabel,
-  Input,
-  SimpleGrid,
   Tab,
   TabIndicator,
   TabList,
@@ -15,21 +11,11 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { marginTopDefault, marginTopMobile } from "../../../layouts/contants";
-import CheckTable from "../../../views/admin/clients/components/CheckTable";
-import ColumnsTable from "../../../views/admin/clients/components/ColumnsTable";
-import ComplexTable from "../../../views/admin/clients/components/ComplexTable";
-import DevelopmentTable from "../../../views/admin/clients/components/DevelopmentTable";
-import tableDataCheck from "../../../views/admin/clients/variables/tableDataCheck";
-import tableDataColumns from "../../../views/admin/clients/variables/tableDataColumns";
-import tableDataComplex from "../../../views/admin/clients/variables/tableDataComplex";
-import tableDataDevelopment from "../../../views/admin/clients/variables/tableDataDevelopment";
 
-import { MdPersonAdd, MdSearch } from "react-icons/md";
+import { MdPersonAdd } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import {
-  darkBgForm,
   darkBrandBgColor,
-  lightBgForm,
   lightBrandBgColor,
 } from "../../../components/form/variables";
 import Clients from "./components/Tabs/client";
@@ -37,7 +23,7 @@ import Clients from "./components/Tabs/client";
 export default function Settings() {
   // Chakra Color Mode
   const navigate = useNavigate();
-  const formBg = useColorModeValue(lightBgForm, darkBgForm);
+  // const formBg = useColorModeValue(lightBgForm, darkBgForm);
   const bgTabIndicator = useColorModeValue(lightBrandBgColor, darkBrandBgColor);
 
   return (
@@ -51,8 +37,8 @@ export default function Settings() {
         >
           <TabList display="flex" flexWrap="nowrap" overflowX="auto" pl="1rem">
             <Tab>Clientes</Tab>
-            <Tab>Reportes</Tab>
-            <Tab>Ingresos</Tab>
+            {/* <Tab>Reportes</Tab>
+            <Tab>Ingresos</Tab> */}
           </TabList>
 
           <Button
@@ -81,7 +67,7 @@ export default function Settings() {
             <Clients />
           </TabPanel>
 
-          <TabPanel>
+          {/* <TabPanel>
             <SimpleGrid
               mb="20px"
               columns={{ sm: 1, md: 2 }}
@@ -92,9 +78,9 @@ export default function Settings() {
               <ColumnsTable tableData={tableDataColumns} />
               <ComplexTable tableData={tableDataComplex} />
             </SimpleGrid>
-          </TabPanel>
+          </TabPanel> */}
 
-          <TabPanel>
+          {/* <TabPanel>
             <Box bgColor={formBg} borderRadius={8} p={1} mb={4}>
               <form>
                 <SimpleGrid
@@ -145,7 +131,7 @@ export default function Settings() {
             >
               <DevelopmentTable tableData={tableDataDevelopment} />
             </SimpleGrid>
-          </TabPanel>
+          </TabPanel> */}
         </TabPanels>
       </Tabs>
     </Box>

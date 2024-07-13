@@ -7,3 +7,7 @@ export interface IPayment {
   status: boolean;
   subscriptionId: number;
 }
+
+export interface IMonthlyRevenueResponse {
+  monthlyRevenue: number;
+}

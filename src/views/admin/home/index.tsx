@@ -13,6 +13,7 @@ import {
   useGetTotalActiveMembers,
   useGetTotalNewMembersThisMonth,
 } from "../../../hooks/subscriptions";
+import { useGetMonthlyRevenue } from "../../../hooks/payments";
 
 export default function UserReports() {
   // Chakra Color Mode
@@ -29,10 +30,16 @@ export default function UserReports() {
     isLoading: totalNewMembersThisMonthLoading,
     isFetching: totalNewMembersThisMonthFetching,
   } = useGetTotalNewMembersThisMonth();
+
+  const {
+    data: monthkyrevenueData,
+    isLoading: isMonthlyRevenueLoading,
+    isFetching: isMonthlyRevenueFetching,
+  } = useGetMonthlyRevenue();
   return (
     <Box pt={{ base: marginTopMobile, md: "80px", xl: marginTopDefault }}>
       <SimpleGrid
-        columns={{ base: 1, md: 2, lg: 3, "2xl": 6 }}
+        columns={{ base: 1, md: 2, lg: 3, "2xl": 3 }}
         gap="20px"
         mb="20px"
       >
@@ -70,7 +77,13 @@ export default function UserReports() {
             totalNewMembersThisMonthLoading || totalNewMembersThisMonthFetching
           }
         />
-        <MiniStatistics growth="+23%" name="Sales" value="$574.34" />
+        <MiniStatistics
+          // growth="+23%"
+
+          name="Ingresos del mes"
+          value={`$BS. ${monthkyrevenueData?.monthlyRevenue || 0}`}
+          isLoading={isMonthlyRevenueLoading || isMonthlyRevenueFetching}
+        />
         {/* <MiniStatistics
           endContent={
             <Flex me="-16px" mt="10px">
