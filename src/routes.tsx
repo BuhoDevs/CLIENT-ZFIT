@@ -2,7 +2,7 @@ import { Icon } from "@chakra-ui/react";
 import { MdHome, MdLogin } from "react-icons/md";
 
 import { FaClipboardList, FaUser } from "react-icons/fa";
-import { IoMdSettings } from "react-icons/io";
+// import { IoMdSettings } from "react-icons/io";
 import { BiMoneyWithdraw, BiSolidBarChartAlt2 } from "react-icons/bi";
 // layout imports
 import DashboardLayout from "./layouts/dashboard";
@@ -20,7 +20,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import HomeDashLazy from "./lazyexports/HomeDashboard";
 import BalanceDashLazy from "./lazyexports/BalanceDashboard";
 import ClientsDashLazy from "./lazyexports/ClientsDashboard";
-import ProfileDashLazy from "./lazyexports/ProfileDashboard";
+// import ProfileDashLazy from "./lazyexports/ProfileDashboard";
 import LoginDashLazy from "./lazyexports/LoginDashboard";
 import PublicGuard from "./guards/public.guard";
 import AuthLayout from "./layouts/auth";
@@ -28,7 +28,7 @@ import NewClient from "./views/admin/clients/components/newClient";
 import SubscriptionsDashLazy from "./lazyexports/SubscriptionsDashboard";
 import NewSubscriptionLazy from "./lazyexports/NewSubscriptionDashboard";
 
-import ConfigDashLazy from "./lazyexports/ConfigDashboard";
+// import ConfigDashLazy from "./lazyexports/ConfigDashboard";
 import EditClient from "./lazyexports/EditClient";
 import SubscriptionEditionLazy from "./lazyexports/SubscriptionEditionDashboard";
 import CheckinDashLazy from "./lazyexports/CheckinDashboard";
@@ -93,20 +93,21 @@ export const routes: RoutesType[] = [
     component: lazy(() => import("./views/admin/marketplace")),
     secondary: true,
   },
-  {
-    name: "Perfil",
-    layout: "/dashboard",
-    path: "profile",
-    icon: <Icon as={IoMdSettings} width="20px" height="20px" color="inherit" />,
-    component: lazy(() => import("./views/admin/profile")),
-  },
-  {
-    name: "Configuraciónes",
-    layout: "/dashboard",
-    path: "config",
-    icon: <Icon as={IoMdSettings} width="20px" height="20px" color="inherit" />,
-    component: lazy(() => import("./views/admin/configuraciones")),
-  },
+  // {
+  //   name: "Perfil",
+  //   layout: "/dashboard",
+  //   path: "profile",
+  //   icon: <Icon as={IoMdSettings} width="20px" height="20px" color="inherit" />,
+  //   component: lazy(() => import("./views/admin/profile")),
+  // },
+  // {
+  //   name: "Configuraciónes",
+  //   layout: "/dashboard",
+  //   path: "config",
+  //   icon: <Icon as={IoMdSettings} width="20px" height="20px" color="inherit" />,
+  //   component: lazy(() => import("./views/admin/configuraciones")),
+  // },
+
   // {
   //   name: "Ingresar",
   //   layout: "/dashboard",
@@ -150,8 +151,8 @@ export const renderRoutes = () => {
             />
             <Route path="expenses" element={<ExpenseDashLazy />} />
             <Route path="checkin" element={<CheckinDashLazy />} />
-            <Route path="profile" element={<ProfileDashLazy />} />
-            <Route path="config" element={<ConfigDashLazy />} />
+            {/* <Route path="profile" element={<ProfileDashLazy />} />
+            <Route path="config" element={<ConfigDashLazy />} /> */}
             {/*
             <Route path="users" element={<UsersDashboard />} />
             {/*
