@@ -45,8 +45,7 @@ import DragAndDropInput from "../DragAndDropInput";
 import { parseToFormdataEditClient } from "../utils";
 
 const EditClient = () => {
-  const params = useParams();
-  const { clientId } = params;
+  const { clientId } = useParams();
   const { data: client, isLoading } = useClientByIdEdition({
     clientId: Number(clientId),
     isReadyTofetch: Boolean(clientId),
