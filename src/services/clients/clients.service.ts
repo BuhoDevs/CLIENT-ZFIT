@@ -2,7 +2,6 @@ import axiosApi from "../../config/axios";
 import {
   IClient,
   IClientByIdEdition,
-  IClientDataTable,
   IClientEditionResponse,
   IClientFilters,
   IGetClientPromise,
@@ -18,12 +17,12 @@ export const getClients = async ({
   clientData,
   skip,
   take,
-}: IClientFilters): Promise<IClientDataTable[]> => {
+}: IClientFilters): Promise<IGetClientPromise> => {
   const { data } = await axiosApi.post<IGetClientPromise>(
     clientsEndpointGetAll(),
     clientFiltersParsed({ clientData, skip, take })
   );
-  return data.clients;
+  return data;
 };
 
 export const saveClient = async ({

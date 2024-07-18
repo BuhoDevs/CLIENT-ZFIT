@@ -28,7 +28,11 @@ import {
   lightBrandBgColor,
 } from "../../../../components/form/variables";
 import { useAllClients } from "../../../../hooks/client";
-import { IClientDataFilters, IClientDataTable } from "../../../../types/client";
+import {
+  IClientDataFilters,
+  IClientDataTable,
+  IGetClientPromise,
+} from "../../../../types/client";
 import { StateDiccionaryProps } from "../../../../types/table";
 import CustomHeaderColumn from "../../clients/components/Table/CustomHeaderColumn";
 import { DataTable } from "../../clients/components/Table/DataTable";
@@ -57,7 +61,7 @@ const SubscriptionModal = ({
   const [filters, setFilters] = useState<IClientDataFilters>(intialFilters);
   const { register, handleSubmit } = useForm<IClientDataFilters>();
   const { mutate: getClients, isPending: areClientsFetching } = useAllClients();
-  const [clientsData, setClientsData] = useState<IClientDataTable[]>();
+  const [clientsData, setClientsData] = useState<IGetClientPromise>();
   const [clientSelected, setClientSelected] = useState<IClientDataTable>();
 
   useEffect(() => {
@@ -185,7 +189,7 @@ const SubscriptionModal = ({
             columns={clientsColumns}
             isFetching={false}
             isLoading={areClientsFetching}
-            data={clientsData}
+            data={clientsData?.clients}
             tableSize="md"
             tableVariant="simple"
             setSelectedItem={setClientSelected}
