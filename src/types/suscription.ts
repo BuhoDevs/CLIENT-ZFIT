@@ -19,6 +19,15 @@ export interface IBodySuscription {
 
 export interface IPostResponse {
   message: string;
+  Subscription?: {
+    dateOut: string;
+  };
+  Client?: {
+    Person: {
+      firstname: string;
+    };
+  };
+  discipline: string;
 }
 
 export interface IFormSuscriptionData {

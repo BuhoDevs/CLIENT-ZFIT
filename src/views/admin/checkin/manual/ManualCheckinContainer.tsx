@@ -14,12 +14,19 @@ import CheckinCard from "./Checkincard";
 import {
   ICurrentSubscriptionsResponse,
   IPostCheckin,
+  IPostResponse,
 } from "../../../../types/suscription";
 import { OverlaySpinner } from "../../../../components/spinner/OverlaySpinner";
+import SuccessCheckinModal from "../components/SuccessCheckinModal";
 
 const ManualCheckinContainer = () => {
   const toast = useToast();
   const { onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenSuccessCheckinModal,
+    onOpen: onOpenSucccessCheckinModal,
+    onClose: onCloseSuccessCheckinModal,
+  } = useDisclosure();
 
   const bgContainer = useColorModeValue(lightBgForm, darkBgForm);
   const [ci, setCi] = useState("");
@@ -38,6 +45,8 @@ const ManualCheckinContainer = () => {
   const onHandleSubmit = (values: { ci: string }) => {
     setCi(values.ci);
   };
+
+  const [successResponse, setSuccessResponse] = useState<IPostResponse>();
 
   useEffect(() => {
     return () => {
@@ -59,6 +68,11 @@ const ManualCheckinContainer = () => {
   const resetCheckinValues = () => {
     setCi("");
     setClientAndSubsLocalState(undefined);
+    setSuccessResponse(undefined);
+  };
+
+  const modalActivater = () => {
+    onOpenSucccessCheckinModal();
   };
 
   const onDisciplineCheckin = ({ ci, subscriptionId }: IPostCheckin) => {
@@ -68,15 +82,17 @@ const ManualCheckinContainer = () => {
         subscriptionId,
       },
       {
-        onSuccess: ({ message }) => {
-          toast({
-            title: `Asistencia`,
-            description: message,
-            status: "success",
-            duration: 2000,
-            isClosable: true,
-          });
-          resetCheckinValues();
+        onSuccess: ({ message, Subscription, Client, discipline }) => {
+          modalActivater();
+          setSuccessResponse({ message, Subscription, Client, discipline });
+          // toast({
+          //   title: `Asistencia`,
+          //   description: message,
+          //   status: "success",
+          //   duration: 2000,
+          //   isClosable: true,
+          // });
+          // resetCheckinValues();
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onError: async (error: any) => {
@@ -110,6 +126,14 @@ const ManualCheckinContainer = () => {
           isOpen={isCheckinPending}
           onClose={onClose}
           onOpen={onOpen}
+        />
+      )}
+      {successResponse && (
+        <SuccessCheckinModal
+          isOpen={isOpenSuccessCheckinModal}
+          onClose={onCloseSuccessCheckinModal}
+          successResponse={successResponse}
+          resetCheckinValues={resetCheckinValues}
         />
       )}
     </>
