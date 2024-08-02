@@ -9,6 +9,7 @@ import { IFormSuscriptionData } from "../../../../types/suscription";
 import { subscriptionDataExtractor } from "../util";
 import { getUserInfo } from "../../../../utilities";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 interface INewsubscriptionContainer {
   clientsData: IClientByIdEdition | undefined;
@@ -24,6 +25,9 @@ const NewsubscriptionContainer = ({
   /** hooks invokes */
   const { mutate: onSubscriptionSubmmit, isPending: isSubscriptionSubmitting } =
     usePostSubscription();
+
+  const [isAmmountAvailableEdition, setAmmountAvailableEdition] =
+    useState(true);
   const {
     control,
     register,
@@ -35,6 +39,7 @@ const NewsubscriptionContainer = ({
   } = useForm<IFormSuscriptionData>();
   const subsTypePrice = watch("subscriptionType");
   const transactionAmmount = watch("transactionAmmount");
+  const totalAmmountWatcher = watch("totalAmmount");
   const onSubscription = (values: IFormSuscriptionData) => {
     if (!clientsData || !subscriptorInfo) return;
 
@@ -84,6 +89,9 @@ const NewsubscriptionContainer = ({
           transactionAmmount={transactionAmmount}
           setValue={setValue}
           errors={errors}
+          isAvailableEdition={isAmmountAvailableEdition}
+          setIsAvailableEdition={setAmmountAvailableEdition}
+          totalAmmountWatcher={totalAmmountWatcher}
         />
         <Flex mt={2} justifyContent="flex-end">
           <Button

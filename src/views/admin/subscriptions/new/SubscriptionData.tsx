@@ -1,11 +1,13 @@
 import {
   Box,
+  Checkbox,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
   SimpleGrid,
   Text,
+  Textarea,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { Select as CkakraSelect } from "chakra-react-select";
@@ -34,6 +36,9 @@ interface ISubscriptionData {
   transactionAmmount: number;
   setValue: UseFormSetValue<IFormSuscriptionData>;
   errors: FieldErrors<IFormSuscriptionData>;
+  isAvailableEdition: boolean;
+  setIsAvailableEdition: (value: boolean) => void;
+  totalAmmountWatcher: number;
 }
 const SubscriptionData = ({
   bgContainer,
@@ -43,7 +48,11 @@ const SubscriptionData = ({
   // transactionAmmount = 0,
   setValue,
   errors,
+  isAvailableEdition,
+  setIsAvailableEdition,
+  totalAmmountWatcher,
 }: ISubscriptionData) => {
+  console.log(isAvailableEdition, "que es ??");
   const { data: disciplinesData } = useDisciplines();
   const { data: subscriptionsTypeData } = useAllSubscriptionsType();
   const brandBgColor = useColorModeValue(lightBrandBgColor, darkBrandBgColor);
@@ -206,7 +215,14 @@ const SubscriptionData = ({
             {...register("transactionAmmount", {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               onChange: ({ target: { value } }) => {
-                setValue("outstanding", Number(subsTypePrice?.price - value));
+                setValue(
+                  "outstanding",
+                  Number(
+                    totalAmmountWatcher > 0
+                      ? totalAmmountWatcher - value
+                      : undefined
+                  )
+                );
               },
               required: {
                 value: true,
@@ -221,25 +237,7 @@ const SubscriptionData = ({
             // max={subsTypePrice?.price || 0}
             color={inputTextColor}
           />
-          {/* <NumberInput
-            isDisabled={!subsTypePrice}
-            min={0}
-            // max={subsTypePrice?.price || 0}
-          >
-            <NumberInputField
-              {...register("transactionAmmount", {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                onChange: ({ target: { value } }) => {
-                  setValue("outstanding", Number(subsTypePrice.price - value));
-                },
-                required: {
-                  value: true,
-                  message: "El monto es requerido",
-                },
-              })}
-              color={inputTextColor}
-            />
-          </NumberInput> */}
+
           {errors?.transactionAmmount && (
             <FormErrorMessage ps={1} mb="24px">
               {errors.transactionAmmount.message}
@@ -247,15 +245,54 @@ const SubscriptionData = ({
           )}
         </FormControl>
 
-        <FormControl>
-          <FormLabel>Costo Suscripción (Bs)</FormLabel>
+        <FormControl isInvalid={Boolean(errors.totalAmmount)}>
+          <FormLabel
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Text>Precio Suscripción (Bs)</Text>
+            <Checkbox
+              checked={isAvailableEdition}
+              onChange={({ target: { checked } }) => {
+                setIsAvailableEdition(checked);
+              }}
+              colorScheme="brandScheme"
+            >
+              Editar
+            </Checkbox>
+          </FormLabel>
           <Input
-            readOnly
+            type="number"
+            readOnly={!isAvailableEdition}
             focusBorderColor={brandBgColor}
             // value={subsTypePrice?.price || 0}
-            {...register("totalAmmount")}
+
+            {...register("totalAmmount", {
+              onChange: ({ target: { value } }) => {
+                setValue("transactionAmmount", 0);
+                setValue(
+                  "outstanding",
+                  Number(totalAmmountWatcher > 0 ? value : undefined)
+                );
+              },
+              required: {
+                value: true,
+                message: "El monto es requerido",
+              },
+              valueAsNumber: true,
+              min: {
+                value: 1,
+                message: `El precio debe ser mayor a 0`,
+              },
+            })}
             color={inputTextColor}
           />
+          {errors.totalAmmount && (
+            <FormErrorMessage ps={1} mb="24px">
+              {errors.totalAmmount.message}
+            </FormErrorMessage>
+          )}
         </FormControl>
 
         <FormControl>
@@ -280,6 +317,10 @@ const SubscriptionData = ({
               // value={Number(subsTypePrice?.price - transactionAmmount) || 0}
             />
           </NumberInput> */}
+        </FormControl>
+        <FormControl>
+          <FormLabel>Saldo/Deuda (Bs)</FormLabel>
+          <Textarea resize="none" focusBorderColor="brand.400" />
         </FormControl>
       </SimpleGrid>
     </Box>
