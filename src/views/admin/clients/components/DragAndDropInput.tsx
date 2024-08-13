@@ -19,15 +19,15 @@ interface IDragAndDropInput extends DropzoneOptions {
     accept?: string;
   };
   image: string | undefined;
+  isEditing?: boolean;
 }
 
 const DragAndDropInput = ({
-  //   filesMaxSizeData,
   file,
   setFile,
-  //   inputProps,
   setImage,
   image,
+  isEditing = false,
   ...props
 }: IDragAndDropInput) => {
   const handleRemoveFile = (file: File) => {
@@ -60,7 +60,6 @@ const DragAndDropInput = ({
   }, []);
   const borderDragInput = useColorModeValue("gray.300", "gray.700");
   const tagBgColor = useColorModeValue("brand.500", "brand.400");
-
   return (
     <Box
       {...getRootProps()}
@@ -86,7 +85,12 @@ const DragAndDropInput = ({
         </Box>
       )}
 
-      <FileList file={file} handleRemoveFile={handleRemoveFile} image={image} />
+      <FileList
+        file={file}
+        handleRemoveFile={handleRemoveFile}
+        image={image}
+        isEditing={isEditing}
+      />
     </Box>
   );
 };

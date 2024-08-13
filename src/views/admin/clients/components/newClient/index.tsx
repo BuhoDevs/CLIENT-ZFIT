@@ -277,7 +277,7 @@ const NewClient = () => {
               <FormControl>
                 <FormLabel>Altura</FormLabel>
                 <NumberInput defaultValue={1.5} precision={2} step={0.1}>
-                  <NumberInputField {...register("height")} />
+                  <NumberInputField {...register("height")} color={textColor} />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />
@@ -287,7 +287,7 @@ const NewClient = () => {
               <FormControl>
                 <FormLabel>Peso</FormLabel>
                 <NumberInput defaultValue={50.5} precision={2} step={0.1}>
-                  <NumberInputField {...register("weight")} />
+                  <NumberInputField {...register("weight")} color={textColor} />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />
