@@ -71,15 +71,16 @@ const EditClient = () => {
     mode: "onChange",
     resolver: zodResolver(schemaClient),
   });
-
   useEffect(() => {
     if (client) {
       reset({
         ...client,
-        birthdate: moment
-          .utc(client.birthdate)
-          .locale("es")
-          .format("yyyy-MM-DD"),
+        ...(client.birthdate && {
+          birthdate: moment
+            .utc(client.birthdate)
+            .locale("es")
+            .format("yyyy-MM-DD"),
+        }),
       });
       setImage(client.photo);
     }
@@ -110,6 +111,11 @@ const EditClient = () => {
       }
     );
   };
+  useEffect(() => {
+    if (file) {
+      setImage(URL.createObjectURL(file));
+    }
+  }, [file]);
 
   if (isLoading)
     return (
@@ -305,6 +311,7 @@ const EditClient = () => {
                   setFile={setFile}
                   setImage={setImage}
                   image={image}
+                  isEditing
                 />
               </Flex>
             </SimpleGrid>

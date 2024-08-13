@@ -32,7 +32,7 @@ export const schemaClient = z.object({
     .max(20, { message: "20 caracteres permitidos como máximo" })
     .regex(/^[a-zA-Z\s]+$/i, "Solo se permiten letras")
     .trim(),
-  birthdate: z.string(),
+  // birthdate: z.string(),
   Genre: schemaGenre,
   email: z
     .string()

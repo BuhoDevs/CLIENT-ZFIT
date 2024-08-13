@@ -39,7 +39,10 @@ const SuccessCheckinModal = ({
     <Modal
       //   initialFocusRef={initialRef}
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => {
+        resetCheckinValues();
+        onClose();
+      }}
       isCentered
       size="xl"
       closeOnOverlayClick={false}
