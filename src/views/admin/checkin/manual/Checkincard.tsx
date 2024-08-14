@@ -103,6 +103,7 @@ export default function CheckinCard(props: {
           />
         </PinInput>
       </HStack>
+
       <Flex w="max-content" mx="auto" mt="26px" gap={3}>
         {ClientAndSubscriptionData?.subscriptions.map((elem) => {
           return (
