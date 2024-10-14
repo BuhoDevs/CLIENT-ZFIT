@@ -11,9 +11,11 @@ export const schemaGenre = z.object({
 export const schemaClient = z.object({
   ci: z
     .string()
-    .min(5, { message: "Debe tener entre 5 y 10 caracteres" })
-    .max(10, { message: "Debe tener entre 5 y 10 caracteres" })
-    .trim(),
+    .trim()
+    .optional()
+    .refine((val) => !val || (val.length >= 5 && val.length <= 10), {
+      message: "Debe tener entre 5 y 10 caracteres",
+    }),
   firstname: z
     .string({
       required_error: "El nombre es requerido",
@@ -34,10 +36,23 @@ export const schemaClient = z.object({
     .trim(),
   // birthdate: z.string(),
   Genre: schemaGenre,
-  email: z
+  email: z.string().optional(),
+  phone: z
     .string()
-    .email({ message: "Dirección de correo electrónico inválido" }),
-  phone: z.number().max(99999999, "Debe tener como maximo 8 numeros"),
+    .trim()
+    .nullable()
+    .optional()
+    .refine(
+      (val) =>
+        val === null ||
+        val === undefined ||
+        val === "" ||
+        /^\d{7,8}$/.test(val),
+      {
+        message: "Debe tener entre 7 y 8 dígitos numéricos",
+      }
+    )
+    .transform((val) => (val ? Number(val) : undefined)),
   height: z.number(),
   weight: z.number(),
   // photo: z.string(),

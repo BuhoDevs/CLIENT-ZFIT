@@ -148,7 +148,7 @@ const EditClient = () => {
         <Box bgColor={formBg} borderRadius={8} p={4}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} mb={4}>
-              <FormControl isRequired isInvalid={!!errors.ci}>
+              <FormControl isInvalid={!!errors.ci}>
                 <FormLabel htmlFor="ci_label" display="flex" gap={1}>
                   Nro Cedula
                 </FormLabel>
@@ -157,6 +157,7 @@ const EditClient = () => {
                   id="ci_label"
                   color={textColor}
                   placeholder="Cedula"
+                  focusBorderColor="brand.400"
                 />
                 <FormErrorMessage>{errors.ci?.message}</FormErrorMessage>
               </FormControl>
@@ -169,6 +170,7 @@ const EditClient = () => {
                   id="firstname_label"
                   color={textColor}
                   placeholder="Nombre(s)"
+                  focusBorderColor="brand.400"
                 />
 
                 {errors && errors.firstname && (
@@ -186,6 +188,7 @@ const EditClient = () => {
                   id="lastname_label"
                   color={textColor}
                   placeholder="Apellido(s)"
+                  focusBorderColor="brand.400"
                 />
 
                 {errors && errors.lastname && (
@@ -241,13 +244,14 @@ const EditClient = () => {
                   </FormErrorMessage>
                 )}
               </FormControl>
-              <FormControl>
+              <FormControl isInvalid={Boolean(errors?.email)}>
                 <FormLabel htmlFor="email_label">Correo</FormLabel>
                 <Input
                   {...register("email")}
                   id="email_label"
                   color={textColor}
                   placeholder="Correo"
+                  focusBorderColor="brand.400"
                 />
 
                 {errors && errors.email && (
@@ -256,16 +260,17 @@ const EditClient = () => {
                   </FormErrorMessage>
                 )}
               </FormControl>
-              <FormControl isRequired isInvalid={!!errors.phone}>
+              <FormControl isInvalid={!!errors.phone}>
                 <FormLabel htmlFor="phone_label" display="flex" gap={1}>
                   Celular
                 </FormLabel>
                 <Input
-                  {...register("phone", { valueAsNumber: true })}
+                  {...register("phone")}
                   type="number"
                   id="phone_label"
                   color={textColor}
                   placeholder="Celular"
+                  focusBorderColor="brand.400"
                 />
 
                 {errors && errors.phone && (
@@ -278,7 +283,12 @@ const EditClient = () => {
             <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} mb={4}>
               <FormControl>
                 <FormLabel>Altura</FormLabel>
-                <NumberInput defaultValue={1.5} precision={2} step={0.1}>
+                <NumberInput
+                  defaultValue={1.5}
+                  precision={2}
+                  step={0.1}
+                  focusBorderColor="brand.400"
+                >
                   <NumberInputField
                     {...register("height", { valueAsNumber: true })}
                     color={textColor}
@@ -291,7 +301,12 @@ const EditClient = () => {
               </FormControl>
               <FormControl>
                 <FormLabel>Peso</FormLabel>
-                <NumberInput defaultValue={50.5} precision={2} step={0.1}>
+                <NumberInput
+                  defaultValue={50.5}
+                  precision={2}
+                  step={0.1}
+                  focusBorderColor="brand.400"
+                >
                   <NumberInputField
                     {...register("weight", { valueAsNumber: true })}
                     color={textColor}

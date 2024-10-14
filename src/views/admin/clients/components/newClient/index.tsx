@@ -122,19 +122,20 @@ const NewClient = () => {
             <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} mb={4}>
               <FormControl isInvalid={!!errors.ci}>
                 <FormLabel display="flex" gap={1}>
-                  Nro Cedula <Text color="brand.500">*</Text>
+                  Nro Cedula
                 </FormLabel>
                 <Input
                   id="ci"
                   type="text"
                   {...register("ci", {
-                    required: {
-                      value: true,
-                      message: "El carnet es requerido",
+                    maxLength: {
+                      value: 10,
+                      message: "Debe tener menos de 11 caracteres",
                     },
                   })}
                   placeholder="Cedula.."
                   color={textColor}
+                  focusBorderColor="brand.400"
                 />
                 {errors && errors.ci && (
                   <FormErrorMessage ps={1} mb="24px">
@@ -157,6 +158,7 @@ const NewClient = () => {
                   })}
                   color={textColor}
                   placeholder="Nombres"
+                  focusBorderColor="brand.400"
                 />
                 {errors && errors.firstname && (
                   <FormErrorMessage ps={1} mb="24px">
@@ -179,6 +181,7 @@ const NewClient = () => {
                   })}
                   color={textColor}
                   placeholder="Apellido"
+                  focusBorderColor="brand.400"
                 />
                 {errors && errors.lastname && (
                   <FormErrorMessage ps={1} mb="24px">
@@ -193,6 +196,7 @@ const NewClient = () => {
                   type="date"
                   {...register("birthdate")}
                   color={textColor}
+                  focusBorderColor="brand.400"
                 />
               </FormControl>
             </SimpleGrid>
@@ -243,28 +247,25 @@ const NewClient = () => {
                   {...register("email")}
                   color={textColor}
                   placeholder="Correo"
+                  focusBorderColor="brand.400"
                 />
               </FormControl>
               <FormControl isInvalid={!!errors.phone}>
                 <FormLabel display="flex" gap={1}>
-                  Celular <Text color="brand.500">*</Text>
+                  Celular
                 </FormLabel>
                 <Input
                   id="phone"
                   type="number"
                   {...register("phone", {
-                    required: {
-                      value: true,
-                      message: "El telefono es requerido",
-                    },
                     maxLength: {
                       value: 10,
-                      message:
-                        "El numero de celular no debe tener mas de 10 digitos",
+                      message: "Debe tener entre 7 y 8 digitos",
                     },
                   })}
                   color={textColor}
                   placeholder="Celular"
+                  focusBorderColor="brand.400"
                 />
                 {errors && errors.phone && (
                   <FormErrorMessage ps={1} mb="24px">
@@ -276,7 +277,12 @@ const NewClient = () => {
             <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} mb={4}>
               <FormControl>
                 <FormLabel>Altura</FormLabel>
-                <NumberInput defaultValue={1.5} precision={2} step={0.1}>
+                <NumberInput
+                  defaultValue={1.5}
+                  precision={2}
+                  step={0.1}
+                  focusBorderColor="brand.400"
+                >
                   <NumberInputField {...register("height")} color={textColor} />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
@@ -286,7 +292,12 @@ const NewClient = () => {
               </FormControl>
               <FormControl>
                 <FormLabel>Peso</FormLabel>
-                <NumberInput defaultValue={50.5} precision={2} step={0.1}>
+                <NumberInput
+                  defaultValue={50.5}
+                  precision={2}
+                  step={0.1}
+                  focusBorderColor="brand.400"
+                >
                   <NumberInputField {...register("weight")} color={textColor} />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
